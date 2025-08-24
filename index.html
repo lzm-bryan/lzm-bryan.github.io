@@ -200,7 +200,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2025-08-24 15:00:00 / Modified: 22:06:39" itemprop="dateCreated datePublished" datetime="2025-08-24T15:00:00+08:00">2025-08-24</time>
+      <time title="Created: 2025-08-24 15:00:00 / Modified: 22:12:55" itemprop="dateCreated datePublished" datetime="2025-08-24T15:00:00+08:00">2025-08-24</time>
     </span>
 
   
@@ -228,7 +228,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="阿里云-CentOS-搭建-WireGuard-VPN"><a href="#阿里云-CentOS-搭建-WireGuard-VPN" class="headerlink" title="阿里云 CentOS 搭建 WireGuard VPN"></a>阿里云 CentOS 搭建 WireGuard VPN</h1><h2 id="1-购买服务器-配置安全组"><a href="#1-购买服务器-配置安全组" class="headerlink" title="1. 购买服务器 &amp; 配置安全组"></a>1. 购买服务器 &amp; 配置安全组</h2><ul>
+          <hr>
+<h2 id="title-WireGuarddate-2025-08-24-15-00-00"><a href="#title-WireGuarddate-2025-08-24-15-00-00" class="headerlink" title="title: WireGuarddate: 2025-08-24 15:00:00"></a>title: WireGuard<br>date: 2025-08-24 15:00:00</h2><h1 id="阿里云-CentOS-搭建-WireGuard-VPN"><a href="#阿里云-CentOS-搭建-WireGuard-VPN" class="headerlink" title="阿里云 CentOS 搭建 WireGuard VPN"></a>阿里云 CentOS 搭建 WireGuard VPN</h1><h2 id="1-购买服务器-配置安全组"><a href="#1-购买服务器-配置安全组" class="headerlink" title="1. 购买服务器 &amp; 配置安全组"></a>1. 购买服务器 &amp; 配置安全组</h2><ul>
 <li><p>在 <a target="_blank" rel="noopener" href="https://ecs.console.aliyun.com/">阿里云 ECS 控制台</a> 购买一台 <strong>ECS 实例</strong>  </p>
 <ul>
 <li>地域：选择中国大陆机房  </li>
@@ -247,19 +248,15 @@
 <hr>
 <h2 id="2-服务端安装-WireGuard"><a href="#2-服务端安装-WireGuard" class="headerlink" title="2. 服务端安装 WireGuard"></a>2. 服务端安装 WireGuard</h2><pre><code class="language-bash">sudo dnf update -y
 sudo dnf install -y wireguard-tools iproute iptables
-3. 生成密钥
-bash
-复制
-编辑
+
+# 生成密钥
 # 服务端
 wg genkey | tee ~/server_private.key | wg pubkey &gt; ~/server_public.key
 
 # 客户端
 wg genkey | tee ~/client_private.key | wg pubkey &gt; ~/client_public.key
-4. 写配置文件 /etc/wireguard/wg0.conf
-bash
-复制
-编辑
+
+# 写配置文件 /etc/wireguard/wg0.conf
 SVR_PRIV=$(cat ~/server_private.key)
 CLI_PUB=$(cat ~/client_public.key)
 
@@ -276,30 +273,25 @@ PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -
 PublicKey = $&#123;CLI_PUB&#125;
 AllowedIPs = 10.0.0.2/32
 EOF
-5. 开启内核转发
-bash
-复制
-编辑
+
+# 开启内核转发
 sudo sysctl -w net.ipv4.ip_forward=1
 echo &#39;net.ipv4.ip_forward=1&#39; | sudo tee /etc/sysctl.d/99-wireguard.conf
 sudo sysctl --system
-6. 启动 WireGuard
-bash
-复制
-编辑
+
+# 启动WireGuard
 sudo systemctl enable wg-quick@wg0
 sudo systemctl restart wg-quick@wg0
 sudo wg show
-7. 本地 Windows 客户端
+
+# 本地 Windows 客户端
+
 下载 WireGuard for Windows
 
 打开应用 → Add Tunnel → Import from file
 
-写入如下配置（⚠️ 修改为你的公网 IP，例如 1.123.123.133）：
+写入如下配置（⚠️ 修改为你的公网 IP，例如 1.123.123.123）：
 
-ini
-复制
-编辑
 [Interface]
 PrivateKey = (client_private.key 内容)
 Address = 10.0.0.2/24
@@ -308,7 +300,7 @@ MTU = 1380
 
 [Peer]
 PublicKey = (server_public.key 内容)
-Endpoint = 1.123.123.133:51820
+Endpoint = 1.123.123.123:51820
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 </code></pre>
