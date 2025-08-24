@@ -135,7 +135,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -161,6 +161,114 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/24/partition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/08/24/partition/" class="post-title-link" itemprop="url">排序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2025-08-24 00:00:00 / Modified: 20:50:31" itemprop="dateCreated datePublished" datetime="2025-08-24T00:00:00+08:00">2025-08-24</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line">def partition(nums, start, end):</span><br><span class="line">    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;</span><br><span class="line">    pivot = nums[start]          # 也可随机：p = random.randint(start, end); nums[start], nums[p] = nums[p], nums[start]</span><br><span class="line">    left, right = start, end</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        # 右侧先找 &lt; pivot 的</span><br><span class="line">        while left &lt; right and nums[right] &gt;= pivot:</span><br><span class="line">            right -= 1</span><br><span class="line">        nums[left] = nums[right]     # 右边的小填到左坑</span><br><span class="line"></span><br><span class="line">        # 左侧再找 &gt; pivot 的</span><br><span class="line">        while left &lt; right and nums[left] &lt;= pivot:</span><br><span class="line">            left += 1</span><br><span class="line">        nums[right] = nums[left]     # 左边的大填到右坑</span><br><span class="line"></span><br><span class="line">    nums[left] = pivot               # 枢轴就位</span><br><span class="line">    return left</span><br><span class="line"></span><br><span class="line">def quicksort(nums, l=0, r=None):</span><br><span class="line">    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;</span><br><span class="line">    if r is None:</span><br><span class="line">        r = len(nums) - 1</span><br><span class="line">    if l &gt;= r:</span><br><span class="line">        return</span><br><span class="line">    mid = partition(nums, l, r)</span><br><span class="line">    quicksort(nums, l, mid - 1)</span><br><span class="line">    quicksort(nums, mid + 1, r)</span><br></pre></td></tr></table></figure>
+<pre><code>def quicksort(nums, start, end):
+    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+    if start &gt;= end:
+        return
+
+    pivot = nums[start]
+    left, right = start, end
+
+    # 分区：右找小填左坑，左找大填右坑
+    while left &lt; right:
+        while left &lt; right and nums[right] &gt;= pivot:
+            right -= 1
+        if left &lt; right:
+            nums[left] = nums[right]
+        while left &lt; right and nums[left] &lt;= pivot:
+            left += 1
+        if left &lt; right:
+            nums[right] = nums[left]
+
+    nums[left] = pivot  # 枢轴就位
+    quicksort(nums, start, left - 1)
+    quicksort(nums, left + 1, end)
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1135,13 +1243,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">8k</span>
+    <span title="Word count total">9k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">7 mins.</span>
+    <span title="Reading time total">8 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
