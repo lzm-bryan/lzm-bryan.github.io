@@ -330,7 +330,7 @@ PersistentKeepalive = 25
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/24/partition/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/24/%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -348,7 +348,7 @@ PersistentKeepalive = 25
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/08/24/partition/" class="post-title-link" itemprop="url">排序</a>
+          <a href="/2025/08/24/%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">排序</a>
         </h2>
 
         <div class="post-meta-container">
@@ -360,7 +360,7 @@ PersistentKeepalive = 25
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2025-08-24 00:00:00 / Modified: 20:50:31" itemprop="dateCreated datePublished" datetime="2025-08-24T00:00:00+08:00">2025-08-24</time>
+      <time title="Created: 2025-08-24 00:00:00 / Modified: 22:32:26" itemprop="dateCreated datePublished" datetime="2025-08-24T00:00:00+08:00">2025-08-24</time>
     </span>
 
   
@@ -370,14 +370,14 @@ PersistentKeepalive = 25
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>1.1k</span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -389,28 +389,19 @@ PersistentKeepalive = 25
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line">def partition(nums, start, end):</span><br><span class="line">    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;</span><br><span class="line">    pivot = nums[start]          # 也可随机：p = random.randint(start, end); nums[start], nums[p] = nums[p], nums[start]</span><br><span class="line">    left, right = start, end</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        # 右侧先找 &lt; pivot 的</span><br><span class="line">        while left &lt; right and nums[right] &gt;= pivot:</span><br><span class="line">            right -= 1</span><br><span class="line">        nums[left] = nums[right]     # 右边的小填到左坑</span><br><span class="line"></span><br><span class="line">        # 左侧再找 &gt; pivot 的</span><br><span class="line">        while left &lt; right and nums[left] &lt;= pivot:</span><br><span class="line">            left += 1</span><br><span class="line">        nums[right] = nums[left]     # 左边的大填到右坑</span><br><span class="line"></span><br><span class="line">    nums[left] = pivot               # 枢轴就位</span><br><span class="line">    return left</span><br><span class="line"></span><br><span class="line">def quicksort(nums, l=0, r=None):</span><br><span class="line">    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;</span><br><span class="line">    if r is None:</span><br><span class="line">        r = len(nums) - 1</span><br><span class="line">    if l &gt;= r:</span><br><span class="line">        return</span><br><span class="line">    mid = partition(nums, l, r)</span><br><span class="line">    quicksort(nums, l, mid - 1)</span><br><span class="line">    quicksort(nums, mid + 1, r)</span><br></pre></td></tr></table></figure>
-<pre><code>def quicksort(nums, start, end):
-    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
-    if start &gt;= end:
-        return
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def quicksort(nums, start, end):</span><br><span class="line">    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;</span><br><span class="line">    if start &gt;= end:</span><br><span class="line">        return</span><br><span class="line"></span><br><span class="line">    pivot = nums[start]</span><br><span class="line">    left, right = start, end</span><br><span class="line"></span><br><span class="line">    # 分区：右找小填左坑，左找大填右坑</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        while left &lt; right and nums[right] &gt;= pivot:</span><br><span class="line">            right -= 1</span><br><span class="line">        if left &lt; right:</span><br><span class="line">            nums[left] = nums[right]</span><br><span class="line">        while left &lt; right and nums[left] &lt;= pivot:</span><br><span class="line">            left += 1</span><br><span class="line">        if left &lt; right:</span><br><span class="line">            nums[right] = nums[left]</span><br><span class="line"></span><br><span class="line">    nums[left] = pivot  # 枢轴就位</span><br><span class="line">    quicksort(nums, start, left - 1)</span><br><span class="line">    quicksort(nums, left + 1, end)</span><br></pre></td></tr></table></figure>
+<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def bubble_sort(nums):</span><br><span class="line">    &quot;&quot;&quot;原地冒泡排序；稳定。平均/最坏 O(n^2)，最好（近乎有序）可提前终止。&quot;&quot;&quot;</span><br><span class="line">    n = len(nums)</span><br><span class="line">    for i in range(n - 1):</span><br><span class="line">        swapped = False</span><br><span class="line">        # 相邻比较与交换，内层区间逐步缩短</span><br><span class="line">        for j in range(0, n - 1 - i):</span><br><span class="line">            if nums[j] &gt; nums[j + 1]:</span><br><span class="line">                nums[j], nums[j + 1] = nums[j + 1], nums[j]</span><br><span class="line">                swapped = True</span><br><span class="line">        if not swapped:  # 本轮无交换 -&gt; 已有序</span><br><span class="line">            break</span><br><span class="line">    return nums</span><br></pre></td></tr></table></figure>
 
-    pivot = nums[start]
-    left, right = start, end
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">def selection_sort(nums):</span><br><span class="line">    &quot;&quot;&quot;原地选择排序；不稳定。时间复杂度始终 O(n^2)。&quot;&quot;&quot;</span><br><span class="line">    n = len(nums)</span><br><span class="line">    for i in range(n - 1):</span><br><span class="line">        min_idx = i</span><br><span class="line">        # 在 [i+1, n) 中找最小元素的位置</span><br><span class="line">        for j in range(i + 1, n):</span><br><span class="line">            if nums[j] &lt; nums[min_idx]:</span><br><span class="line">                min_idx = j</span><br><span class="line">        # 只在需要时交换，减少无谓交换次数</span><br><span class="line">        if min_idx != i:</span><br><span class="line">            nums[i], nums[min_idx] = nums[min_idx], nums[i]</span><br><span class="line">    return nums</span><br></pre></td></tr></table></figure>
 
-    # 分区：右找小填左坑，左找大填右坑
-    while left &lt; right:
-        while left &lt; right and nums[right] &gt;= pivot:
-            right -= 1
-        if left &lt; right:
-            nums[left] = nums[right]
-        while left &lt; right and nums[left] &lt;= pivot:
-            left += 1
-        if left &lt; right:
-            nums[right] = nums[left]
 
-    nums[left] = pivot  # 枢轴就位
-    quicksort(nums, start, left - 1)
-    quicksort(nums, left + 1, end)
+<h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">def merge_sort(nums):</span><br><span class="line">    if len(nums) &lt;= 1:</span><br><span class="line">        return nums</span><br><span class="line">    mid = len(nums) // 2</span><br><span class="line">    left = merge_sort(nums[:mid])</span><br><span class="line">    right = merge_sort(nums[mid:])</span><br><span class="line">    return merge(left, right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def merge(left, right):</span><br><span class="line">    l, r = 0, 0</span><br><span class="line">    res = []</span><br><span class="line">    while l &lt; len(left) and r &lt; len(right):</span><br><span class="line">        if left[l] &lt;= right[r]:</span><br><span class="line">            res.append(left[l])</span><br><span class="line">            l += 1</span><br><span class="line">        else:</span><br><span class="line">            res.append(right[r])</span><br><span class="line">            r += 1</span><br><span class="line">    res.extend(left[l:])</span><br><span class="line">    res.extend(right[r:])</span><br><span class="line">    return res</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>        nums[right] = nums[left]
+
+nums[left] = pivot  # 枢轴就位
+quicksort(nums, start, left - 1)
+quicksort(nums, left + 1, end)
 </code></pre>
 
       
@@ -1315,13 +1306,13 @@ PersistentKeepalive = 25
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Word count total">11k</span>
+    <span title="Word count total">12k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10 mins.</span>
+    <span title="Reading time total">11 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
