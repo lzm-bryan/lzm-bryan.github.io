@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.24.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="快速排序1234567891011121314151617181920212223242526272829import randomdef partition(nums, start, end):    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;    pivot &#x3D; nums[start]          # 也可随机：p &#x3D; rand">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/08/24/Code/%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="快速排序1234567891011121314151617181920212223242526272829import randomdef partition(nums, start, end):    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;    pivot &#x3D; nums[start]          # 也可随机：p &#x3D; rand">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-24T12:50:03.101Z">
+<meta property="article:modified_time" content="2025-08-25T17:27:54.013Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/08/24/Code/%E6%8E%92%E5%BA%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/08/24/Code/%E6%8E%92%E5%BA%8F/","path":"2025/08/24/Code/排序/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">快速排序</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/24/Code/%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-08-24 20:50:03" itemprop="dateCreated datePublished" datetime="2025-08-24T20:50:03+08:00">2025-08-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-08-26 01:27:54" itemprop="dateModified" datetime="2025-08-26T01:27:54+08:00">2025-08-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line">def partition(nums, start, end):</span><br><span class="line">    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;</span><br><span class="line">    pivot = nums[start]          # 也可随机：p = random.randint(start, end); nums[start], nums[p] = nums[p], nums[start]</span><br><span class="line">    left, right = start, end</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        # 右侧先找 &lt; pivot 的</span><br><span class="line">        while left &lt; right and nums[right] &gt;= pivot:</span><br><span class="line">            right -= 1</span><br><span class="line">        nums[left] = nums[right]     # 右边的小填到左坑</span><br><span class="line"></span><br><span class="line">        # 左侧再找 &gt; pivot 的</span><br><span class="line">        while left &lt; right and nums[left] &lt;= pivot:</span><br><span class="line">            left += 1</span><br><span class="line">        nums[right] = nums[left]     # 左边的大填到右坑</span><br><span class="line"></span><br><span class="line">    nums[left] = pivot               # 枢轴就位</span><br><span class="line">    return left</span><br><span class="line"></span><br><span class="line">def quicksort(nums, l=0, r=None):</span><br><span class="line">    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;</span><br><span class="line">    if r is None:</span><br><span class="line">        r = len(nums) - 1</span><br><span class="line">    if l &gt;= r:</span><br><span class="line">        return</span><br><span class="line">    mid = partition(nums, l, r)</span><br><span class="line">    quicksort(nums, l, mid - 1)</span><br><span class="line">    quicksort(nums, mid + 1, r)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def quicksort(nums, start, end):</span><br><span class="line">    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;</span><br><span class="line">    if start &gt;= end:</span><br><span class="line">        return</span><br><span class="line"></span><br><span class="line">    pivot = nums[start]</span><br><span class="line">    left, right = start, end</span><br><span class="line"></span><br><span class="line">    # 分区：右找小填左坑，左找大填右坑</span><br><span class="line">    while left &lt; right:</span><br><span class="line">        while left &lt; right and nums[right] &gt;= pivot:</span><br><span class="line">            right -= 1</span><br><span class="line">        if left &lt; right:</span><br><span class="line">            nums[left] = nums[right]</span><br><span class="line">        while left &lt; right and nums[left] &lt;= pivot:</span><br><span class="line">            left += 1</span><br><span class="line">        if left &lt; right:</span><br><span class="line">            nums[right] = nums[left]</span><br><span class="line"></span><br><span class="line">    nums[left] = pivot  # 枢轴就位</span><br><span class="line">    quicksort(nums, start, left - 1)</span><br><span class="line">    quicksort(nums, left + 1, end)</span><br></pre></td></tr></table></figure>
+<p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line">from typing import List</span><br><span class="line"></span><br><span class="line">def quicksort(a: List[int], l: int, r: int) -&gt; None:</span><br><span class="line">    &quot;&quot;&quot;改进版原地快速排序（三路划分 + 随机枢轴 + 尾递归优化）&quot;&quot;&quot;</span><br><span class="line">    while l &lt; r:</span><br><span class="line">        # 1) 随机选择枢轴，交换到开头</span><br><span class="line">        p = random.randint(l, r)</span><br><span class="line">        a[l], a[p] = a[p], a[l]</span><br><span class="line">        pivot = a[l]</span><br><span class="line"></span><br><span class="line">        # 2) 三路划分：[l..lt-1] &lt; pivot, [lt..gt] == pivot, [gt+1..r] &gt; pivot</span><br><span class="line">        lt, i, gt = l, l + 1, r</span><br><span class="line">        while i &lt;= gt:</span><br><span class="line">            if a[i] &lt; pivot:</span><br><span class="line">                a[lt], a[i] = a[i], a[lt]</span><br><span class="line">                lt += 1</span><br><span class="line">                i += 1</span><br><span class="line">            elif a[i] &gt; pivot:</span><br><span class="line">                a[i], a[gt] = a[gt], a[i]</span><br><span class="line">                gt -= 1</span><br><span class="line">            else:</span><br><span class="line">                i += 1</span><br><span class="line"></span><br><span class="line">        # 3) 递归较小的一侧，循环处理较大的一侧（尾递归优化）</span><br><span class="line">        left_len = lt - 1 - l</span><br><span class="line">        right_len = r - (gt + 1)</span><br><span class="line">        if left_len &lt; right_len:</span><br><span class="line">            if l &lt; lt - 1:</span><br><span class="line">                quicksort(a, l, lt - 1)</span><br><span class="line">            l = gt + 1</span><br><span class="line">        else:</span><br><span class="line">            if gt + 1 &lt; r:</span><br><span class="line">                quicksort(a, gt + 1, r)</span><br><span class="line">            r = lt - 1</span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"># 冒泡排序</span><br></pre></td></tr></table></figure>
+<p>def bubble_sort(nums):<br>    “””原地冒泡排序；稳定。平均&#x2F;最坏 O(n^2)，最好（近乎有序）可提前终止。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        swapped &#x3D; False<br>        # 相邻比较与交换，内层区间逐步缩短<br>        for j in range(0, n - 1 - i):<br>            if nums[j] &gt; nums[j + 1]:<br>                nums[j], nums[j + 1] &#x3D; nums[j + 1], nums[j]<br>                swapped &#x3D; True<br>        if not swapped:  # 本轮无交换 -&gt; 已有序<br>            break<br>    return nums</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>def selection_sort(nums):<br>    “””原地选择排序；不稳定。时间复杂度始终 O(n^2)。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        min_idx &#x3D; i<br>        # 在 [i+1, n) 中找最小元素的位置<br>        for j in range(i + 1, n):<br>            if nums[j] &lt; nums[min_idx]:<br>                min_idx &#x3D; j<br>        # 只在需要时交换，减少无谓交换次数<br>        if min_idx !&#x3D; i:<br>            nums[i], nums[min_idx] &#x3D; nums[min_idx], nums[i]<br>    return nums</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"># 归并排序</span><br></pre></td></tr></table></figure>
+<p>def merge_sort(nums):<br>    if len(nums) &lt;&#x3D; 1:<br>        return nums<br>    mid &#x3D; len(nums) &#x2F;&#x2F; 2<br>    left &#x3D; merge_sort(nums[:mid])<br>    right &#x3D; merge_sort(nums[mid:])<br>    return merge(left, right)</p>
+<p>def merge(left, right):<br>    l, r &#x3D; 0, 0<br>    res &#x3D; []<br>    while l &lt; len(left) and r &lt; len(right):<br>        if left[l] &lt;&#x3D; right[r]:<br>            res.append(left[l])<br>            l +&#x3D; 1<br>        else:<br>            res.append(right[r])<br>            r +&#x3D; 1<br>    res.extend(left[l:])<br>    res.extend(right[r:])<br>    return res</p>
+<pre><code>
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/24/wireguard/" rel="prev" title="Wireguard">
+                  <i class="fa fa-angle-left"></i> Wireguard
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/08/27/Hip-Hop/rapper/" rel="next" title="Rapper">
+                  Rapper <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">22k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">20 mins.</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.24.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="title: WireGuarddate: 2025-08-24 15:00:00阿里云 CentOS 搭建 WireGuard VPN1. 购买服务器 &amp; 配置安全组 在 阿里云 ECS 控制台 购买一台 ECS 实例    地域：选择中国大陆机房   系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8   带宽：≥ 5 Mbps   在 安全组 → 入方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wireguard">
+<meta property="og:url" content="http://example.com/2025/08/24/wireguard/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="title: WireGuarddate: 2025-08-24 15:00:00阿里云 CentOS 搭建 WireGuard VPN1. 购买服务器 &amp; 配置安全组 在 阿里云 ECS 控制台 购买一台 ECS 实例    地域：选择中国大陆机房   系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8   带宽：≥ 5 Mbps   在 安全组 → 入方">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-24T07:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-24T14:12:55.878Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/08/24/wireguard/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/08/24/wireguard/","path":"2025/08/24/wireguard/","title":"Wireguard"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Wireguard | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#title-WireGuarddate-2025-08-24-15-00-00"><span class="nav-number">1.</span> <span class="nav-text">title: WireGuarddate: 2025-08-24 15:00:00</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91-CentOS-%E6%90%AD%E5%BB%BA-WireGuard-VPN"><span class="nav-number"></span> <span class="nav-text">阿里云 CentOS 搭建 WireGuard VPN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%B4%AD%E4%B9%B0%E6%9C%8D%E5%8A%A1%E5%99%A8-%E9%85%8D%E7%BD%AE%E5%AE%89%E5%85%A8%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">1. 购买服务器 &amp; 配置安全组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%89%E8%A3%85-WireGuard"><span class="nav-number">2.</span> <span class="nav-text">2. 服务端安装 WireGuard</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/08/24/wireguard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Wireguard | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Wireguard
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2025-08-24 15:00:00 / Modified: 22:12:55" itemprop="dateCreated datePublished" datetime="2025-08-24T15:00:00+08:00">2025-08-24</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><hr>
+<h2 id="title-WireGuarddate-2025-08-24-15-00-00"><a href="#title-WireGuarddate-2025-08-24-15-00-00" class="headerlink" title="title: WireGuarddate: 2025-08-24 15:00:00"></a>title: WireGuard<br>date: 2025-08-24 15:00:00</h2><h1 id="阿里云-CentOS-搭建-WireGuard-VPN"><a href="#阿里云-CentOS-搭建-WireGuard-VPN" class="headerlink" title="阿里云 CentOS 搭建 WireGuard VPN"></a>阿里云 CentOS 搭建 WireGuard VPN</h1><h2 id="1-购买服务器-配置安全组"><a href="#1-购买服务器-配置安全组" class="headerlink" title="1. 购买服务器 &amp; 配置安全组"></a>1. 购买服务器 &amp; 配置安全组</h2><ul>
+<li><p>在 <a target="_blank" rel="noopener" href="https://ecs.console.aliyun.com/">阿里云 ECS 控制台</a> 购买一台 <strong>ECS 实例</strong>  </p>
+<ul>
+<li>地域：选择中国大陆机房  </li>
+<li>系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8  </li>
+<li>带宽：≥ 5 Mbps</li>
+</ul>
+</li>
+<li><p>在 <strong>安全组 → 入方向规则</strong> 添加：  </p>
+<ul>
+<li>协议类型：UDP  </li>
+<li>端口范围：51820  </li>
+<li>授权对象：0.0.0.0&#x2F;0</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-服务端安装-WireGuard"><a href="#2-服务端安装-WireGuard" class="headerlink" title="2. 服务端安装 WireGuard"></a>2. 服务端安装 WireGuard</h2><pre><code class="language-bash">sudo dnf update -y
+sudo dnf install -y wireguard-tools iproute iptables
+
+# 生成密钥
+# 服务端
+wg genkey | tee ~/server_private.key | wg pubkey &gt; ~/server_public.key
+
+# 客户端
+wg genkey | tee ~/client_private.key | wg pubkey &gt; ~/client_public.key
+
+# 写配置文件 /etc/wireguard/wg0.conf
+SVR_PRIV=$(cat ~/server_private.key)
+CLI_PUB=$(cat ~/client_public.key)
+
+sudo bash -c &quot;cat &gt; /etc/wireguard/wg0.conf&quot; &lt;&lt;EOF
+[Interface]
+PrivateKey = $&#123;SVR_PRIV&#125;
+Address = 10.0.0.1/24
+ListenPort = 51820
+MTU = 1380
+PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+[Peer]
+PublicKey = $&#123;CLI_PUB&#125;
+AllowedIPs = 10.0.0.2/32
+EOF
+
+# 开启内核转发
+sudo sysctl -w net.ipv4.ip_forward=1
+echo &#39;net.ipv4.ip_forward=1&#39; | sudo tee /etc/sysctl.d/99-wireguard.conf
+sudo sysctl --system
+
+# 启动WireGuard
+sudo systemctl enable wg-quick@wg0
+sudo systemctl restart wg-quick@wg0
+sudo wg show
+
+# 本地 Windows 客户端
+
+下载 WireGuard for Windows
+
+打开应用 → Add Tunnel → Import from file
+
+写入如下配置（⚠️ 修改为你的公网 IP，例如 1.123.123.123）：
+
+[Interface]
+PrivateKey = (client_private.key 内容)
+Address = 10.0.0.2/24
+DNS = 223.5.5.5
+MTU = 1380
+
+[Peer]
+PublicKey = (server_public.key 内容)
+Endpoint = 1.123.123.123:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" rel="prev" title="在新加坡的第一次网购">
+                  <i class="fa fa-angle-left"></i> 在新加坡的第一次网购
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/08/24/Code/%E6%8E%92%E5%BA%8F/" rel="next" title="">
+                   <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">22k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">20 mins.</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
