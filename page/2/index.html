@@ -77,6 +77,414 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Code/排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.329Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/">排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><pre class="line-numbers language-none"><code class="language-none">import random
+
+def partition(nums, start, end):
+    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;
+    pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end); nums[start], nums[p] &#x3D; nums[p], nums[start]
+    left, right &#x3D; start, end
+    while left &lt; right:
+        # 右侧先找 &lt; pivot 的
+        while left &lt; right and nums[right] &gt;&#x3D; pivot:
+            right -&#x3D; 1
+        nums[left] &#x3D; nums[right]     # 右边的小填到左坑
+
+        # 左侧再找 &gt; pivot 的
+        while left &lt; right and nums[left] &lt;&#x3D; pivot:
+            left +&#x3D; 1
+        nums[right] &#x3D; nums[left]     # 左边的大填到右坑
+
+    nums[left] &#x3D; pivot               # 枢轴就位
+    return left
+
+def quicksort(nums, l&#x3D;0, r&#x3D;None):
+    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+    if r is None:
+        r &#x3D; len(nums) - 1
+    if l &gt;&#x3D; r:
+        return
+    mid &#x3D; partition(nums, l, r)
+    quicksort(nums, l, mid - 1)
+    quicksort(nums, mid + 1, r)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">def quicksort(nums, start, end):
+    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+    if start &gt;&#x3D; end:
+        return
+
+    pivot &#x3D; nums[start]
+    left, right &#x3D; start, end
+
+    # 分区：右找小填左坑，左找大填右坑
+    while left &lt; right:
+        while left &lt; right and nums[right] &gt;&#x3D; pivot:
+            right -&#x3D; 1
+        if left &lt; right:
+            nums[left] &#x3D; nums[right]
+        while left &lt; right and nums[left] &lt;&#x3D; pivot:
+            left +&#x3D; 1
+        if left &lt; right:
+            nums[right] &#x3D; nums[left]
+
+    nums[left] &#x3D; pivot  # 枢轴就位
+    quicksort(nums, start, left - 1)
+    quicksort(nums, left + 1, end)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
+<pre class="line-numbers language-none"><code class="language-none">import random
+from typing import List
+
+def quicksort(a: List[int], l: int, r: int) -&gt; None:
+    &quot;&quot;&quot;改进版原地快速排序（三路划分 + 随机枢轴 + 尾递归优化）&quot;&quot;&quot;
+    while l &lt; r:
+        # 1) 随机选择枢轴，交换到开头
+        p &#x3D; random.randint(l, r)
+        a[l], a[p] &#x3D; a[p], a[l]
+        pivot &#x3D; a[l]
+
+        # 2) 三路划分：[l..lt-1] &lt; pivot, [lt..gt] &#x3D;&#x3D; pivot, [gt+1..r] &gt; pivot
+        lt, i, gt &#x3D; l, l + 1, r
+        while i &lt;&#x3D; gt:
+            if a[i] &lt; pivot:
+                a[lt], a[i] &#x3D; a[i], a[lt]
+                lt +&#x3D; 1
+                i +&#x3D; 1
+            elif a[i] &gt; pivot:
+                a[i], a[gt] &#x3D; a[gt], a[i]
+                gt -&#x3D; 1
+            else:
+                i +&#x3D; 1
+
+        # 3) 递归较小的一侧，循环处理较大的一侧（尾递归优化）
+        left_len &#x3D; lt - 1 - l
+        right_len &#x3D; r - (gt + 1)
+        if left_len &lt; right_len:
+            if l &lt; lt - 1:
+                quicksort(a, l, lt - 1)
+            l &#x3D; gt + 1
+        else:
+            if gt + 1 &lt; r:
+                quicksort(a, gt + 1, r)
+            r &#x3D; lt - 1
+
+&#96;&#96;&#96;  
+# 冒泡排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>def bubble_sort(nums):<br>    “””原地冒泡排序；稳定。平均&#x2F;最坏 O(n^2)，最好（近乎有序）可提前终止。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        swapped &#x3D; False<br>        # 相邻比较与交换，内层区间逐步缩短<br>        for j in range(0, n - 1 - i):<br>            if nums[j] &gt; nums[j + 1]:<br>                nums[j], nums[j + 1] &#x3D; nums[j + 1], nums[j]<br>                swapped &#x3D; True<br>        if not swapped:  # 本轮无交换 -&gt; 已有序<br>            break<br>    return nums</p>
+<pre class="line-numbers language-none"><code class="language-none"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>def selection_sort(nums):<br>    “””原地选择排序；不稳定。时间复杂度始终 O(n^2)。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        min_idx &#x3D; i<br>        # 在 [i+1, n) 中找最小元素的位置<br>        for j in range(i + 1, n):<br>            if nums[j] &lt; nums[min_idx]:<br>                min_idx &#x3D; j<br>        # 只在需要时交换，减少无谓交换次数<br>        if min_idx !&#x3D; i:<br>            nums[i], nums[min_idx] &#x3D; nums[min_idx], nums[i]<br>    return nums</p>
+<pre class="line-numbers language-none"><code class="language-none">
+
+# 归并排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>def merge_sort(nums):<br>    if len(nums) &lt;&#x3D; 1:<br>        return nums<br>    mid &#x3D; len(nums) &#x2F;&#x2F; 2<br>    left &#x3D; merge_sort(nums[:mid])<br>    right &#x3D; merge_sort(nums[mid:])<br>    return merge(left, right)</p>
+<p>def merge(left, right):<br>    l, r &#x3D; 0, 0<br>    res &#x3D; []<br>    while l &lt; len(left) and r &lt; len(right):<br>        if left[l] &lt;&#x3D; right[r]:<br>            res.append(left[l])<br>            l +&#x3D; 1<br>        else:<br>            res.append(right[r])<br>            r +&#x3D; 1<br>    res.extend(left[l:])<br>    res.extend(right[r:])<br>    return res</p>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidd-fj7MxuNsdw9SYiAdOwH" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-第二轮复习要点（自_2025_09_13_19_16_起）_网络与实战笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.318Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: # # 第二轮复习要点（自 2025‑09‑13 19:16 起）— 网络与实战笔记<br>date: 2025-08-16 15:00:00</p>
+<hr>
+<blockquote>
+<p>本笔记汇总我们在该时间点之后的所有关键对话，按主题整理，便于复习与分享（可打印）。</p>
+</blockquote>
+<hr>
+<h2 id="0-时间锚点"><a href="#0-时间锚点" class="headerlink" title="0. 时间锚点"></a>0. 时间锚点</h2><ul>
+<li>复习起始时间：2025‑09‑13 19:16（新加坡时间）。</li>
+</ul>
+<hr>
+<h2 id="1-Nmap-实战与结果解读"><a href="#1-Nmap-实战与结果解读" class="headerlink" title="1) Nmap 实战与结果解读"></a>1) Nmap 实战与结果解读</h2><ul>
+<li><strong>环境</strong>：Windows Nmap 7.98。</li>
+<li><strong>常用命令</strong>：<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nmap target                <span class="token comment"># 常见 1000 TCP 端口</span>
+nmap <span class="token operator">-</span>p 1-65535 target     <span class="token comment"># 全端口</span>
+nmap <span class="token operator">-</span>sS <span class="token operator">-</span><span class="token function">sV</span> <span class="token operator">-</span>O target     <span class="token comment"># 半开扫描 + 服务版本 + OS 识别（需管理员）</span>
+nmap <span class="token operator">-</span>sU <span class="token operator">-</span>p 53<span class="token punctuation">,</span>5000-5500 target <span class="token comment"># UDP 扫描（较慢）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><strong>对百度的扫描</strong>（<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> → 45.113.192.101）：<ul>
+<li>开放：TCP <strong>80&#x2F;443</strong> → Web&#x2F;CDN 常规端口。</li>
+</ul>
+</li>
+<li><strong>对 LOL 国服</strong>（lol.qq.com → 203.205.137.181）：<ul>
+<li>开放：TCP <strong>80&#x2F;443&#x2F;8080&#x2F;880&#x2F;6006</strong> → 除网页外，还有业务端口（登录&#x2F;大厅&#x2F;服务接口等）。</li>
+</ul>
+</li>
+<li><strong>下一步建议</strong>：<ul>
+<li><code>-sV</code> 看具体服务与版本；<code>-O</code> 看 OS；<code>-sU</code> 探测对局相关 UDP 段（如 5000–5500）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-Nmap-的工作原理（总览）"><a href="#2-Nmap-的工作原理（总览）" class="headerlink" title="2) Nmap 的工作原理（总览）"></a>2) Nmap 的工作原理（总览）</h2><ul>
+<li><strong>主机发现</strong>：ICMP、ARP、TCP SYN&#x2F;ACK Ping 等判活。</li>
+<li><strong>端口扫描</strong>：<ul>
+<li>TCP SYN（-sS，半开）、TCP Connect（-sT）、UDP（-sU）、FIN&#x2F;NULL&#x2F;XMAS 等。</li>
+<li>端口状态：open &#x2F; closed &#x2F; filtered。</li>
+</ul>
+</li>
+<li><strong>服务与版本识别</strong>（-sV）：发“探针”匹配返回 banner。</li>
+<li><strong>OS 识别</strong>（-O）：根据响应特征匹配指纹库。</li>
+<li><strong>NSE 脚本</strong>：弱口令、漏洞、证书&#x2F;标题等信息收集。</li>
+</ul>
+<hr>
+<h2 id="3-DNS-进阶：FQDN-与解析路径"><a href="#3-DNS-进阶：FQDN-与解析路径" class="headerlink" title="3) DNS 进阶：FQDN 与解析路径"></a>3) DNS 进阶：FQDN 与解析路径</h2><ul>
+<li><strong>FQDN</strong>：完整域名以点结尾（如 <code>www.example.com.</code>）。DNS 语义等价于不带点写法，但 <strong>HTTP Host</strong> 为 <code>www.example.com.</code> 时属异常输入，WAF&#x2F;风控可能拦截。</li>
+<li><strong>解析路径（逻辑）</strong>：客户端把查询交给 <strong>递归解析器</strong>（路由器 DNS&#x2F;运营商&#x2F;114&#x2F;8.8.8.8）。解析器若缓存命中直接返回，否则迭代问 <strong>根 → TLD(.com) → 权威 DNS</strong>。</li>
+<li><strong>实际物理路径</strong>：数据包先到 <strong>默认网关</strong> → <strong>运营商</strong> → 递归 DNS（之后才发生上述逻辑迭代）。</li>
+<li><strong>示例流程（<a target="_blank" rel="noopener" href="http://www.server.com)/">www.server.com）</a></strong>：本地 DNS → 根 → .com → <code>server.com</code> 权威 → 返回 A 记录。</li>
+</ul>
+<hr>
+<h2 id="4-子网与掩码：网络号-主机号"><a href="#4-子网与掩码：网络号-主机号" class="headerlink" title="4) 子网与掩码：网络号&#x2F;主机号"></a>4) 子网与掩码：网络号&#x2F;主机号</h2><ul>
+<li><strong>IP 构成</strong>：32 位 &#x3D; <strong>网络号</strong> + <strong>主机号</strong>（由子网掩码划分）。</li>
+<li><strong>&#x2F;18 计算示例</strong>：<ul>
+<li>掩码：<code>11111111.11111111.11000000.00000000</code> &#x3D; <strong>255.255.192.0</strong>。</li>
+<li>主机位：14 位 → 可用主机数 &#x3D; 2^14 − 2 &#x3D; <strong>16382</strong>。</li>
+<li>若网络从 <code>192.168.0.0/18</code>：范围 <strong>192.168.0.1–192.168.63.254</strong>，广播 <code>192.168.63.255</code>。</li>
+</ul>
+</li>
+<li><strong>主机号注意</strong>：同一子网内必须唯一；全 0（网络地址）和全 1（广播地址）不可用。</li>
+</ul>
+<hr>
+<h2 id="5-ARP：从内网到网关"><a href="#5-ARP：从内网到网关" class="headerlink" title="5) ARP：从内网到网关"></a>5) ARP：从内网到网关</h2><ul>
+<li><strong>作用</strong>：解析 <strong>IP→MAC</strong>，仅在同一二层广播域有效。</li>
+<li><strong>流程（访问公网前）</strong>：<ol>
+<li>主机判定目标不在本网段 → 交给默认网关 IP（如 192.168.0.1）。</li>
+<li>查询 ARP 缓存，无则广播“谁是 192.168.0.1？”</li>
+<li>网关以单播回复其 <strong>MAC</strong> → 写入缓存。</li>
+<li>以后发包直接用该 MAC 作为帧目的地址。</li>
+</ol>
+</li>
+<li><strong>ARP 表观测</strong>：<code>arp -a</code> 中常见网关 MAC（动态），以及 224.* &#x2F; 239.* &#x2F; 255.* 的组播&#x2F;广播（静态条目）。</li>
+</ul>
+<hr>
+<h2 id="6-路由器如何把包“发到互联网”"><a href="#6-路由器如何把包“发到互联网”" class="headerlink" title="6) 路由器如何把包“发到互联网”"></a>6) 路由器如何把包“发到互联网”</h2><ul>
+<li><strong>步骤</strong>：查路由表 → 选出口接口（WAN）→ （家庭场景）执行 <strong>NAT</strong>（内网源地址&#x2F;端口映射）→ 对“下一跳”做 ARP → 重新封装帧（源 MAC&#x3D;路由器 WAN，目的 MAC&#x3D;上级网关）→ 送入运营商 → 通过 BGP&#x2F;IGP 转发至目标自治系统。</li>
+<li><strong>回包</strong>：先到路由器公网 IP → 由 NAT 表还原到内网主机（会话四元组）。</li>
+<li><strong>简图</strong>：<pre class="line-numbers language-none"><code class="language-none">主机(192.168.0.102) ──&gt; 网关(192.168.0.1) ──&gt; 运营商网关 ──&gt; 目标服务器
+               ARP找网关MAC       NAT+ARP下一跳        BGP选路<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h2 id="7-路由表：查看与意义（结合你的输出）"><a href="#7-路由表：查看与意义（结合你的输出）" class="headerlink" title="7) 路由表：查看与意义（结合你的输出）"></a>7) 路由表：查看与意义（结合你的输出）</h2><ul>
+<li><strong>核心字段</strong>：网络目标 &#x2F; 掩码 &#x2F; 网关 &#x2F; 接口 &#x2F; 跃点数。</li>
+<li><strong>你的关键项</strong>：<ul>
+<li>默认路由 <code>0.0.0.0/0 → 192.168.0.1</code>（所有非本地流量走网关）。</li>
+<li>本地网段 <code>192.168.0.0/24</code>（同网段直达，不经网关）。</li>
+<li>回环 <code>127.0.0.0/8</code>；组播 <code>224.0.0.0/4</code>；全广播 <code>255.255.255.255/32</code>。</li>
+</ul>
+</li>
+<li><strong>意义</strong>：决定包从哪块网卡、交由哪个下一跳转发；多网卡&#x2F;有 VPN 场景尤为关键；按<strong>最长前缀匹配</strong>优先选择最具体的路由。</li>
+</ul>
+<hr>
+<h2 id="8-OSI-vs-TCP-IP-模型与封装"><a href="#8-OSI-vs-TCP-IP-模型与封装" class="headerlink" title="8) OSI vs TCP&#x2F;IP 模型与封装"></a>8) OSI vs TCP&#x2F;IP 模型与封装</h2><ul>
+<li><strong>OSI 七层</strong>：物理、数据链路、网络、传输、会话、表示、应用（理论模型）。</li>
+<li><strong>TCP&#x2F;IP 四层</strong>：网络接口、网络层、传输层、应用层（互联网实际分层）。</li>
+<li><strong>封装链路</strong>：<pre class="line-numbers language-none"><code class="language-none">应用数据 → [TCP&#x2F;UDP头] → [IP头] → [以太网帧头&#x2F;尾] → 物理信号<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><strong>常见协议映射</strong>：HTTP&#x2F;DNS(应用)；TCP&#x2F;UDP(传输)；IP&#x2F;ICMP&#x2F;ARP&#x2F;BGP(网络)；Ethernet&#x2F;Wi‑Fi(接口&#x2F;物理)。</li>
+</ul>
+<hr>
+<h2 id="9-应用层-Socket-与编程"><a href="#9-应用层-Socket-与编程" class="headerlink" title="9) 应用层 Socket 与编程"></a>9) 应用层 Socket 与编程</h2><ul>
+<li><strong>Socket 含义</strong>：应用调用 OS 的网络接口（BSD Sockets&#x2F;Winsock）以使用 TCP&#x2F;UDP。</li>
+<li><strong>不使用 <code>import socket</code> 的可能性</strong>：<ul>
+<li>用 <code>scapy</code> 等库手工构造&#x2F;发送包（底层仍调用内核接口）。</li>
+<li>自己实现用户态协议栈 + 原始以太网发送（复杂度极高，仍需通过驱动&#x2F;内核接口下发）。</li>
+</ul>
+</li>
+<li><strong>现实</strong>：真正“发到网卡”必须经由操作系统提供的接口。</li>
+</ul>
+<hr>
+<h2 id="10-TCP-UDP-在理想与现实网络"><a href="#10-TCP-UDP-在理想与现实网络" class="headerlink" title="10) TCP&#x2F;UDP 在理想与现实网络"></a>10) TCP&#x2F;UDP 在理想与现实网络</h2><ul>
+<li><strong>理想：不掉包&#x2F;不乱序&#x2F;不拥塞</strong> → 可直接用 UDP（轻量），TCP 的重传&#x2F;拥塞控制少用或不需。</li>
+<li><strong>现实公网</strong>：不可避免抖动&#x2F;丢包&#x2F;拥塞 → 仍需 TCP 的可靠机制；实时应用常用 UDP + 应用层容错。</li>
+</ul>
+<hr>
+<h2 id="11-Linux-收发网络包（扩展认知）"><a href="#11-Linux-收发网络包（扩展认知）" class="headerlink" title="11) Linux 收发网络包（扩展认知）"></a>11) Linux 收发网络包（扩展认知）</h2><ul>
+<li><strong>接收</strong>：网卡 DMA → 环形缓冲 → 硬中断 → 软中断&#x2F;NAPI 轮询 → 接口层 → IP 层 → TCP&#x2F;UDP → 套接字缓冲 → 应用读取。</li>
+<li><strong>发送</strong>：应用写 Socket → 分配 <code>sk_buff</code> → 传输层&#x2F;IP 层封装 → 接口层（ARP、帧头）→ 网卡队列&#x2F;DMA 发送。</li>
+<li><strong>关键优化</strong>：NAPI 减少中断风暴；<code>sk_buff</code> 头部预留减少拷贝；MTU&#x2F;分片注意性能成本。</li>
+</ul>
+<hr>
+<h2 id="12-命令与实验清单（可自测）"><a href="#12-命令与实验清单（可自测）" class="headerlink" title="12) 命令与实验清单（可自测）"></a>12) 命令与实验清单（可自测）</h2><ul>
+<li><strong>DNS</strong>：<code>nslookup domain [dns]</code>；比较不同 DNS 的解析与 TTL。</li>
+<li><strong>连通性</strong>：<code>ping ip</code>；<strong>路由路径</strong>：<code>tracert ip</code>。</li>
+<li><strong>端口</strong>：<code>nmap -sS -sV -O target</code> &#x2F; <code>nmap -sU -p 5000-5500 target</code>。</li>
+<li><strong>ARP</strong>：<code>arp -a</code>；观察网关 MAC 与组播条目。</li>
+<li><strong>路由</strong>：<code>route print</code>；必要时 <code>route add</code> 做定向路由实验（例如公司内网段走 VPN）。</li>
+</ul>
+<hr>
+<h2 id="13-速记要点（一屏记忆）"><a href="#13-速记要点（一屏记忆）" class="headerlink" title="13) 速记要点（一屏记忆）"></a>13) 速记要点（一屏记忆）</h2><ul>
+<li>DNS：<strong>递归解析器能答就不向上</strong>；逻辑迭代根&#x2F;TLD&#x2F;权威仅在未命中时发生。</li>
+<li>FQDN：<code>www.xxx.com.</code> 与 <code>www.xxx.com</code> 等价于 DNS 层；HTTP Host 末尾点属异常，可能触发风控。</li>
+<li>ARP：只在二层广播域有效；发公网先 ARP 网关 MAC。</li>
+<li>NAT：家庭上网的关键；回包靠 NAT 表映射四元组复原。</li>
+<li>路由：按最长前缀匹配；默认路由兜底，专网&#x2F;多网卡要配静态路由。</li>
+<li>Nmap：SYN 扫描最常用；UDP 慢但观察对局端口必备；<code>-sV/-O</code> 获取更多情报。</li>
+<li>分层：OSI 理念、TCP&#x2F;IP实用；封装顺序<strong>应用→传输→网络→链路&#x2F;物理</strong>。</li>
+</ul>
+<hr>
+<blockquote>
+<p>完。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" data-id="cuidnPFxMlVVMpZrOJLkxRA-S" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-一些小目标" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.314Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/">一些小目标</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="所谓的八股？系统、网络、数据库"><a href="#所谓的八股？系统、网络、数据库" class="headerlink" title="所谓的八股？系统、网络、数据库"></a>所谓的八股？系统、网络、数据库</h1><p>都是很重要的东西，数据库和网络是时时刻刻都在用的<br>组成和系统可能没有那么有用，但作为科班至少得明白一些底层原理吧<br>目标10.10之前完成所有吧，尽量在投递建立之前就基本完成，然后逐步实践加深记忆并且更新</p>
+<h1 id="leetcode编码能力"><a href="#leetcode编码能力" class="headerlink" title="leetcode编码能力"></a>leetcode编码能力</h1><p>目前九月份稍微放一放<br>但是力求每天进步一点点，应该是有机会的<br>这次秋招我没有梭哈算法先整理别的<br>但是到二月份春招一定要达到大厂的水平<br>我相信你可以的<br>10.10之前解决完hot100吧<br>学期结束前解决完100+150</p>
+<h1 id="新加坡实习"><a href="#新加坡实习" class="headerlink" title="新加坡实习"></a>新加坡实习</h1><p>目标从投递完秋招开始投递<br>实事求是</p>
+<h1 id="机器学习-深度学习能力"><a href="#机器学习-深度学习能力" class="headerlink" title="机器学习&#x2F;深度学习能力"></a>机器学习&#x2F;深度学习能力</h1><p>依托课程和kaggle吧<br>这两个都是要逐步解决攻克的<br>在9.28之前完成初步的依托课程的系统理解，以在面试中从容应对</p>
+<h2 id="包括但不限于部署llm-lora-gan-cv-nlp的模型-至少得有的讲？"><a href="#包括但不限于部署llm-lora-gan-cv-nlp的模型-至少得有的讲？" class="headerlink" title="包括但不限于部署llm+lora gan cv nlp的模型 至少得有的讲？"></a>包括但不限于部署llm+lora gan cv nlp的模型 至少得有的讲？</h2><p>然后每个月都要参加kaggle在实践之中磨练自己的数据挖掘能力这个真的是练出来的</p>
+<p>#简历以及面试<br>9.28前完成所有要从容应对的部分<br>9.28以后根据上文的学习情况逐步增加“xxx模型”“xxx竞赛”“xxx作业”的经验丰富</p>
+<p>#26春招和秋招 直接全面开火</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" data-id="cuidBFmL0HDDqzoe48ekbOSmx" data-title="一些小目标" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:43:21.680Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/hello-world/" data-id="cuidf0FejnsITm_Q1aRPRCEBP" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-ml/hexo_colab_post" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/21/ml/hexo_colab_post/" class="article-date">
@@ -288,7 +696,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/21/ml/hexo_colab_post/" data-id="cuideso2k-7wsAO1NpLvNApOr" data-title="Colab 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/21/ml/hexo_colab_post/" data-id="cuid_RDOskCS2xYGcBT7IYjeG" data-title="Colab 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -477,7 +885,7 @@ W <span class="token operator">-=</span> lr <span class="token operator">*</span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/18/ml/logistic-cheatsheet/" data-id="cuid_Mix2ELY0xV-VCnWdrYKI" data-title="逻辑回归一文通：二分类 vs 多分类（含 MLE、求导、正则、优化）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/18/ml/logistic-cheatsheet/" data-id="cuid42Kk0Oh6Gi8zD6ASdW219" data-title="逻辑回归一文通：二分类 vs 多分类（含 MLE、求导、正则、优化）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -629,7 +1037,7 @@ W <span class="token operator">-=</span> lr <span class="token operator">*</span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/03/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuidoWO6XX7MWG9jTSnMQeXCn" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/03/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuidziApYIznjJh65nKvj-DZO" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -793,7 +1201,7 @@ W <span class="token operator">-=</span> lr <span class="token operator">*</span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/31/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuidD7qn1dDr4SYTqKVClCCjI" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/31/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuid0XvdV8SKmAzBllIqI6ssu" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1018,7 +1426,7 @@ W <span class="token operator">-=</span> lr <span class="token operator">*</span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/31/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuidacEW7-G57n8AcZ_KhYYsR" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/31/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuidKWMQsoc0_vXqYje4Y-uks" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1789,914 +2197,12 @@ W <span class="token operator">-=</span> lr <span class="token operator">*</span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/28/English/English/" data-id="cuidqoMYi-Vip2Xi3pyzfhEYc" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/28/English/English/" data-id="cuidLs_ME1KPmiBDXLFk0Y9a2" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" rel="tag">生活常识</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" rel="tag">英语学习</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Hip-Hop/rap" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/27/Hip-Hop/rap/" class="article-date">
-  <time class="dt-published" datetime="2025-08-26T16:00:00.000Z" itemprop="datePublished">2025-08-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Hip-Hop/">Hip-Hop</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/27/Hip-Hop/rap/">Hiphop Exercise</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="🎤-今日练习-2025-08-27"><a href="#🎤-今日练习-2025-08-27" class="headerlink" title="🎤 今日练习 (2025-08-27)"></a>🎤 今日练习 (2025-08-27)</h2><h3 id="1-通天教主-–-疯癫翘楚"><a href="#1-通天教主-–-疯癫翘楚" class="headerlink" title="1. 通天教主 – 疯癫翘楚"></a>1. 通天教主 – 疯癫翘楚</h3><ul>
-<li><strong>CN</strong>: 通天教主 – 疯癫翘楚  </li>
-<li><strong>EN</strong>: Heaven’s preacher – mad teacher</li>
-</ul>
-<hr>
-<h3 id="2-代码-–-蛋挞（外挂）"><a href="#2-代码-–-蛋挞（外挂）" class="headerlink" title="2. 代码 – 蛋挞（外挂）"></a>2. 代码 – 蛋挞（外挂）</h3><ul>
-<li><strong>CN</strong>: 代码 – 蛋挞（外挂）  </li>
-<li><strong>EN</strong>: Source code – snack mode (cheat code)</li>
-</ul>
-<hr>
-<h3 id="3-学习-–-阕题（雪梨）"><a href="#3-学习-–-阕题（雪梨）" class="headerlink" title="3. 学习 – 阕题（雪梨）"></a>3. 学习 – 阕题（雪梨）</h3><ul>
-<li><strong>CN</strong>: 学习 – 阕题（雪梨）  </li>
-<li><strong>EN</strong>: Study hard – final card (Sydney yard)</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-08-28"><a href="#🎤-今日练习-2025-08-28" class="headerlink" title="🎤 今日练习 (2025-08-28)"></a>🎤 今日练习 (2025-08-28)</h2><h3 id="4-努力-–-肝脑涂地"><a href="#4-努力-–-肝脑涂地" class="headerlink" title="4. 努力 – 肝脑涂地"></a>4. 努力 – 肝脑涂地</h3><ul>
-<li><strong>CN</strong>: 努力 – 肝脑涂地  </li>
-<li><strong>EN</strong>: Work hard &#x2F; bleed heart</li>
-</ul>
-<hr>
-<h3 id="5-苦力-–-鼓励-–-主义"><a href="#5-苦力-–-鼓励-–-主义" class="headerlink" title="5. 苦力 – 鼓励 – 主义"></a>5. 苦力 – 鼓励 – 主义</h3><ul>
-<li><strong>CN</strong>: 苦力 – 鼓励 – 主义  </li>
-<li><strong>EN</strong>: Hard labor &#x2F; good favor &#x2F; ideology</li>
-</ul>
-<hr>
-<h3 id="6-赌气-–-土地"><a href="#6-赌气-–-土地" class="headerlink" title="6. 赌气 – 土地"></a>6. 赌气 – 土地</h3><ul>
-<li><strong>CN</strong>: 赌气 – 土地  </li>
-<li><strong>EN</strong>: Lose temper &#x2F; root deeper &#x2F; on this land</li>
-</ul>
-<hr>
-<h3 id="7-稳定-–-肯定"><a href="#7-稳定-–-肯定" class="headerlink" title="7. 稳定 – 肯定"></a>7. 稳定 – 肯定</h3><ul>
-<li><strong>CN</strong>: 稳定 – 肯定  </li>
-<li><strong>EN</strong>: Stay steady &#x2F; rock ready</li>
-</ul>
-<hr>
-<h3 id="8-家-–-瞎"><a href="#8-家-–-瞎" class="headerlink" title="8. 家 – 瞎"></a>8. 家 – 瞎</h3><ul>
-<li><strong>CN</strong>: 家 – 瞎  </li>
-<li><strong>EN</strong>: Home &#x2F; alone 或 home &#x2F; gone</li>
-</ul>
-<hr>
-<h3 id="9-蟑螂-–-猖狂"><a href="#9-蟑螂-–-猖狂" class="headerlink" title="9. 蟑螂 – 猖狂"></a>9. 蟑螂 – 猖狂</h3><ul>
-<li><strong>CN</strong>: 蟑螂 – 猖狂  </li>
-<li><strong>EN</strong>: Cockroach &#x2F; out of control</li>
-</ul>
-<hr>
-<h3 id="10-美梦-–-谁碰"><a href="#10-美梦-–-谁碰" class="headerlink" title="10. 美梦 – 谁碰"></a>10. 美梦 – 谁碰</h3><ul>
-<li><strong>CN</strong>: 美梦 – 谁碰  </li>
-<li><strong>EN</strong>: Sweet dream &#x2F; who dare to intervene</li>
-</ul>
-<hr>
-<h3 id="11-废土-–-背负"><a href="#11-废土-–-背负" class="headerlink" title="11. 废土 – 背负"></a>11. 废土 – 背负</h3><ul>
-<li><strong>CN</strong>: 废土 – 背负  </li>
-<li><strong>EN</strong>: Wasteland &#x2F; weight on hand</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-08-29"><a href="#🎤-今日练习-2025-08-29" class="headerlink" title="🎤 今日练习 (2025-08-29)"></a>🎤 今日练习 (2025-08-29)</h2><h3 id="13-昂贵-–-狼狈-–-六神无主-–-原地踌躇-–-王秦必楚"><a href="#13-昂贵-–-狼狈-–-六神无主-–-原地踌躇-–-王秦必楚" class="headerlink" title="13. 昂贵 – 狼狈 – 六神无主 – 原地踌躇 – 王秦必楚"></a>13. 昂贵 – 狼狈 – 六神无主 – 原地踌躇 – 王秦必楚</h3><ul>
-<li><strong>CN</strong>: 昂贵 – 狼狈 – 六神无主 – 原地踌躇 – 王秦必楚  </li>
-<li><strong>EN</strong>: High price – bad vice – lost in the night – standing still with no fight – kings clash in sight</li>
-</ul>
-<hr>
-<h3 id="14-天堂-–-偏旁"><a href="#14-天堂-–-偏旁" class="headerlink" title="14. 天堂 – 偏旁"></a>14. 天堂 – 偏旁</h3><ul>
-<li><strong>CN</strong>: 天堂 – 偏旁  </li>
-<li><strong>EN</strong>: Heaven’s gate – language shape</li>
-</ul>
-<hr>
-<h3 id="15-Confidence-–-Lonely-–-Dance"><a href="#15-Confidence-–-Lonely-–-Dance" class="headerlink" title="15. Confidence – Lonely – Dance"></a>15. Confidence – Lonely – Dance</h3><ul>
-<li><strong>CN</strong>: 自信 – 孤独 – 舞蹈  </li>
-<li><strong>EN</strong>: Confidence – lonely – dance with only chance<br>（confidence – prominence – dominanc）</li>
-</ul>
-<hr>
-<h3 id="16-脑海-–-翻江倒海"><a href="#16-脑海-–-翻江倒海" class="headerlink" title="16. 脑海 – 翻江倒海"></a>16. 脑海 – 翻江倒海</h3><ul>
-<li><strong>CN</strong>: 脑海 – 翻江倒海  </li>
-<li><strong>EN</strong>: In my mind – waves collide, storm inside</li>
-</ul>
-<hr>
-<h3 id="17-Random-encounter（偶遇灵感）"><a href="#17-Random-encounter（偶遇灵感）" class="headerlink" title="17. Random encounter（偶遇灵感）"></a>17. Random encounter（偶遇灵感）</h3><ul>
-<li><strong>CN</strong>: 在一个随机的地方，和过去的人重逢  </li>
-<li><strong>EN</strong>: Got to reconnect with someone from my past in such a random spot</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-08-30"><a href="#🎤-今日练习-2025-08-30" class="headerlink" title="🎤 今日练习 (2025-08-30)"></a>🎤 今日练习 (2025-08-30)</h2><h3 id="18-碎了-–-跪着-–-会了"><a href="#18-碎了-–-跪着-–-会了" class="headerlink" title="18. 碎了 – 跪着 – 会了"></a>18. 碎了 – 跪着 – 会了</h3><ul>
-<li><strong>CN</strong>: 碎了 – 跪着 – 会了  </li>
-<li><strong>EN</strong>: Broken down – on the ground – knowledge found</li>
-</ul>
-<hr>
-<h3 id="19-喇叭-–-垮塌"><a href="#19-喇叭-–-垮塌" class="headerlink" title="19. 喇叭 – 垮塌"></a>19. 喇叭 – 垮塌</h3><ul>
-<li><strong>CN</strong>: 喇叭 – 垮塌  </li>
-<li><strong>EN</strong>: Loud horn – walls torn<br>（喇叭 – 火花）</li>
-</ul>
-<hr>
-<h3 id="20-Break-–-Freak-–-Greed-–-Be-made"><a href="#20-Break-–-Freak-–-Greed-–-Be-made" class="headerlink" title="20. Break – Freak – Greed – Be made"></a>20. Break – Freak – Greed – Be made</h3><ul>
-<li><strong>CN</strong>: 打破 – 怪异 – 贪婪 – 被造  </li>
-<li><strong>EN</strong>: Break – freak – greed – be made</li>
-</ul>
-<hr>
-<h3 id="21-手机-–-肘击"><a href="#21-手机-–-肘击" class="headerlink" title="21. 手机 – 肘击"></a>21. 手机 – 肘击</h3><ul>
-<li><strong>CN</strong>: 手机 – 肘击  </li>
-<li><strong>EN</strong>: Cell phone – elbow thrown</li>
-</ul>
-<hr>
-<h3 id="22-洲际-–-候机"><a href="#22-洲际-–-候机" class="headerlink" title="22. 洲际 – 候机"></a>22. 洲际 – 候机</h3><ul>
-<li><strong>CN</strong>: 洲际 – 候机  </li>
-<li><strong>EN</strong>: Intercontinental – waiting at the terminal</li>
-</ul>
-<hr>
-<h3 id="23-苦逼-–-母鸡"><a href="#23-苦逼-–-母鸡" class="headerlink" title="23. 苦逼 – 母鸡"></a>23. 苦逼 – 母鸡</h3><ul>
-<li><strong>CN</strong>: 苦逼 – 母鸡  </li>
-<li><strong>EN</strong>: Hard life – mother’s strife<br>（hard fight &#x2F; midnight）</li>
-</ul>
-<hr>
-<h3 id="24-Chip-–-Deep"><a href="#24-Chip-–-Deep" class="headerlink" title="24. Chip – Deep"></a>24. Chip – Deep</h3><ul>
-<li><strong>CN</strong>: 芯片 – 深处  </li>
-<li><strong>EN</strong>: Chip – deep</li>
-</ul>
-<hr>
-<h3 id="25-变声器-–-滇声气"><a href="#25-变声器-–-滇声气" class="headerlink" title="25. 变声器 – 滇声气"></a>25. 变声器 – 滇声气</h3><ul>
-<li><strong>CN</strong>: 变声器 – 滇声气  </li>
-<li><strong>EN</strong>: Voice changer – Yunnan flavor</li>
-</ul>
-<hr>
-<h3 id="26-瓦洛兰特-–-塔罗盘色"><a href="#26-瓦洛兰特-–-塔罗盘色" class="headerlink" title="26. 瓦洛兰特 – 塔罗盘色"></a>26. 瓦洛兰特 – 塔罗盘色</h3><ul>
-<li><strong>CN</strong>: 瓦洛兰特 – 塔罗盘色  </li>
-<li><strong>EN</strong>: Valorant – tarot chance</li>
-</ul>
-<hr>
-<h3 id="27-蔷薇-–-翔飞"><a href="#27-蔷薇-–-翔飞" class="headerlink" title="27. 蔷薇 – 翔飞"></a>27. 蔷薇 – 翔飞</h3><ul>
-<li><strong>CN</strong>: 蔷薇 – 翔飞  </li>
-<li><strong>EN</strong>: Rose bloom – soaring soon</li>
-</ul>
-<hr>
-<h3 id="28-费翔-–-最强"><a href="#28-费翔-–-最强" class="headerlink" title="28. 费翔 – 最强"></a>28. 费翔 – 最强</h3><ul>
-<li><strong>CN</strong>: 费翔 – 最强  </li>
-<li><strong>EN</strong>: Fei Xiang – standing strong</li>
-</ul>
-<hr>
-<h3 id="29-日期-–-志气"><a href="#29-日期-–-志气" class="headerlink" title="29. 日期 – 志气"></a>29. 日期 – 志气</h3><ul>
-<li><strong>CN</strong>: 日期 – 志气  </li>
-<li><strong>EN</strong>: Mark the date – keep the faith</li>
-</ul>
-<hr>
-<h3 id="30-入金-–-镀金-–-父亲"><a href="#30-入金-–-镀金-–-父亲" class="headerlink" title="30. 入金 – 镀金 – 父亲"></a>30. 入金 – 镀金 – 父亲</h3><ul>
-<li><strong>CN</strong>: 入金 – 镀金 – 父亲  </li>
-<li><strong>EN</strong>: Cash in – golden skin – father within</li>
-</ul>
-<hr>
-<h3 id="31-契机-–-气息-–-七夕-–-地基-–-利息"><a href="#31-契机-–-气息-–-七夕-–-地基-–-利息" class="headerlink" title="31. 契机 – 气息 – 七夕 – 地基 – 利息"></a>31. 契机 – 气息 – 七夕 – 地基 – 利息</h3><ul>
-<li><strong>CN</strong>: 契机 – 气息 – 七夕 – 地基 – 利息  </li>
-<li><strong>EN</strong>: Turning key – breathing free – lovers’ eve – firm ground beneath – service fee</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-08-31"><a href="#🎤-今日练习-2025-08-31" class="headerlink" title="🎤 今日练习 (2025-08-31)"></a>🎤 今日练习 (2025-08-31)</h2><h3 id="32-Five-hundred-–-Dangerous"><a href="#32-Five-hundred-–-Dangerous" class="headerlink" title="32. Five hundred – Dangerous"></a>32. Five hundred – Dangerous</h3><ul>
-<li><strong>CN</strong>: 五百 – 危险  </li>
-<li><strong>EN</strong>: Five hundred – dangerous</li>
-</ul>
-<hr>
-<h3 id="33-Equal-–-Neigo"><a href="#33-Equal-–-Neigo" class="headerlink" title="33. Equal – Neigo"></a>33. Equal – Neigo</h3><ul>
-<li><strong>CN</strong>: 相等 – “内狗”（自造音节，flow 用）  </li>
-<li><strong>EN</strong>: Equal – neigo</li>
-</ul>
-<hr>
-<h3 id="34-志愿者-–-试验着"><a href="#34-志愿者-–-试验着" class="headerlink" title="34. 志愿者 – 试验着"></a>34. 志愿者 – 试验着</h3><ul>
-<li><strong>CN</strong>: 志愿者 – 试验着  </li>
-<li><strong>EN</strong>: Volunteer – testing here</li>
-</ul>
-<hr>
-<h3 id="35-清高-–-青蒿"><a href="#35-清高-–-青蒿" class="headerlink" title="35. 清高 – 青蒿"></a>35. 清高 – 青蒿</h3><ul>
-<li><strong>CN</strong>: 清高 – 青蒿  </li>
-<li><strong>EN</strong>: Noble pride – artemisia side</li>
-</ul>
-<hr>
-<h3 id="36-挣钱"><a href="#36-挣钱" class="headerlink" title="36. 挣钱"></a>36. 挣钱</h3><ul>
-<li><strong>CN</strong>: 挣钱  </li>
-<li><strong>EN</strong>: Make money – my honey</li>
-</ul>
-<hr>
-<h3 id="37-Drake-–-Treat-–-Made-–-Fake"><a href="#37-Drake-–-Treat-–-Made-–-Fake" class="headerlink" title="37. Drake – Treat – Made – Fake"></a>37. Drake – Treat – Made – Fake</h3><ul>
-<li><strong>CN</strong>: 德雷克 – 对待 – 制造 – 虚假  </li>
-<li><strong>EN</strong>: Drake – treat – made – fake</li>
-</ul>
-<hr>
-<h3 id="38-Hard-drive-–-Try"><a href="#38-Hard-drive-–-Try" class="headerlink" title="38. Hard drive – Try"></a>38. Hard drive – Try</h3><ul>
-<li><strong>CN</strong>: 硬盘 – 尝试  </li>
-<li><strong>EN</strong>: Hard drive – try</li>
-</ul>
-<hr>
-<h3 id="39-声卡-–-灯塔"><a href="#39-声卡-–-灯塔" class="headerlink" title="39. 声卡 – 灯塔"></a>39. 声卡 – 灯塔</h3><ul>
-<li><strong>CN</strong>: 声卡 – 灯塔  </li>
-<li><strong>EN</strong>: Sound card – lighthouse yard</li>
-</ul>
-<hr>
-<h3 id="40-E-bay-–-May-day"><a href="#40-E-bay-–-May-day" class="headerlink" title="40. E-bay – May day"></a>40. E-bay – May day</h3><ul>
-<li><strong>CN</strong>: 易趣网 – 求救信号  </li>
-<li><strong>EN</strong>: E-bay – May day</li>
-</ul>
-<hr>
-<h3 id="41-双拳-–-窗帘-–-窗前-–-荒原"><a href="#41-双拳-–-窗帘-–-窗前-–-荒原" class="headerlink" title="41. 双拳 – 窗帘 – 窗前 – 荒原"></a>41. 双拳 – 窗帘 – 窗前 – 荒原</h3><ul>
-<li><strong>CN</strong>: 双拳 – 窗帘 – 窗前 – 荒原  </li>
-<li><strong>EN</strong>: Double fists – window drapes – by the panes – on wastelands</li>
-</ul>
-<hr>
-<h3 id="42-家徒四壁-–-徒四溢-–-逝去-–-自闭"><a href="#42-家徒四壁-–-徒四溢-–-逝去-–-自闭" class="headerlink" title="42. 家徒四壁 – 徒四溢 – 逝去 – 自闭"></a>42. 家徒四壁 – 徒四溢 – 逝去 – 自闭</h3><ul>
-<li><strong>CN</strong>: 家徒四壁 – 徒四溢 – 逝去 – 自闭  </li>
-<li><strong>EN</strong>: Bare walls all around – sorrow spills – time gone – silence chills</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-09-01"><a href="#🎤-今日练习-2025-09-01" class="headerlink" title="🎤 今日练习 (2025-09-01)"></a>🎤 今日练习 (2025-09-01)</h2><h3 id="43-Boss-–-Doss-–-Dos"><a href="#43-Boss-–-Doss-–-Dos" class="headerlink" title="43. Boss – Doss – Dos"></a>43. Boss – Doss – Dos</h3><ul>
-<li><strong>CN</strong>: 老板 – 混日子 – 操作系统指令（dos）  </li>
-<li><strong>EN</strong>: Boss – doss – dos</li>
-</ul>
-<hr>
-<h3 id="44-考研-–-搞钱"><a href="#44-考研-–-搞钱" class="headerlink" title="44. 考研 – 搞钱"></a>44. 考研 – 搞钱</h3><ul>
-<li><strong>CN</strong>: 考研 – 搞钱  </li>
-<li><strong>EN</strong>: Take exams – make grands</li>
-</ul>
-<hr>
-<h3 id="45-阔绰-–-错落-–-过错"><a href="#45-阔绰-–-错落-–-过错" class="headerlink" title="45. 阔绰 – 错落 – 过错"></a>45. 阔绰 – 错落 – 过错</h3><ul>
-<li><strong>CN</strong>: 阔绰 – 错落 – 过错  </li>
-<li><strong>EN</strong>: Living large – scattered parts – guilty scars</li>
-</ul>
-<hr>
-<h3 id="46-吓尿-–-驾到-–-吓到-–-驾照"><a href="#46-吓尿-–-驾到-–-吓到-–-驾照" class="headerlink" title="46. 吓尿 – 驾到 – 吓到 – 驾照"></a>46. 吓尿 – 驾到 – 吓到 – 驾照</h3><ul>
-<li><strong>CN</strong>: 吓尿 – 驾到 – 吓到 – 驾照  </li>
-<li><strong>EN</strong>: Scared piss – boss arrives – shocked eyes – driver’s license prize</li>
-</ul>
-<hr>
-<h3 id="47-招数-–-招募"><a href="#47-招数-–-招募" class="headerlink" title="47. 招数 – 招募"></a>47. 招数 – 招募</h3><ul>
-<li><strong>CN</strong>: 招数 – 招募  </li>
-<li><strong>EN</strong>: Tricks – recruit the clique</li>
-</ul>
-<hr>
-<h3 id="48-肚子-–-固执"><a href="#48-肚子-–-固执" class="headerlink" title="48. 肚子 – 固执"></a>48. 肚子 – 固执</h3><ul>
-<li><strong>CN</strong>: 肚子 – 固执  </li>
-<li><strong>EN</strong>: Belly full – stubborn rule</li>
-</ul>
-<hr>
-<h3 id="49-罗马-–-活法"><a href="#49-罗马-–-活法" class="headerlink" title="49. 罗马 – 活法"></a>49. 罗马 – 活法</h3><ul>
-<li><strong>CN</strong>: 罗马 – 活法  </li>
-<li><strong>EN</strong>: Rome – way to roam</li>
-</ul>
-<hr>
-<h3 id="50-Opportunity-–-Unit"><a href="#50-Opportunity-–-Unit" class="headerlink" title="50. Opportunity – Unit"></a>50. Opportunity – Unit</h3><ul>
-<li><strong>CN</strong>: 机会 – 单位  </li>
-<li><strong>EN</strong>: Opportunity – unit</li>
-</ul>
-<hr>
-<h3 id="51-醉了-–-跪着-–-碎了-–-会了"><a href="#51-醉了-–-跪着-–-碎了-–-会了" class="headerlink" title="51. 醉了 – 跪着 – 碎了 – 会了"></a>51. 醉了 – 跪着 – 碎了 – 会了</h3><ul>
-<li><strong>CN</strong>: 醉了 – 跪着 – 碎了 – 会了  </li>
-<li><strong>EN</strong>: Drunk down – on the ground – broken sound – knowledge found</li>
-</ul>
-<hr>
-<h3 id="52-清迈-–-星奈露-–-青睐"><a href="#52-清迈-–-星奈露-–-青睐" class="headerlink" title="52. 清迈 – 星奈露 – 青睐"></a>52. 清迈 – 星奈露 – 青睐</h3><ul>
-<li><strong>CN</strong>: 清迈 – 星奈露 – 青睐  </li>
-<li><strong>EN</strong>: Chiang Mai – starry sky – favor in my eye</li>
-</ul>
-<hr>
-<h3 id="53-冲晕-–-中军-–-空军"><a href="#53-冲晕-–-中军-–-空军" class="headerlink" title="53. 冲晕 – 中军 – 空军"></a>53. 冲晕 – 中军 – 空军</h3><ul>
-<li><strong>CN</strong>: 冲晕 – 中军 – 空军  </li>
-<li><strong>EN</strong>: Dizzy run – central troops – air force moves</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-09-02"><a href="#🎤-今日练习-2025-09-02" class="headerlink" title="🎤 今日练习 (2025-09-02)"></a>🎤 今日练习 (2025-09-02)</h2><h3 id="54-鸡饭-–-鸡蛋-–-稀饭-–-期盼-–-忌惮"><a href="#54-鸡饭-–-鸡蛋-–-稀饭-–-期盼-–-忌惮" class="headerlink" title="54. 鸡饭 – 鸡蛋 – 稀饭 – 期盼 – 忌惮"></a>54. 鸡饭 – 鸡蛋 – 稀饭 – 期盼 – 忌惮</h3><ul>
-<li><strong>CN</strong>: 鸡饭 – 鸡蛋 – 稀饭 – 期盼 – 忌惮  </li>
-<li><strong>EN</strong>: Chicken rice – sunny side – porridge nice – hope inside – fear to hide</li>
-</ul>
-<hr>
-<h3 id="55-回来-–-会来"><a href="#55-回来-–-会来" class="headerlink" title="55. 回来 – 会来"></a>55. 回来 – 会来</h3><ul>
-<li><strong>CN</strong>: 回来 – 会来  </li>
-<li><strong>EN</strong>: Coming back – will come back</li>
-</ul>
-<hr>
-<h3 id="56-期待-–-依赖"><a href="#56-期待-–-依赖" class="headerlink" title="56. 期待 – 依赖"></a>56. 期待 – 依赖</h3><ul>
-<li><strong>CN</strong>: 期待 – 依赖  </li>
-<li><strong>EN</strong>: Anticipate – rely on fate</li>
-</ul>
-<hr>
-<h3 id="57-升级-–-蹦迪"><a href="#57-升级-–-蹦迪" class="headerlink" title="57. 升级 – 蹦迪"></a>57. 升级 – 蹦迪</h3><ul>
-<li><strong>CN</strong>: 升级 – 蹦迪  </li>
-<li><strong>EN</strong>: Level up – hit the club</li>
-</ul>
-<hr>
-<h3 id="58-城府-–-城主"><a href="#58-城府-–-城主" class="headerlink" title="58. 城府 – 城主"></a>58. 城府 – 城主</h3><ul>
-<li><strong>CN</strong>: 城府 – 城主  </li>
-<li><strong>EN</strong>: Deep mind – lord of the shrine</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-09-03"><a href="#🎤-今日练习-2025-09-03" class="headerlink" title="🎤 今日练习 (2025-09-03)"></a>🎤 今日练习 (2025-09-03)</h2><h3 id="59-不辍-–-独特"><a href="#59-不辍-–-独特" class="headerlink" title="59. 不辍 – 独特"></a>59. 不辍 – 独特</h3><ul>
-<li><strong>CN</strong>: 不辍 – 独特  </li>
-<li><strong>EN</strong>: Never stop – stay unique</li>
-</ul>
-<hr>
-<h3 id="60-活在-–-国外"><a href="#60-活在-–-国外" class="headerlink" title="60. 活在 – 国外"></a>60. 活在 – 国外</h3><ul>
-<li><strong>CN</strong>: 活在 – 国外  </li>
-<li><strong>EN</strong>: Live inside – overseas ride</li>
-</ul>
-<hr>
-<h3 id="61-科技-–-车技"><a href="#61-科技-–-车技" class="headerlink" title="61. 科技 – 车技"></a>61. 科技 – 车技</h3><ul>
-<li><strong>CN</strong>: 科技 – 车技  </li>
-<li><strong>EN</strong>: High tech – driving check</li>
-</ul>
-<hr>
-<h3 id="62-第一-–-地基"><a href="#62-第一-–-地基" class="headerlink" title="62. 第一 – 地基"></a>62. 第一 – 地基</h3><ul>
-<li><strong>CN</strong>: 第一 – 地基  </li>
-<li><strong>EN</strong>: Number one – solid ground begun</li>
-</ul>
-<hr>
-<h3 id="63-部队-–-护卫"><a href="#63-部队-–-护卫" class="headerlink" title="63. 部队 – 护卫"></a>63. 部队 – 护卫</h3><ul>
-<li><strong>CN</strong>: 部队 – 护卫  </li>
-<li><strong>EN</strong>: Army troops – loyal guards in groups</li>
-</ul>
-<hr>
-<h3 id="64-侵略-–-心血"><a href="#64-侵略-–-心血" class="headerlink" title="64. 侵略 – 心血"></a>64. 侵略 – 心血</h3><ul>
-<li><strong>CN</strong>: 侵略 – 心血  </li>
-<li><strong>EN</strong>: Invasion – dedication</li>
-</ul>
-<hr>
-<h3 id="65-泰坦-–-菜板"><a href="#65-泰坦-–-菜板" class="headerlink" title="65. 泰坦 – 菜板"></a>65. 泰坦 – 菜板</h3><ul>
-<li><strong>CN</strong>: 泰坦 – 菜板  </li>
-<li><strong>EN</strong>: Titan – chopping board plan</li>
-</ul>
-<hr>
-<h3 id="66-起点-–-绩点-–-奇点"><a href="#66-起点-–-绩点-–-奇点" class="headerlink" title="66. 起点 – 绩点 – 奇点"></a>66. 起点 – 绩点 – 奇点</h3><ul>
-<li><strong>CN</strong>: 起点 – 绩点 – 奇点  </li>
-<li><strong>EN</strong>: Starting line – grade point sign – singularity shine</li>
-</ul>
-<hr>
-<h3 id="67-Spot-–-Scoot"><a href="#67-Spot-–-Scoot" class="headerlink" title="67. Spot – Scoot"></a>67. Spot – Scoot</h3><ul>
-<li><strong>CN</strong>: 位置 – 飞驰  </li>
-<li><strong>EN</strong>: Spot – scoot</li>
-</ul>
-<hr>
-<h3 id="68-Look-out-–-No-doubt"><a href="#68-Look-out-–-No-doubt" class="headerlink" title="68. Look out – No doubt"></a>68. Look out – No doubt</h3><ul>
-<li><strong>CN</strong>: 小心 – 毫无疑问  </li>
-<li><strong>EN</strong>: Look out – no doubt</li>
-</ul>
-<hr>
-<h3 id="69-Chaos-–-Drills"><a href="#69-Chaos-–-Drills" class="headerlink" title="69. Chaos – Drills"></a>69. Chaos – Drills</h3><ul>
-<li><strong>CN</strong>: 混乱 – 训练  </li>
-<li><strong>EN</strong>: Chaos – drills</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<h2 id="🎤-今日练习-2025-09-04"><a href="#🎤-今日练习-2025-09-04" class="headerlink" title="🎤 今日练习 (2025-09-04)"></a>🎤 今日练习 (2025-09-04)</h2><h3 id="70-Mit-–-Die"><a href="#70-Mit-–-Die" class="headerlink" title="70. Mit – Die"></a>70. Mit – Die</h3><ul>
-<li><strong>CN</strong>: 德语词 – Mit &#x2F; Die  </li>
-<li><strong>EN</strong>: Mit – die</li>
-</ul>
-<hr>
-<h3 id="71-Bruce-Lee-–-Crazy-Me"><a href="#71-Bruce-Lee-–-Crazy-Me" class="headerlink" title="71. Bruce Lee – Crazy Me"></a>71. Bruce Lee – Crazy Me</h3><ul>
-<li><strong>CN</strong>: 李小龙 – 疯狂的我  </li>
-<li><strong>EN</strong>: Bruce Lee – crazy me</li>
-</ul>
-<hr>
-<h3 id="72-理想-–-奔驰-–-参差"><a href="#72-理想-–-奔驰-–-参差" class="headerlink" title="72. 理想 – 奔驰 – 参差"></a>72. 理想 – 奔驰 – 参差</h3><ul>
-<li><strong>CN</strong>: 理想 – 奔驰 – 参差  </li>
-<li><strong>EN</strong>: Ideal dream – Benz machine – gap between</li>
-</ul>
-<hr>
-<h3 id="73-憔悴-–-学会"><a href="#73-憔悴-–-学会" class="headerlink" title="73. 憔悴 – 学会"></a>73. 憔悴 – 学会</h3><ul>
-<li><strong>CN</strong>: 憔悴 – 学会  </li>
-<li><strong>EN</strong>: Worn face – learn the ways</li>
-</ul>
-<hr>
-<h3 id="74-前途-–-钱途-–-钱图"><a href="#74-前途-–-钱途-–-钱图" class="headerlink" title="74. 前途 – 钱途 – 钱图"></a>74. 前途 – 钱途 – 钱图</h3><ul>
-<li><strong>CN</strong>: 前途 – 钱途 – 钱图  </li>
-<li><strong>EN</strong>: Bright road – money mode – fortune load</li>
-</ul>
-<hr>
-<h3 id="75-眼力见-–-眼里见"><a href="#75-眼力见-–-眼里见" class="headerlink" title="75. 眼力见 – 眼里见"></a>75. 眼力见 – 眼里见</h3><ul>
-<li><strong>CN</strong>: 眼力见 – 眼里见  </li>
-<li><strong>EN</strong>: Sharp sight – seen inside</li>
-</ul>
-<hr>
-<h3 id="76-挑战极限-–-小看意念"><a href="#76-挑战极限-–-小看意念" class="headerlink" title="76. 挑战极限 – 小看意念"></a>76. 挑战极限 – 小看意念</h3><ul>
-<li><strong>CN</strong>: 挑战极限 – 小看意念  </li>
-<li><strong>EN</strong>: Push the limit – underestimate spirit</li>
-</ul>
-<hr>
-<h3 id="77-法理-–-卡里-–-打理-–-咖喱"><a href="#77-法理-–-卡里-–-打理-–-咖喱" class="headerlink" title="77. 法理 – 卡里 – 打理 – 咖喱"></a>77. 法理 – 卡里 – 打理 – 咖喱</h3><ul>
-<li><strong>CN</strong>: 法理 – 卡里 – 打理 – 咖喱  </li>
-<li><strong>EN</strong>: Legal base – in my case – manage pace – curry taste</li>
-</ul>
-<hr>
-<h3 id="78-攻击性-–-通缉令"><a href="#78-攻击性-–-通缉令" class="headerlink" title="78. 攻击性 – 通缉令"></a>78. 攻击性 – 通缉令</h3><ul>
-<li><strong>CN</strong>: 攻击性 – 通缉令  </li>
-<li><strong>EN</strong>: Aggression – wanted mission</li>
-</ul>
-<hr>
-<h3 id="79-内卷-–-读书破万卷"><a href="#79-内卷-–-读书破万卷" class="headerlink" title="79. 内卷 – 读书破万卷"></a>79. 内卷 – 读书破万卷</h3><ul>
-<li><strong>CN</strong>: 内卷 – 读书破万卷  </li>
-<li><strong>EN</strong>: Rat race – read through a thousand page</li>
-</ul>
-<hr>
-<h3 id="80-起点-–-期限-–-纪念"><a href="#80-起点-–-期限-–-纪念" class="headerlink" title="80. 起点 – 期限 – 纪念"></a>80. 起点 – 期限 – 纪念</h3><ul>
-<li><strong>CN</strong>: 起点 – 期限 – 纪念  </li>
-<li><strong>EN</strong>: Starting line – deadline – memory sign</li>
-</ul>
-<hr>
-<h3 id="81-爬山-–-河山-–-和善"><a href="#81-爬山-–-河山-–-和善" class="headerlink" title="81. 爬山 – 河山 – 和善"></a>81. 爬山 – 河山 – 和善</h3><ul>
-<li><strong>CN</strong>: 爬山 – 河山 – 和善  </li>
-<li><strong>EN</strong>: Climb peaks – guard lands – kindness speaks</li>
-</ul>
-<hr>
-<h3 id="82-贪图-–-滩涂"><a href="#82-贪图-–-滩涂" class="headerlink" title="82. 贪图 – 滩涂"></a>82. 贪图 – 滩涂</h3><ul>
-<li><strong>CN</strong>: 贪图 – 滩涂  </li>
-<li><strong>EN</strong>: Greed chase – mud place</li>
-</ul>
-<hr>
-<h3 id="83-干脆-–-干碎-–-贪睡-–-汗水"><a href="#83-干脆-–-干碎-–-贪睡-–-汗水" class="headerlink" title="83. 干脆 – 干碎 – 贪睡 – 汗水"></a>83. 干脆 – 干碎 – 贪睡 – 汗水</h3><ul>
-<li><strong>CN</strong>: 干脆 – 干碎 – 贪睡 – 汗水  </li>
-<li><strong>EN</strong>: Straight way – break clay – oversleep day – sweat spray</li>
-</ul>
-<hr>
-<h3 id="84-Coach-–-Coach"><a href="#84-Coach-–-Coach" class="headerlink" title="84. Coach – Coach"></a>84. Coach – Coach</h3><ul>
-<li><strong>CN</strong>: 教练 – coach  </li>
-<li><strong>EN</strong>: Coach – coach</li>
-</ul>
-<hr>
-<p>✍️ <em>Keep it daily. Tomorrow &#x3D; new date + new rhymes.</em></p>
-<p>狼狈 狂吠</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/27/Hip-Hop/rap/" data-id="cuiddCJT_zThE2w-EHdQXV_nR" data-title="Hiphop Exercise" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hiphop/" rel="tag">hiphop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/practice/" rel="tag">practice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rhyme/" rel="tag">rhyme</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-wireguard" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/24/wireguard/" class="article-date">
-  <time class="dt-published" datetime="2025-08-24T07:00:00.000Z" itemprop="datePublished">2025-08-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/24/wireguard/">WireGuard</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="阿里云-CentOS-搭建-WireGuard"><a href="#阿里云-CentOS-搭建-WireGuard" class="headerlink" title="阿里云 CentOS 搭建 WireGuard"></a>阿里云 CentOS 搭建 WireGuard</h1><h2 id="1-购买服务器-配置安全组"><a href="#1-购买服务器-配置安全组" class="headerlink" title="1. 购买服务器 &amp; 配置安全组"></a>1. 购买服务器 &amp; 配置安全组</h2><ul>
-<li><p>在 <a target="_blank" rel="noopener" href="https://ecs.console.aliyun.com/">阿里云 ECS 控制台</a> 购买一台 <strong>ECS 实例</strong>  </p>
-<ul>
-<li>地域：选择中国大陆机房  </li>
-<li>系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8  </li>
-<li>带宽：≥ 5 Mbps</li>
-</ul>
-</li>
-<li><p>在 <strong>安全组 → 入方向规则</strong> 添加：  </p>
-<ul>
-<li>协议类型：UDP  </li>
-<li>端口范围：51820  </li>
-<li>授权对象：0.0.0.0&#x2F;0</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="2-服务端安装-WireGuard"><a href="#2-服务端安装-WireGuard" class="headerlink" title="2. 服务端安装 WireGuard"></a>2. 服务端安装 WireGuard</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> dnf update <span class="token parameter variable">-y</span>
-<span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> wireguard-tools iproute iptables
-
-<span class="token comment"># 生成密钥</span>
-<span class="token comment"># 服务端</span>
-wg genkey <span class="token operator">|</span> <span class="token function">tee</span> ~/server_private.key <span class="token operator">|</span> wg pubkey <span class="token operator">></span> ~/server_public.key
-
-<span class="token comment"># 客户端</span>
-wg genkey <span class="token operator">|</span> <span class="token function">tee</span> ~/client_private.key <span class="token operator">|</span> wg pubkey <span class="token operator">></span> ~/client_public.key
-
-<span class="token comment"># 写配置文件 /etc/wireguard/wg0.conf</span>
-<span class="token assign-left variable">SVR_PRIV</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> ~/server_private.key<span class="token variable">)</span></span>
-<span class="token assign-left variable">CLI_PUB</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> ~/client_public.key<span class="token variable">)</span></span>
-
-<span class="token function">sudo</span> <span class="token function">bash</span> <span class="token parameter variable">-c</span> <span class="token string">"cat > /etc/wireguard/wg0.conf"</span> <span class="token operator">&lt;&lt;</span><span class="token string">EOF
-[Interface]
-PrivateKey = <span class="token variable">$&#123;SVR_PRIV&#125;</span>
-Address = 10.0.0.1/24
-ListenPort = 51820
-MTU = 1380
-PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
-[Peer]
-PublicKey = <span class="token variable">$&#123;CLI_PUB&#125;</span>
-AllowedIPs = 10.0.0.2/32
-EOF</span>
-
-<span class="token comment"># 开启内核转发</span>
-<span class="token function">sudo</span> <span class="token function">sysctl</span> <span class="token parameter variable">-w</span> <span class="token assign-left variable">net.ipv4.ip_forward</span><span class="token operator">=</span><span class="token number">1</span>
-<span class="token builtin class-name">echo</span> <span class="token string">'net.ipv4.ip_forward=1'</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> /etc/sysctl.d/99-wireguard.conf
-<span class="token function">sudo</span> <span class="token function">sysctl</span> <span class="token parameter variable">--system</span>
-
-<span class="token comment"># 启动WireGuard</span>
-<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> wg-quick@wg0
-<span class="token function">sudo</span> systemctl restart wg-quick@wg0
-<span class="token function">sudo</span> wg show
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="3-本地-Windows-客户端"><a href="#3-本地-Windows-客户端" class="headerlink" title="3. 本地 Windows 客户端"></a>3. 本地 Windows 客户端</h2><pre class="line-numbers language-none"><code class="language-none">下载 WireGuard for Windows
-
-打开应用 → Add Tunnel → Import from file
-
-写入如下配置（⚠️ 修改为你的公网 IP，例如 1.123.123.123）：
-
-[Interface]
-PrivateKey &#x3D; (client_private.key 内容)
-Address &#x3D; 10.0.0.2&#x2F;24
-DNS &#x3D; 223.5.5.5
-MTU &#x3D; 1380
-
-[Peer]
-PublicKey &#x3D; (server_public.key 内容)
-Endpoint &#x3D; 1.123.123.123:51820
-AllowedIPs &#x3D; 0.0.0.0&#x2F;0, ::&#x2F;0
-PersistentKeepalive &#x3D; 25<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-细节"><a href="#4-细节" class="headerlink" title="4.细节"></a>4.细节</h2><h4 id="在客户端"><a href="#在客户端" class="headerlink" title="在客户端"></a>在客户端</h4><p>wireguard使用<strong>Curve25519</strong> 椭圆曲线密钥（非对称加密算法）<br>[Interface]<br>里面是自己的私钥和自己的虚拟ip地址，解析用的dns服务器（这里选了阿里云的）<br>MTU限制吞吐量</p>
-<ul>
-<li>这么做有三大好处：</li>
-</ul>
-<ol>
-<li><p><strong>避免 DNS 泄漏</strong>：如果不改，浏览器可能还在用本地网关的 DNS，查询会走公网而不是隧道。</p>
-</li>
-<li><p><strong>解析内网域名</strong>：你在服务器上跑了 <code>dnsmasq/unbound</code>（比如 <code>10.0.0.1</code>），客户端填它就能解析内网域名。</p>
-</li>
-<li><p><strong>稳定性</strong>：一些网络&#x2F;MTU 场景下，把 DNS 指向“隧道内可达”的服务器更稳。</p>
-</li>
-</ol>
-<p>[peer]<br>端保存服务器的公钥，服务器的ip和端口<br>AllowedIPs目前是全局代理，当然可以指定自己的规则</p>
-<ul>
-<li>全局代理：<code>0.0.0.0/0, ::/0</code>  </li>
-<li>仅内网：例如 <code>10.0.0.0/24</code></li>
-</ul>
-<p>PersistentKeepalive &#x3D; 25<br>是为了防止因为NAT等原因断开<br>但是我下边的日志交换密钥很频繁可能是因为丢包率较高</p>
-<h4 id="在服务器端"><a href="#在服务器端" class="headerlink" title="在服务器端"></a>在服务器端</h4><p>首先下载需要的组件<br>其次生成公钥私钥<br>自己保存私钥 公钥是为了方便别人找到自己<br>在服务器控制面板打开udp协议和端口<br>[peer]<br> PublicKey &#x3D;<br>AllowedIPs &#x3D; 10.0.0.2&#x2F;32<br>写好客户端的公钥和ip</p>
-<p>[Interface]<br>端不需要写DNS但是要指定自己的端口</p>
-<ul>
-<li><p>启用 IPv4 转发：<code>net.ipv4.ip_forward=1</code>（见安装步骤）</p>
-</li>
-<li><p>NAT 与转发：同时允许流量进&#x2F;出 <code>wg0</code>，并做源 NAT</p>
-</li>
-</ul>
-<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token comment">#配置服务器转发（若需客户端通过服务器访问公网）</span>
-<span class="token key attr-name">PostUp</span> <span class="token punctuation">=</span> <span class="token value attr-value">iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
-<span class="token key attr-name">PostDown</span> <span class="token punctuation">=</span> <span class="token value attr-value">iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token comment"># 启动服务并设置开机自启 </span>
-sudo systemctl enable --now wg-quick@wg0 
-<span class="token comment"># 查看状态（若显示“active (running)”则成功） </span>
-sudo systemctl status wg-quick@wg0 
-<span class="token comment"># 查看连接信息（初始为空，待客户端连接后显示） </span>
-sudo wgo wg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>分析一下通信过程</p>
-<ul>
-<li><strong>Peer A</strong>：「客户端设备」（比如你的 PC、手机，即之前配置中  <code>Address = 10.0.0.2/24</code>  或  <code>10.0.0.3/24</code>  的设备）</li>
-<li><strong>Peer B</strong>：「阿里云 WireGuard 服务器」（即  <code>Address = 10.0.0.1/24</code>、<code>ListenPort = 51820</code>  的设备，其 Endpoint 是服务器公网 IP:51820，比如你之前用的  <code>8.138.164.133:51820</code>）</li>
-</ul>
-<h4 id="1-密钥协商：A-是客户端，B-是服务器"><a href="#1-密钥协商：A-是客户端，B-是服务器" class="headerlink" title="1. 密钥协商：A 是客户端，B 是服务器"></a>1. 密钥协商：A 是客户端，B 是服务器</h4><p>流程中 “Peer A 首次向 Peer B 发送数据”，对应实际场景：</p>
-<ul>
-<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机（主动发起连接的一方）。比如你点击 PC 上 WireGuard 的 “Activate” 后，客户端会生成 “临时随机数”，用服务器的公钥加密，向服务器的 Endpoint（<code>8.138.164.133:51820</code>）发送请求；</li>
-<li><strong>Peer B（服务器）</strong>：阿里云上的 WireGuard 服务端（监听 51820 端口的一方）。收到客户端的请求后，用自己的私钥解密，再生成临时随机数、用客户端公钥加密后返回响应，最终双方算出相同的 “会话密钥”。</li>
-</ul>
-<h4 id="2-数据封装：A-是客户端（发起访问的一方）"><a href="#2-数据封装：A-是客户端（发起访问的一方）" class="headerlink" title="2. 数据封装：A 是客户端（发起访问的一方）"></a>2. 数据封装：A 是客户端（发起访问的一方）</h4><p>流程中 “Peer A 要访问 Peer B 所在的公司内网（如 10.0.0.5）”，对应实际场景：</p>
-<ul>
-<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机（要访问服务器内网资源的一方）。比如你在 PC 上访问服务器内网的  <code>10.0.0.5</code>  设备，PC 会把访问请求发给本地 WireGuard 虚拟网卡（<code>wg0</code>），再由 WireGuard 用 “会话密钥” 加密，封装成 UDP 包发给服务器；</li>
-<li><strong>Peer B（服务器）</strong>：阿里云 WireGuard 服务端（内网资源的 “网关”）。客户端发送的 UDP 包，目标地址就是服务器的 Endpoint（<code>8.138.164.133:51820</code>）。</li>
-</ul>
-<h4 id="3-数据解密与转发：B-是服务器（转发内网资源的一方）"><a href="#3-数据解密与转发：B-是服务器（转发内网资源的一方）" class="headerlink" title="3. 数据解密与转发：B 是服务器（转发内网资源的一方）"></a>3. 数据解密与转发：B 是服务器（转发内网资源的一方）</h4><p>流程中 “Peer B 收到 UDP 数据包后转发到内网”，对应实际场景：</p>
-<ul>
-<li><strong>Peer B（服务器）</strong>：阿里云 WireGuard 服务端。收到客户端的加密包后，验证客户端身份、解密数据，再根据  <code>AllowedIPs</code>  规则（比如服务器配置中允许客户端访问内网），把请求转发到内网的  <code>10.0.0.5</code>；</li>
-<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机。当  <code>10.0.0.5</code>  返回响应时，响应会先发给服务器，服务器加密后再发给客户端，客户端解密后交给本地系统，完成一次通信。</li>
-</ul>
-<h4 id="PC端客户端的日志"><a href="#PC端客户端的日志" class="headerlink" title="PC端客户端的日志"></a>PC端客户端的日志</h4><img src="/images/wire.JPG" alt="到货包装" style="max-width: 80%; height: auto;">
-
-<img src="/images/wire2.JPG" alt="日志1" style="max-width: 80%; height: auto;">
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/24/wireguard/" data-id="cuidKN0oTUYJuwxIhPeyB8ZzP" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-第一次网购" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" class="article-date">
-  <time class="dt-published" datetime="2025-08-16T07:00:00.000Z" itemprop="datePublished">2025-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/">在新加坡的第一次网购</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="在新加坡的第一次网购"><a href="#在新加坡的第一次网购" class="headerlink" title="在新加坡的第一次网购"></a>在新加坡的第一次网购</h1><blockquote>
-<p>淘宝网购小米热水壶，邮费比货贵</p>
-</blockquote>
-<ul>
-<li><strong>8 月 4 日 23:47</strong> 下单。  </li>
-<li><strong>8 月 9 日晚上</strong>，包裹已空运抵达新加坡。<br>配送员通过 WhatsApp 联系我，但我当时没有看到消息。<br>对方说我的单元楼号填写不够详细，如果当时及时回复，可能当天晚上就能收到。  </li>
-<li>空运速度很快，可惜我没注意到消息。第二天配送员再次联系，我依然没有看到。等我回复时，已经没有了反馈。我原以为他们不再配送了，后来才知道，两天联系不上就会更换配送员。  </li>
-<li><strong>8 月 13 日中午</strong>，新的配送员通过 WhatsApp 再次询问详细地址，我下午才回复，对方确认收到了。  </li>
-<li><strong>8 月 14 日下午</strong>，包裹顺利送达。  <blockquote>
-<p>整体来说空运速度还是很快的</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="到货包装"><a href="#到货包装" class="headerlink" title="到货包装"></a>到货包装</h3><img src="/images/包装.jpg" alt="到货包装" style="max-width: 20%; height: auto;">
-
-<h3 id="包裹内容"><a href="#包裹内容" class="headerlink" title="包裹内容"></a>包裹内容</h3><img src="/images/货.jpg" alt="包裹内容" style="max-width: 20%; height: auto;">
-
-<h3 id="购买链接截图"><a href="#购买链接截图" class="headerlink" title="购买链接截图"></a>购买链接截图</h3><img src="/images/订单.png" alt="购买链接" style="max-width: 20%; height: auto;">
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" data-id="cuidGNn_HE8QNVFaKnZoZz8Ck" data-title="在新加坡的第一次网购" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-计算机网络要点复习（dns_cdn_游戏网络_icmp_bgp_端口_传输层_多网段）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" class="article-date">
-  <time class="dt-published" datetime="2025-08-16T07:00:00.000Z" itemprop="datePublished">2025-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <hr>
-<blockquote>
-<p>这份清单覆盖：DNS 与多 IP、Cloudflare 与 Riot、LOL 国服&#x2F;国际服差异、Ping&#x2F;Traceroute&#x2F;ICMP、BGP 路由劫持（2008 巴基斯坦 YouTube 事件）、端口与连接、LOL 端口与连接拓扑、端口耗尽与扩展、网卡与多 IP&#x2F;多网段、跨境加速与地区选择等。配合命令速查与小图示，便于复习与分享。</p>
-</blockquote>
-<hr>
-<h2 id="1-DNS-解析与“一个域名多个-IP”"><a href="#1-DNS-解析与“一个域名多个-IP”" class="headerlink" title="1) DNS 解析与“一个域名多个 IP”"></a>1) DNS 解析与“一个域名多个 IP”</h2><ul>
-<li><strong>一个域名可以对应多 IP</strong>：用于负载均衡、就近接入与容错（CDN&#x2F;GSLB）。</li>
-<li><code>www.baidu.com → www.a.shifen.com → www.wshifen.com</code>：常见的 <strong>CNAME 链</strong>（别名 → 别名 → 最终 A 记录）。</li>
-<li>不同 DNS（114DNS&#x2F;8.8.8.8&#x2F;1.1.1.1&#x2F;阿里DNS）返回的 IP 可能 <strong>不同</strong>：因为 <strong>地理调度&#x2F;运营商&#x2F;缓存</strong> 不同。</li>
-<li><strong>非权威应答</strong>：当前 DNS 不是该域名权威服务器，但给出缓存或递归解析的结果。</li>
-<li>常用命令：<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nslookup www<span class="token punctuation">.</span>baidu<span class="token punctuation">.</span>com           <span class="token comment"># 使用系统默认 DNS</span>
-nslookup www<span class="token punctuation">.</span>baidu<span class="token punctuation">.</span>com 114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114  <span class="token comment"># 指定公共 DNS</span>
-nslookup auth<span class="token punctuation">.</span>riotgames<span class="token punctuation">.</span>com 8<span class="token punctuation">.</span>8<span class="token punctuation">.</span>8<span class="token punctuation">.</span>8<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
-</ul>
-<hr>
-<h2 id="2-Cloudflare-是什么？"><a href="#2-Cloudflare-是什么？" class="headerlink" title="2) Cloudflare 是什么？"></a>2) Cloudflare 是什么？</h2><ul>
-<li><strong>CDN + DDoS 防护 + 反向代理 + Anycast</strong> 的全球网络。</li>
-<li>站在用户与源站之间：<strong>加速</strong>（就近节点）、<strong>防护</strong>（隐藏源 IP、WAF）、<strong>高可用</strong>。</li>
-<li>例：<code>auth.riotgames.com</code> 解析到 <code>*.cdn.cloudflare.net</code>（Cloudflare IP），不同 DNS 解析一致，说明统一走 Cloudflare 边缘节点。</li>
-</ul>
-<hr>
-<h2 id="3-LOL：国服-vs-国际服（Riot-自营）"><a href="#3-LOL：国服-vs-国际服（Riot-自营）" class="headerlink" title="3) LOL：国服 vs 国际服（Riot 自营）"></a>3) LOL：国服 vs 国际服（Riot 自营）</h2><ul>
-<li><strong>国际服</strong>：域名多为 <code>riotgames.com</code> &#x2F; <code>pvp.net</code>；登录等常走 Cloudflare；对局在各大洲机房。</li>
-<li><strong>国服（腾讯运营）</strong>：域名多为 <code>qq.com</code> &#x2F; <code>tencent.com</code>；机房在 <strong>中国大陆（北京&#x2F;上海&#x2F;广州&#x2F;成都）</strong>；常见 IP 网段：<code>203.205.*.*</code>、<code>119.*.*</code> 等。</li>
-<li><strong>结论</strong>：同一大区（如电一&#x2F;网一）背后是不同机房&#x2F;集群；选择不同大区 → <strong>不同服务器 IP 段</strong>。</li>
-</ul>
-<hr>
-<h2 id="4-Ping-Traceroute-实验与解读"><a href="#4-Ping-Traceroute-实验与解读" class="headerlink" title="4) Ping &#x2F; Traceroute 实验与解读"></a>4) Ping &#x2F; Traceroute 实验与解读</h2><ul>
-<li><strong>Ping 原理</strong>：ICMP Echo Request&#x2F;Reply，测可达性与往返延迟 RTT；TTL 反映大致跳数。并非所有主机都回 ICMP（防火墙可能丢弃）。</li>
-<li><strong>Traceroute 原理</strong>：逐步增加 TTL，依靠 ICMP Time Exceeded 显示各跳路由。</li>
-<li>示例现象：<ul>
-<li>新加坡 → 腾讯 <code>203.205.*.*</code>：多经由 <strong>PCCW 香港</strong>，延迟约 40–60ms。</li>
-<li>新加坡 → <code>119.167.*.*</code>：曾出现 <strong>绕欧洲（Telia&#x2F;法兰克福）再回中国</strong>，延迟 300ms+。</li>
-</ul>
-</li>
-<li><strong>加速器（如 UU）</strong>：先到本地加速节点 → 走加速专线直达国内节点 → 减少绕路&#x2F;拥塞，延迟显著降低。</li>
-</ul>
-<hr>
-<h2 id="5-ICMP-速查"><a href="#5-ICMP-速查" class="headerlink" title="5) ICMP 速查"></a>5) ICMP 速查</h2><ul>
-<li>作用：网络层的<strong>控制消息</strong>（诊断&#x2F;错误报告）。</li>
-<li>常见类型：<ul>
-<li>8&#x2F;0：Echo Request&#x2F;Reply（ping）</li>
-<li>11：Time Exceeded（traceroute）</li>
-<li>3：Destination Unreachable（目标不可达）</li>
-<li>5：Redirect（重定向）</li>
-<li>12：Parameter Problem（参数问题）</li>
-</ul>
-</li>
-<li><strong>不能“绕过防火墙”</strong>：ICMP 可被拦截；Ping 不通不代表服务一定不可用。</li>
-</ul>
-<hr>
-<h2 id="6-BGP-与-2008-巴基斯坦-YouTube-事件（必考级）"><a href="#6-BGP-与-2008-巴基斯坦-YouTube-事件（必考级）" class="headerlink" title="6) BGP 与 2008 巴基斯坦 YouTube 事件（必考级）"></a>6) BGP 与 2008 巴基斯坦 YouTube 事件（必考级）</h2><ul>
-<li>背景：2008-02-24，巴基斯坦电信为屏蔽 YouTube，本地“黑洞路由”误通过 <strong>BGP</strong> 广播到全球。</li>
-<li>关键点：<ul>
-<li>YouTube 公布前缀：<code>208.65.152.0/22</code></li>
-<li>错误广播：<code>208.65.153.0/24</code>（<strong>更具体前缀优先</strong>）</li>
-<li>大量全球流量被吸到巴基斯坦，YouTube 全球中断约 <strong>2 小时</strong>。</li>
-<li>谷歌联系上游 <strong>PCCW</strong> 撤回错误前缀，网络收敛恢复。</li>
-</ul>
-</li>
-<li>意义：暴露 BGP 无认证&#x2F;易被“劫持”；促进 <strong>RPKI</strong> 等路由验证部署。</li>
-</ul>
-<hr>
-<h2 id="7-端口、连接与临时端口（Ephemeral）"><a href="#7-端口、连接与临时端口（Ephemeral）" class="headerlink" title="7) 端口、连接与临时端口（Ephemeral）"></a>7) 端口、连接与临时端口（Ephemeral）</h2><ul>
-<li><strong>端口范围</strong>：0–65535；0–1023（知名），1024–49151（注册），49152–65535（临时）。</li>
-<li><strong>服务器端口</strong>：应用显式监听（如 80&#x2F;443&#x2F;2099&#x2F;5000–5500）。</li>
-<li><strong>客户端临时端口</strong>：OS 自动分配；连接结束进入 <strong>TIME_WAIT</strong> 再回收。</li>
-<li><strong>四元组</strong> 唯一标识连接：<code>(源IP, 源端口, 目的IP, 目的端口)</code>。</li>
-<li>浏览器访问：HTTP&#x3D;80，HTTPS&#x3D;443（可显式写其他端口，如 <code>:8080</code>）。CDN&#x2F;代理层对外 80&#x2F;443，后端真实端口对外不可见。</li>
-<li><code>netstat</code> 解读：看本地&#x2F;远端地址与状态（ESTABLISHED&#x2F;TIME_WAIT&#x2F;CLOSE_WAIT&#x2F;SYN_SENT 等）。</li>
-</ul>
-<hr>
-<h2 id="8-LOL-的端口与对局拓扑"><a href="#8-LOL-的端口与对局拓扑" class="headerlink" title="8) LOL 的端口与对局拓扑"></a>8) LOL 的端口与对局拓扑</h2><ul>
-<li><strong>TCP</strong>：80、443（登录&#x2F;更新&#x2F;商城）；2099（大厅&#x2F;匹配）；5222&#x2F;5223（聊天）；8393–8400（启动器）。</li>
-<li><strong>UDP</strong>：5000–5500（对局核心数据）；语音可能额外 UDP 端口范围。</li>
-<li><strong>同一房间</strong>：所有玩家 → <strong>同一个服务器 UDP 端口</strong>（例如 5003）；客户端各自使用不同本地临时端口。</li>
-</ul>
-<h3 id="小图：同房间同端口"><a href="#小图：同房间同端口" class="headerlink" title="小图：同房间同端口"></a>小图：同房间同端口</h3><pre class="line-numbers language-none"><code class="language-none">玩家A 1.1.1.1:49120 ─┐
-玩家B 2.2.2.2:53001 ─┤  (UDP)
-...                  ─┤→ 203.205.136.77:5003
-玩家J 10.10.10.10:60001┘<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<ul>
-<li><strong>打一局大致连接数量</strong>：<ul>
-<li>大厅阶段：2–5 条 TCP</li>
-<li>对局阶段：1–2 条 UDP（+ 可能 1 条 TCP 辅助）</li>
-<li>语音：1–2 条 UDP</li>
-<li>合计：约 <strong>5–10</strong> 个并发端口</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="9-端口耗尽与扩展思路"><a href="#9-端口耗尽与扩展思路" class="headerlink" title="9) 端口耗尽与扩展思路"></a>9) 端口耗尽与扩展思路</h2><ul>
-<li>单个 IP 理论上限：<strong>65535</strong> 端口；极端并发（压测&#x2F;P2P）才可能耗尽。</li>
-<li>扩展手段：<ul>
-<li><strong>多个 IP</strong>（每个 IP × 65535）</li>
-<li>调整临时端口范围&#x2F;回收策略（Linux: <code>ip_local_port_range</code> &#x2F; <code>tcp_fin_timeout</code>；Windows: <code>MaxUserPort</code>）</li>
-<li><strong>IPv6</strong>（更多地址组合），或多机分布式架构&#x2F;负载均衡。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="10-网卡（NIC）与多-IP-多网段"><a href="#10-网卡（NIC）与多-IP-多网段" class="headerlink" title="10) 网卡（NIC）与多 IP &#x2F; 多网段"></a>10) 网卡（NIC）与多 IP &#x2F; 多网段</h2><ul>
-<li><strong>IP 绑定在网卡接口上</strong>；网卡有 <strong>MAC</strong>，IP 是逻辑地址。</li>
-<li><strong>一块网卡可绑多个 IP</strong>（IPv4&#x2F;IPv6 都行）；服务器&#x2F;网站托管常见。</li>
-<li><strong>PC 可有多个 IPv4</strong>：同一网卡多 IP、不同网卡（有线+无线+虚拟网卡）、以及 IPv6 同时存在。</li>
-<li><strong>两个公网 IP</strong>：<ul>
-<li>需运营商&#x2F;云厂商分配（同网卡多公网 IP，或双网卡双运营商）。</li>
-</ul>
-</li>
-<li><strong>一台服务器两个网段</strong>：<ul>
-<li>多网卡分别接入内外网，或单网卡多 IP；关键是 <strong>路由表&#x2F;策略路由</strong> 与 <strong>防火墙</strong>。</li>
-</ul>
-</li>
-<li><strong>两个外网段（双线接入&#x2F;Multi-homing）</strong>：<ul>
-<li>典型：电信 + 联通；需策略路由保证“从哪个源 IP 出去就从哪个网关回来”，避免回程错乱。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="11-跨境连接、加速与地区选择"><a href="#11-跨境连接、加速与地区选择" class="headerlink" title="11) 跨境连接、加速与地区选择"></a>11) 跨境连接、加速与地区选择</h2><ul>
-<li>地理近 ≠ 网络近：路径由 <strong>BGP 与运营商策略</strong> 决定。</li>
-<li><strong>AWS 台北 ←→ 大陆</strong>：常绕路&#x2F;拥塞，实际比香港&#x2F;新加坡&#x2F;日本更慢。</li>
-<li>方案：选 <strong>CN2&#x2F;GIA 优化线路</strong> 的香港&#x2F;新加坡&#x2F;日本节点；或中转&#x2F;协议优化（gRPC&#x2F;XTLS&#x2F;QUIC 等）。</li>
-<li><strong>加速器</strong>：本地节点 + 专线直连国内节点 → 避免绕路与公共出口拥塞。</li>
-</ul>
-<hr>
-<h2 id="12-命令速查（Windows-为例）"><a href="#12-命令速查（Windows-为例）" class="headerlink" title="12) 命令速查（Windows 为例）"></a>12) 命令速查（Windows 为例）</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># DNS 解析</span>
-nslookup domain<span class="token punctuation">.</span>com
-nslookup domain<span class="token punctuation">.</span>com 114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114
-
-<span class="token comment"># 连通性/延迟</span>
-ping 203<span class="token punctuation">.</span>205<span class="token punctuation">.</span>136<span class="token punctuation">.</span>77
-
-<span class="token comment"># 路由路径</span>
-tracert 203<span class="token punctuation">.</span>205<span class="token punctuation">.</span>136<span class="token punctuation">.</span>77
-
-<span class="token comment"># 当前连接</span>
-netstat <span class="token operator">-</span>ano <span class="token punctuation">|</span> findstr ESTABLISHED
-
-<span class="token comment"># 查看/添加 IP（Linux 示例）</span>
-ip addr show
-ip addr add 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>0<span class="token punctuation">.</span>200/24 dev eth0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<hr>
-<h2 id="13-传输层总览（TCP-vs-UDP）"><a href="#13-传输层总览（TCP-vs-UDP）" class="headerlink" title="13) 传输层总览（TCP vs UDP）"></a>13) 传输层总览（TCP vs UDP）</h2><ul>
-<li><strong>TCP</strong>：面向连接、可靠、有序、拥塞+流控；适合网页&#x2F;文件&#x2F;登录。</li>
-<li><strong>UDP</strong>：无连接、不保证可靠；时延小、开销低；适合直播&#x2F;语音&#x2F;游戏&#x2F;DNS。</li>
-<li><strong>端口</strong> 是传输层与应用的“门牌号”，四元组唯一标识一条会话。</li>
-</ul>
-<hr>
-<h2 id="14-关键概念一图流"><a href="#14-关键概念一图流" class="headerlink" title="14) 关键概念一图流"></a>14) 关键概念一图流</h2><pre class="line-numbers language-none"><code class="language-none">应用层:  HTTP &#x2F; DNS &#x2F; SMTP &#x2F; FTP &#x2F; ...
-            │
-传输层:  TCP &#x2F; UDP   ← 端口(80&#x2F;443&#x2F;5000..)
-            │
-网络层:    IP        ← 寻址&#x2F;路由
-            │
-链路层: Ethernet &#x2F; Wi‑Fi
-            │
-物理层: 光纤&#x2F;电缆&#x2F;无线<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<pre class="line-numbers language-none"><code class="language-none">连接四元组:
-(源IP, 源端口, 目的IP, 目的端口)
-192.168.0.102:49835 → 220.181.38.148:443<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<hr>
-<h2 id="15-自测题（快速复习）"><a href="#15-自测题（快速复习）" class="headerlink" title="15) 自测题（快速复习）"></a>15) 自测题（快速复习）</h2><ol>
-<li>为什么不同 DNS 解析同一域名得到的 IP 不同？</li>
-<li>Cloudflare 在链路中扮演什么角色，为什么 <code>auth.riotgames.com</code> 常解析到它？</li>
-<li>Ping 与 Traceroute 各用到哪种 ICMP 类型？能否绕过防火墙？</li>
-<li>2008 巴基斯坦 YouTube 事件的根本原因是什么？“更具体前缀优先”带来了什么后果？</li>
-<li>LOL 同一房间内，所有玩家是否连接到同一个服务器端口？为什么？</li>
-<li>本地临时端口为什么会进入 TIME_WAIT？如何避免端口资源耗尽？</li>
-<li>一台服务器如何同时接入两个外网段？策略路由如何保证出入口一致？</li>
-<li>为什么 AWS 台北从大陆访问常常比香港&#x2F;新加坡更慢？</li>
-</ol>
-<hr>
-<h3 id="End"><a href="#End" class="headerlink" title="End"></a>End</h3><p>这份清单可直接当“速记本”使用；若你要分享给同学，可在此基础上继续补充截图与实验数据（如你的 <code>ping/tracert/netstat</code> 输出）。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidbXCYZSeTZwbTnkiRPw84A" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
     </footer>
   </div>
   
@@ -2730,7 +2236,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colab/" rel="tag">Colab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-Regression/" rel="tag">Logistic Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Softmax-Regression/" rel="tag">Softmax Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hiphop/" rel="tag">hiphop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/practice/" rel="tag">practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhyme/" rel="tag">rhyme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" rel="tag">出国申请</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" rel="tag">时间线</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%82%E8%81%8C/" rel="tag">求职</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" rel="tag">生活常识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%80%83%E7%A0%94/" rel="tag">考研</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" rel="tag">英语学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" rel="tag">计算机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colab/" rel="tag">Colab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-Regression/" rel="tag">Logistic Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Softmax-Regression/" rel="tag">Softmax Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" rel="tag">生活常识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" rel="tag">英语学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li></ul>
     </div>
   </div>
 
@@ -2740,7 +2246,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Colab/" style="font-size: 10px;">Colab</a> <a href="/tags/Logistic-Regression/" style="font-size: 10px;">Logistic Regression</a> <a href="/tags/Softmax-Regression/" style="font-size: 10px;">Softmax Regression</a> <a href="/tags/hiphop/" style="font-size: 10px;">hiphop</a> <a href="/tags/practice/" style="font-size: 10px;">practice</a> <a href="/tags/rhyme/" style="font-size: 10px;">rhyme</a> <a href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" style="font-size: 10px;">出国申请</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">学习笔记</a> <a href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" style="font-size: 10px;">新加坡</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" style="font-size: 20px;">日常口语</a> <a href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" style="font-size: 10px;">时间线</a> <a href="/tags/%E6%B1%82%E8%81%8C/" style="font-size: 10px;">求职</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" style="font-size: 20px;">生活常识</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">生活记录</a> <a href="/tags/%E7%BD%91%E8%B4%AD/" style="font-size: 10px;">网购</a> <a href="/tags/%E8%80%83%E7%A0%94/" style="font-size: 10px;">考研</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">英语学习</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 15px;">规划</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" style="font-size: 10px;">计算机</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+      <a href="/tags/Colab/" style="font-size: 10px;">Colab</a> <a href="/tags/Logistic-Regression/" style="font-size: 10px;">Logistic Regression</a> <a href="/tags/Softmax-Regression/" style="font-size: 10px;">Softmax Regression</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">学习笔记</a> <a href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" style="font-size: 10px;">新加坡</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" style="font-size: 20px;">日常口语</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" style="font-size: 20px;">生活常识</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">生活记录</a> <a href="/tags/%E7%BD%91%E8%B4%AD/" style="font-size: 10px;">网购</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">英语学习</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 10px;">规划</a>
     </div>
   </div>
 
@@ -2762,23 +2268,23 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       <ul>
         
           <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%80%9D%E8%80%83/">思考可太重要了</a>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/">这找工作感觉跟考研一样啊！</a>
           </li>
         
           <li>
-            <a href="/2025/09/26/Job/%E6%8B%9B%E8%81%98/">招聘</a>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/">🌏 我的出国申请全流程时间线回顾</a>
           </li>
         
           <li>
-            <a href="/2025/09/26/Job/%E4%B8%AD%E5%9B%BD%E7%94%B5%E4%BF%A1/">工作</a>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%80%9D%E8%80%83/">AI 时代，别把思考外包</a>
           </li>
         
           <li>
-            <a href="/2025/09/26/Hip-Hop/verse9.22/">Verse9.22</a>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E5%AE%8C%E7%BE%8E%E7%9A%84%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%84%E5%88%92/">完美的计算机规划</a>
           </li>
         
           <li>
-            <a href="/2025/09/26/Hip-Hop/verse/">Verse1</a>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/phd-two-years/">读博的两年，我到底收获了什么</a>
           </li>
         
       </ul>
