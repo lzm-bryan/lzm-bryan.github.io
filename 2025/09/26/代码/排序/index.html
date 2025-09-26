@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>排序 | Zhiming Liang Blog</title>
+  <title>浅拷贝和深拷贝 | Zhiming Liang Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="（正文内容从这里开始…） 快速排序import random  def partition(nums, start, end):     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;     pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end)">
+  <meta name="description" content="快速排序import random  def partition(nums, start, end):     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;     pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end); nums[start]">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排序">
-<meta property="og:url" content="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/">
+<meta property="og:title" content="浅拷贝和深拷贝">
+<meta property="og:url" content="https://lzm-bryan.github.io/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%8E%92%E5%BA%8F/">
 <meta property="og:site_name" content="Zhiming Liang Blog">
-<meta property="og:description" content="（正文内容从这里开始…） 快速排序import random  def partition(nums, start, end):     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;     pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end)">
+<meta property="og:description" content="快速排序import random  def partition(nums, start, end):     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;     pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end); nums[start]">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-26T13:44:43.329Z">
-<meta property="article:modified_time" content="2025-09-26T14:02:59.149Z">
+<meta property="article:published_time" content="2025-09-26T13:58:31.435Z">
+<meta property="article:modified_time" content="2025-09-26T14:04:47.492Z">
 <meta property="article:author" content="Zhiming Liang">
 <meta name="twitter:card" content="summary">
   
@@ -77,10 +77,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-Code/排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-代码/排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time class="dt-published" datetime="2025-09-26T13:44:43.329Z" itemprop="datePublished">2025-09-26</time>
+    <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:58:31.435Z" itemprop="datePublished">2025-09-26</time>
 </a>
     
   <div class="article-category">
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      排序
+      浅拷贝和深拷贝
     </h1>
   
 
@@ -103,8 +103,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>（正文内容从这里开始…）</p>
-<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><pre class="line-numbers language-none"><code class="language-none">import random
+        <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><pre class="line-numbers language-none"><code class="language-none">import random
 
 def partition(nums, start, end):
     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;
@@ -208,7 +207,7 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidQWTe2PXHS-uHYGvlXA-ea" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%8E%92%E5%BA%8F/" data-id="cuidA0yxkz2nYG_sygFRP7b-S" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -218,7 +217,7 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
     
 <nav id="article-nav">
   
-    <a href="/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
@@ -228,9 +227,9 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
     </a>
   
   
-    <a href="/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/09/26/Job/%E8%BF%90%E8%90%A5%E5%95%86/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">运营商</div>
     </a>
   
 </nav>

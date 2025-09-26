@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>拷贝 | Zhiming Liang Blog</title>
+  <title>浅拷贝和深拷贝 | Zhiming Liang Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1, 2, 3] b &amp;#x3D">
+  <meta name="description" content="（正文内容从这里开始…）  title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="拷贝">
+<meta property="og:title" content="浅拷贝和深拷贝">
 <meta property="og:url" content="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
 <meta property="og:site_name" content="Zhiming Liang Blog">
-<meta property="og:description" content="title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1, 2, 3] b &amp;#x3D">
+<meta property="og:description" content="（正文内容从这里开始…）  title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1,">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-26T13:44:43.331Z">
-<meta property="article:modified_time" content="2025-09-26T13:23:21.355Z">
+<meta property="article:modified_time" content="2025-09-26T14:03:08.587Z">
 <meta property="article:author" content="Zhiming Liang">
 <meta name="twitter:card" content="summary">
   
@@ -84,7 +84,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Code/">Code</a>
+    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81/">代码</a>
   </div>
 
   </div>
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      拷贝
+      浅拷贝和深拷贝
     </h1>
   
 
@@ -103,7 +103,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <hr>
+        <p>（正文内容从这里开始…）</p>
+<hr>
 <h2 id="title-🐍-Python-列表赋值-拷贝总结date-2025-08-16-14-30-00tags-Python-列表-拷贝-categories-Python学习"><a href="#title-🐍-Python-列表赋值-拷贝总结date-2025-08-16-14-30-00tags-Python-列表-拷贝-categories-Python学习" class="headerlink" title="title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习"></a>title: 🐍 Python 列表赋值 &amp; 拷贝总结<br>date: 2025-08-16 14:30:00<br>tags: [Python, 列表, 拷贝]<br>categories: Python学习</h2><h1 id="🐍-Python-列表赋值-拷贝总结"><a href="#🐍-Python-列表赋值-拷贝总结" class="headerlink" title="🐍 Python 列表赋值 &amp; 拷贝总结"></a>🐍 Python 列表赋值 &amp; 拷贝总结</h1><h2 id="1-赋值（-）"><a href="#1-赋值（-）" class="headerlink" title="1. 赋值（&#x3D;）"></a>1. 赋值（&#x3D;）</h2><ul>
 <li><p><strong>只是创建新名字，指向同一个对象</strong></p>
 </li>
@@ -155,7 +156,7 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidmqaRMTJJ1ZHhxcJ5t8vmI" data-title="拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidkYK0NzFyVzCEwytL4JfRL" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -194,7 +195,7 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hip-Hop/">Hip-Hop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ml/">ml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E4%BD%9C/">工作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hip-Hop/">Hip-Hop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ml/">ml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%A3%E7%A0%81/">代码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E4%BD%9C/">工作</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a></li></ul>
     </div>
   </div>
 
@@ -236,23 +237,23 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       <ul>
         
           <li>
+            <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">浅拷贝和深拷贝</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%8E%92%E5%BA%8F/">浅拷贝和深拷贝</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Job/%E8%BF%90%E8%90%A5%E5%95%86/">运营商</a>
+          </li>
+        
+          <li>
             <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/">这找工作感觉跟考研一样啊！</a>
           </li>
         
           <li>
             <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/">🌏 我的出国申请全流程时间线回顾</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%80%9D%E8%80%83/">AI 时代，别把思考外包</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E5%AE%8C%E7%BE%8E%E7%9A%84%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%84%E5%88%92/">完美的计算机规划</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/phd-two-years/">读博的两年，我到底收获了什么</a>
           </li>
         
       </ul>
