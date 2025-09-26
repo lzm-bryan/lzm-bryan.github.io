@@ -6,15 +6,15 @@
   
   <title>浅拷贝和深拷贝 | Zhiming Liang Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="（正文内容从这里开始…）  title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1,">
+  <meta name="description" content="1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1, 2, 3] b &#x3D; a      # 赋值 b[0] &#x3D; 99  print(a)  # [99, 2, 3] print(b)  # [99, 2, 3] print(a is b)  # True 2. 浅拷贝（copy.copy()） 新建外层容器，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅拷贝和深拷贝">
 <meta property="og:url" content="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
 <meta property="og:site_name" content="Zhiming Liang Blog">
-<meta property="og:description" content="（正文内容从这里开始…）  title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习🐍 Python 列表赋值 &amp; 拷贝总结1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1,">
+<meta property="og:description" content="1. 赋值（&#x3D;） 只是创建新名字，指向同一个对象  修改任意一方，另一方都会跟着变   a &#x3D; [1, 2, 3] b &#x3D; a      # 赋值 b[0] &#x3D; 99  print(a)  # [99, 2, 3] print(b)  # [99, 2, 3] print(a is b)  # True 2. 浅拷贝（copy.copy()） 新建外层容器，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-26T13:44:43.331Z">
-<meta property="article:modified_time" content="2025-09-26T14:03:08.587Z">
+<meta property="article:modified_time" content="2025-09-26T14:09:46.948Z">
 <meta property="article:author" content="Zhiming Liang">
 <meta name="twitter:card" content="summary">
   
@@ -103,9 +103,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>（正文内容从这里开始…）</p>
-<hr>
-<h2 id="title-🐍-Python-列表赋值-拷贝总结date-2025-08-16-14-30-00tags-Python-列表-拷贝-categories-Python学习"><a href="#title-🐍-Python-列表赋值-拷贝总结date-2025-08-16-14-30-00tags-Python-列表-拷贝-categories-Python学习" class="headerlink" title="title: 🐍 Python 列表赋值 &amp; 拷贝总结date: 2025-08-16 14:30:00tags: [Python, 列表, 拷贝]categories: Python学习"></a>title: 🐍 Python 列表赋值 &amp; 拷贝总结<br>date: 2025-08-16 14:30:00<br>tags: [Python, 列表, 拷贝]<br>categories: Python学习</h2><h1 id="🐍-Python-列表赋值-拷贝总结"><a href="#🐍-Python-列表赋值-拷贝总结" class="headerlink" title="🐍 Python 列表赋值 &amp; 拷贝总结"></a>🐍 Python 列表赋值 &amp; 拷贝总结</h1><h2 id="1-赋值（-）"><a href="#1-赋值（-）" class="headerlink" title="1. 赋值（&#x3D;）"></a>1. 赋值（&#x3D;）</h2><ul>
+        <h2 id="1-赋值（-）"><a href="#1-赋值（-）" class="headerlink" title="1. 赋值（&#x3D;）"></a>1. 赋值（&#x3D;）</h2><ul>
 <li><p><strong>只是创建新名字，指向同一个对象</strong></p>
 </li>
 <li><p>修改任意一方，另一方都会跟着变</p>
@@ -156,7 +154,7 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidEKv9yfFh50p6KW9Sb1mrx" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidz8nWAgdATZIinHSPGqop8" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
