@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>WireGuard | Zhiming Liang Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="阿里云 CentOS 搭建 WireGuard1. 购买服务器 &amp; 配置安全组 在 阿里云 ECS 控制台 购买一台 ECS 实例    地域：选择中国大陆机房   系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8   带宽：≥ 5 Mbps   在 安全组 → 入方向规则 添加：    协议类型：UDP   端口范围：51820   授权对象：0.0.0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WireGuard">
+<meta property="og:url" content="https://lzm-bryan.github.io/2025/08/24/wireguard/">
+<meta property="og:site_name" content="Zhiming Liang Blog">
+<meta property="og:description" content="阿里云 CentOS 搭建 WireGuard1. 购买服务器 &amp; 配置安全组 在 阿里云 ECS 控制台 购买一台 ECS 实例    地域：选择中国大陆机房   系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8   带宽：≥ 5 Mbps   在 安全组 → 入方向规则 添加：    协议类型：UDP   端口范围：51820   授权对象：0.0.0.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzm-bryan.github.io/images/wire.JPG">
+<meta property="og:image" content="https://lzm-bryan.github.io/images/wire2.JPG">
+<meta property="article:published_time" content="2025-08-24T07:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-26T13:23:21.355Z">
+<meta property="article:author" content="Zhiming Liang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzm-bryan.github.io/images/wire.JPG">
+  
+    <link rel="alternate" href="/atom.xml" title="Zhiming Liang Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Zhiming Liang Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Notes &amp; Life</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lzm-bryan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-wireguard" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/24/wireguard/" class="article-date">
+  <time class="dt-published" datetime="2025-08-24T07:00:00.000Z" itemprop="datePublished">2025-08-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      WireGuard
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="阿里云-CentOS-搭建-WireGuard"><a href="#阿里云-CentOS-搭建-WireGuard" class="headerlink" title="阿里云 CentOS 搭建 WireGuard"></a>阿里云 CentOS 搭建 WireGuard</h1><h2 id="1-购买服务器-配置安全组"><a href="#1-购买服务器-配置安全组" class="headerlink" title="1. 购买服务器 &amp; 配置安全组"></a>1. 购买服务器 &amp; 配置安全组</h2><ul>
+<li><p>在 <a target="_blank" rel="noopener" href="https://ecs.console.aliyun.com/">阿里云 ECS 控制台</a> 购买一台 <strong>ECS 实例</strong>  </p>
+<ul>
+<li>地域：选择中国大陆机房  </li>
+<li>系统：Alibaba Cloud Linux 3 &#x2F; CentOS 8  </li>
+<li>带宽：≥ 5 Mbps</li>
+</ul>
+</li>
+<li><p>在 <strong>安全组 → 入方向规则</strong> 添加：  </p>
+<ul>
+<li>协议类型：UDP  </li>
+<li>端口范围：51820  </li>
+<li>授权对象：0.0.0.0&#x2F;0</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-服务端安装-WireGuard"><a href="#2-服务端安装-WireGuard" class="headerlink" title="2. 服务端安装 WireGuard"></a>2. 服务端安装 WireGuard</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> dnf update <span class="token parameter variable">-y</span>
+<span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> wireguard-tools iproute iptables
+
+<span class="token comment"># 生成密钥</span>
+<span class="token comment"># 服务端</span>
+wg genkey <span class="token operator">|</span> <span class="token function">tee</span> ~/server_private.key <span class="token operator">|</span> wg pubkey <span class="token operator">></span> ~/server_public.key
+
+<span class="token comment"># 客户端</span>
+wg genkey <span class="token operator">|</span> <span class="token function">tee</span> ~/client_private.key <span class="token operator">|</span> wg pubkey <span class="token operator">></span> ~/client_public.key
+
+<span class="token comment"># 写配置文件 /etc/wireguard/wg0.conf</span>
+<span class="token assign-left variable">SVR_PRIV</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> ~/server_private.key<span class="token variable">)</span></span>
+<span class="token assign-left variable">CLI_PUB</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> ~/client_public.key<span class="token variable">)</span></span>
+
+<span class="token function">sudo</span> <span class="token function">bash</span> <span class="token parameter variable">-c</span> <span class="token string">"cat > /etc/wireguard/wg0.conf"</span> <span class="token operator">&lt;&lt;</span><span class="token string">EOF
+[Interface]
+PrivateKey = <span class="token variable">$&#123;SVR_PRIV&#125;</span>
+Address = 10.0.0.1/24
+ListenPort = 51820
+MTU = 1380
+PostUp   = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+[Peer]
+PublicKey = <span class="token variable">$&#123;CLI_PUB&#125;</span>
+AllowedIPs = 10.0.0.2/32
+EOF</span>
+
+<span class="token comment"># 开启内核转发</span>
+<span class="token function">sudo</span> <span class="token function">sysctl</span> <span class="token parameter variable">-w</span> <span class="token assign-left variable">net.ipv4.ip_forward</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token builtin class-name">echo</span> <span class="token string">'net.ipv4.ip_forward=1'</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> /etc/sysctl.d/99-wireguard.conf
+<span class="token function">sudo</span> <span class="token function">sysctl</span> <span class="token parameter variable">--system</span>
+
+<span class="token comment"># 启动WireGuard</span>
+<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> wg-quick@wg0
+<span class="token function">sudo</span> systemctl restart wg-quick@wg0
+<span class="token function">sudo</span> wg show
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="3-本地-Windows-客户端"><a href="#3-本地-Windows-客户端" class="headerlink" title="3. 本地 Windows 客户端"></a>3. 本地 Windows 客户端</h2><pre class="line-numbers language-none"><code class="language-none">下载 WireGuard for Windows
+
+打开应用 → Add Tunnel → Import from file
+
+写入如下配置（⚠️ 修改为你的公网 IP，例如 1.123.123.123）：
+
+[Interface]
+PrivateKey &#x3D; (client_private.key 内容)
+Address &#x3D; 10.0.0.2&#x2F;24
+DNS &#x3D; 223.5.5.5
+MTU &#x3D; 1380
+
+[Peer]
+PublicKey &#x3D; (server_public.key 内容)
+Endpoint &#x3D; 1.123.123.123:51820
+AllowedIPs &#x3D; 0.0.0.0&#x2F;0, ::&#x2F;0
+PersistentKeepalive &#x3D; 25<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-细节"><a href="#4-细节" class="headerlink" title="4.细节"></a>4.细节</h2><h4 id="在客户端"><a href="#在客户端" class="headerlink" title="在客户端"></a>在客户端</h4><p>wireguard使用<strong>Curve25519</strong> 椭圆曲线密钥（非对称加密算法）<br>[Interface]<br>里面是自己的私钥和自己的虚拟ip地址，解析用的dns服务器（这里选了阿里云的）<br>MTU限制吞吐量</p>
+<ul>
+<li>这么做有三大好处：</li>
+</ul>
+<ol>
+<li><p><strong>避免 DNS 泄漏</strong>：如果不改，浏览器可能还在用本地网关的 DNS，查询会走公网而不是隧道。</p>
+</li>
+<li><p><strong>解析内网域名</strong>：你在服务器上跑了 <code>dnsmasq/unbound</code>（比如 <code>10.0.0.1</code>），客户端填它就能解析内网域名。</p>
+</li>
+<li><p><strong>稳定性</strong>：一些网络&#x2F;MTU 场景下，把 DNS 指向“隧道内可达”的服务器更稳。</p>
+</li>
+</ol>
+<p>[peer]<br>端保存服务器的公钥，服务器的ip和端口<br>AllowedIPs目前是全局代理，当然可以指定自己的规则</p>
+<ul>
+<li>全局代理：<code>0.0.0.0/0, ::/0</code>  </li>
+<li>仅内网：例如 <code>10.0.0.0/24</code></li>
+</ul>
+<p>PersistentKeepalive &#x3D; 25<br>是为了防止因为NAT等原因断开<br>但是我下边的日志交换密钥很频繁可能是因为丢包率较高</p>
+<h4 id="在服务器端"><a href="#在服务器端" class="headerlink" title="在服务器端"></a>在服务器端</h4><p>首先下载需要的组件<br>其次生成公钥私钥<br>自己保存私钥 公钥是为了方便别人找到自己<br>在服务器控制面板打开udp协议和端口<br>[peer]<br> PublicKey &#x3D;<br>AllowedIPs &#x3D; 10.0.0.2&#x2F;32<br>写好客户端的公钥和ip</p>
+<p>[Interface]<br>端不需要写DNS但是要指定自己的端口</p>
+<ul>
+<li><p>启用 IPv4 转发：<code>net.ipv4.ip_forward=1</code>（见安装步骤）</p>
+</li>
+<li><p>NAT 与转发：同时允许流量进&#x2F;出 <code>wg0</code>，并做源 NAT</p>
+</li>
+</ul>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token comment">#配置服务器转发（若需客户端通过服务器访问公网）</span>
+<span class="token key attr-name">PostUp</span> <span class="token punctuation">=</span> <span class="token value attr-value">iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="token key attr-name">PostDown</span> <span class="token punctuation">=</span> <span class="token value attr-value">iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token comment"># 启动服务并设置开机自启 </span>
+sudo systemctl enable --now wg-quick@wg0 
+<span class="token comment"># 查看状态（若显示“active (running)”则成功） </span>
+sudo systemctl status wg-quick@wg0 
+<span class="token comment"># 查看连接信息（初始为空，待客户端连接后显示） </span>
+sudo wgo wg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>分析一下通信过程</p>
+<ul>
+<li><strong>Peer A</strong>：「客户端设备」（比如你的 PC、手机，即之前配置中  <code>Address = 10.0.0.2/24</code>  或  <code>10.0.0.3/24</code>  的设备）</li>
+<li><strong>Peer B</strong>：「阿里云 WireGuard 服务器」（即  <code>Address = 10.0.0.1/24</code>、<code>ListenPort = 51820</code>  的设备，其 Endpoint 是服务器公网 IP:51820，比如你之前用的  <code>8.138.164.133:51820</code>）</li>
+</ul>
+<h4 id="1-密钥协商：A-是客户端，B-是服务器"><a href="#1-密钥协商：A-是客户端，B-是服务器" class="headerlink" title="1. 密钥协商：A 是客户端，B 是服务器"></a>1. 密钥协商：A 是客户端，B 是服务器</h4><p>流程中 “Peer A 首次向 Peer B 发送数据”，对应实际场景：</p>
+<ul>
+<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机（主动发起连接的一方）。比如你点击 PC 上 WireGuard 的 “Activate” 后，客户端会生成 “临时随机数”，用服务器的公钥加密，向服务器的 Endpoint（<code>8.138.164.133:51820</code>）发送请求；</li>
+<li><strong>Peer B（服务器）</strong>：阿里云上的 WireGuard 服务端（监听 51820 端口的一方）。收到客户端的请求后，用自己的私钥解密，再生成临时随机数、用客户端公钥加密后返回响应，最终双方算出相同的 “会话密钥”。</li>
+</ul>
+<h4 id="2-数据封装：A-是客户端（发起访问的一方）"><a href="#2-数据封装：A-是客户端（发起访问的一方）" class="headerlink" title="2. 数据封装：A 是客户端（发起访问的一方）"></a>2. 数据封装：A 是客户端（发起访问的一方）</h4><p>流程中 “Peer A 要访问 Peer B 所在的公司内网（如 10.0.0.5）”，对应实际场景：</p>
+<ul>
+<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机（要访问服务器内网资源的一方）。比如你在 PC 上访问服务器内网的  <code>10.0.0.5</code>  设备，PC 会把访问请求发给本地 WireGuard 虚拟网卡（<code>wg0</code>），再由 WireGuard 用 “会话密钥” 加密，封装成 UDP 包发给服务器；</li>
+<li><strong>Peer B（服务器）</strong>：阿里云 WireGuard 服务端（内网资源的 “网关”）。客户端发送的 UDP 包，目标地址就是服务器的 Endpoint（<code>8.138.164.133:51820</code>）。</li>
+</ul>
+<h4 id="3-数据解密与转发：B-是服务器（转发内网资源的一方）"><a href="#3-数据解密与转发：B-是服务器（转发内网资源的一方）" class="headerlink" title="3. 数据解密与转发：B 是服务器（转发内网资源的一方）"></a>3. 数据解密与转发：B 是服务器（转发内网资源的一方）</h4><p>流程中 “Peer B 收到 UDP 数据包后转发到内网”，对应实际场景：</p>
+<ul>
+<li><strong>Peer B（服务器）</strong>：阿里云 WireGuard 服务端。收到客户端的加密包后，验证客户端身份、解密数据，再根据  <code>AllowedIPs</code>  规则（比如服务器配置中允许客户端访问内网），把请求转发到内网的  <code>10.0.0.5</code>；</li>
+<li><strong>Peer A（客户端）</strong>：你的 PC &#x2F; 手机。当  <code>10.0.0.5</code>  返回响应时，响应会先发给服务器，服务器加密后再发给客户端，客户端解密后交给本地系统，完成一次通信。</li>
+</ul>
+<h4 id="PC端客户端的日志"><a href="#PC端客户端的日志" class="headerlink" title="PC端客户端的日志"></a>PC端客户端的日志</h4><img src="/images/wire.JPG" alt="到货包装" style="max-width: 80%; height: auto;">
+
+<img src="/images/wire2.JPG" alt="日志1" style="max-width: 80%; height: auto;">
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/08/24/wireguard/" data-id="cuidIOuLnfGjXYGIaFhsChFCM" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/08/27/Hip-Hop/rap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Hiphop Exercise
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">在新加坡的第一次网购</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hip-Hop/">Hip-Hop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ml/">ml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colab/" rel="tag">Colab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-Regression/" rel="tag">Logistic Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Softmax-Regression/" rel="tag">Softmax Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hiphop/" rel="tag">hiphop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/practice/" rel="tag">practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhyme/" rel="tag">rhyme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" rel="tag">出国申请</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" rel="tag">时间线</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%82%E8%81%8C/" rel="tag">求职</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" rel="tag">生活常识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%80%83%E7%A0%94/" rel="tag">考研</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" rel="tag">英语学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" rel="tag">计算机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Colab/" style="font-size: 10px;">Colab</a> <a href="/tags/Logistic-Regression/" style="font-size: 10px;">Logistic Regression</a> <a href="/tags/Softmax-Regression/" style="font-size: 10px;">Softmax Regression</a> <a href="/tags/hiphop/" style="font-size: 10px;">hiphop</a> <a href="/tags/practice/" style="font-size: 10px;">practice</a> <a href="/tags/rhyme/" style="font-size: 10px;">rhyme</a> <a href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" style="font-size: 10px;">出国申请</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">学习笔记</a> <a href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" style="font-size: 10px;">新加坡</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" style="font-size: 20px;">日常口语</a> <a href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" style="font-size: 10px;">时间线</a> <a href="/tags/%E6%B1%82%E8%81%8C/" style="font-size: 10px;">求职</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" style="font-size: 20px;">生活常识</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">生活记录</a> <a href="/tags/%E7%BD%91%E8%B4%AD/" style="font-size: 10px;">网购</a> <a href="/tags/%E8%80%83%E7%A0%94/" style="font-size: 10px;">考研</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">英语学习</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 15px;">规划</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" style="font-size: 10px;">计算机</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%80%9D%E8%80%83/">思考可太重要了</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Job/%E6%8B%9B%E8%81%98/">招聘</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Job/%E4%B8%AD%E5%9B%BD%E7%94%B5%E4%BF%A1/">工作</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Hip-Hop/verse9.22/">Verse9.22</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Hip-Hop/verse/">Verse1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Zhiming Liang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

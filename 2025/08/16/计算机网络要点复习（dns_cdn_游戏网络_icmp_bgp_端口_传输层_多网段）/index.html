@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Zhiming Liang Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="这份清单覆盖：DNS 与多 IP、Cloudflare 与 Riot、LOL 国服&#x2F;国际服差异、Ping&#x2F;Traceroute&#x2F;ICMP、BGP 路由劫持（2008 巴基斯坦 YouTube 事件）、端口与连接、LOL 端口与连接拓扑、端口耗尽与扩展、网卡与多 IP&#x2F;多网段、跨境加速与地区选择等。配合命令速查与小图示，便于复习与分享。   1) DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zhiming Liang Blog">
+<meta property="og:url" content="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/">
+<meta property="og:site_name" content="Zhiming Liang Blog">
+<meta property="og:description" content="这份清单覆盖：DNS 与多 IP、Cloudflare 与 Riot、LOL 国服&#x2F;国际服差异、Ping&#x2F;Traceroute&#x2F;ICMP、BGP 路由劫持（2008 巴基斯坦 YouTube 事件）、端口与连接、LOL 端口与连接拓扑、端口耗尽与扩展、网卡与多 IP&#x2F;多网段、跨境加速与地区选择等。配合命令速查与小图示，便于复习与分享。   1) DNS">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-16T07:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-26T13:23:21.356Z">
+<meta property="article:author" content="Zhiming Liang">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Zhiming Liang Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Zhiming Liang Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Notes &amp; Life</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lzm-bryan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-计算机网络要点复习（dns_cdn_游戏网络_icmp_bgp_端口_传输层_多网段）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-08-16T07:00:00.000Z" itemprop="datePublished">2025-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<blockquote>
+<p>这份清单覆盖：DNS 与多 IP、Cloudflare 与 Riot、LOL 国服&#x2F;国际服差异、Ping&#x2F;Traceroute&#x2F;ICMP、BGP 路由劫持（2008 巴基斯坦 YouTube 事件）、端口与连接、LOL 端口与连接拓扑、端口耗尽与扩展、网卡与多 IP&#x2F;多网段、跨境加速与地区选择等。配合命令速查与小图示，便于复习与分享。</p>
+</blockquote>
+<hr>
+<h2 id="1-DNS-解析与“一个域名多个-IP”"><a href="#1-DNS-解析与“一个域名多个-IP”" class="headerlink" title="1) DNS 解析与“一个域名多个 IP”"></a>1) DNS 解析与“一个域名多个 IP”</h2><ul>
+<li><strong>一个域名可以对应多 IP</strong>：用于负载均衡、就近接入与容错（CDN&#x2F;GSLB）。</li>
+<li><code>www.baidu.com → www.a.shifen.com → www.wshifen.com</code>：常见的 <strong>CNAME 链</strong>（别名 → 别名 → 最终 A 记录）。</li>
+<li>不同 DNS（114DNS&#x2F;8.8.8.8&#x2F;1.1.1.1&#x2F;阿里DNS）返回的 IP 可能 <strong>不同</strong>：因为 <strong>地理调度&#x2F;运营商&#x2F;缓存</strong> 不同。</li>
+<li><strong>非权威应答</strong>：当前 DNS 不是该域名权威服务器，但给出缓存或递归解析的结果。</li>
+<li>常用命令：<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nslookup www<span class="token punctuation">.</span>baidu<span class="token punctuation">.</span>com           <span class="token comment"># 使用系统默认 DNS</span>
+nslookup www<span class="token punctuation">.</span>baidu<span class="token punctuation">.</span>com 114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114  <span class="token comment"># 指定公共 DNS</span>
+nslookup auth<span class="token punctuation">.</span>riotgames<span class="token punctuation">.</span>com 8<span class="token punctuation">.</span>8<span class="token punctuation">.</span>8<span class="token punctuation">.</span>8<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<hr>
+<h2 id="2-Cloudflare-是什么？"><a href="#2-Cloudflare-是什么？" class="headerlink" title="2) Cloudflare 是什么？"></a>2) Cloudflare 是什么？</h2><ul>
+<li><strong>CDN + DDoS 防护 + 反向代理 + Anycast</strong> 的全球网络。</li>
+<li>站在用户与源站之间：<strong>加速</strong>（就近节点）、<strong>防护</strong>（隐藏源 IP、WAF）、<strong>高可用</strong>。</li>
+<li>例：<code>auth.riotgames.com</code> 解析到 <code>*.cdn.cloudflare.net</code>（Cloudflare IP），不同 DNS 解析一致，说明统一走 Cloudflare 边缘节点。</li>
+</ul>
+<hr>
+<h2 id="3-LOL：国服-vs-国际服（Riot-自营）"><a href="#3-LOL：国服-vs-国际服（Riot-自营）" class="headerlink" title="3) LOL：国服 vs 国际服（Riot 自营）"></a>3) LOL：国服 vs 国际服（Riot 自营）</h2><ul>
+<li><strong>国际服</strong>：域名多为 <code>riotgames.com</code> &#x2F; <code>pvp.net</code>；登录等常走 Cloudflare；对局在各大洲机房。</li>
+<li><strong>国服（腾讯运营）</strong>：域名多为 <code>qq.com</code> &#x2F; <code>tencent.com</code>；机房在 <strong>中国大陆（北京&#x2F;上海&#x2F;广州&#x2F;成都）</strong>；常见 IP 网段：<code>203.205.*.*</code>、<code>119.*.*</code> 等。</li>
+<li><strong>结论</strong>：同一大区（如电一&#x2F;网一）背后是不同机房&#x2F;集群；选择不同大区 → <strong>不同服务器 IP 段</strong>。</li>
+</ul>
+<hr>
+<h2 id="4-Ping-Traceroute-实验与解读"><a href="#4-Ping-Traceroute-实验与解读" class="headerlink" title="4) Ping &#x2F; Traceroute 实验与解读"></a>4) Ping &#x2F; Traceroute 实验与解读</h2><ul>
+<li><strong>Ping 原理</strong>：ICMP Echo Request&#x2F;Reply，测可达性与往返延迟 RTT；TTL 反映大致跳数。并非所有主机都回 ICMP（防火墙可能丢弃）。</li>
+<li><strong>Traceroute 原理</strong>：逐步增加 TTL，依靠 ICMP Time Exceeded 显示各跳路由。</li>
+<li>示例现象：<ul>
+<li>新加坡 → 腾讯 <code>203.205.*.*</code>：多经由 <strong>PCCW 香港</strong>，延迟约 40–60ms。</li>
+<li>新加坡 → <code>119.167.*.*</code>：曾出现 <strong>绕欧洲（Telia&#x2F;法兰克福）再回中国</strong>，延迟 300ms+。</li>
+</ul>
+</li>
+<li><strong>加速器（如 UU）</strong>：先到本地加速节点 → 走加速专线直达国内节点 → 减少绕路&#x2F;拥塞，延迟显著降低。</li>
+</ul>
+<hr>
+<h2 id="5-ICMP-速查"><a href="#5-ICMP-速查" class="headerlink" title="5) ICMP 速查"></a>5) ICMP 速查</h2><ul>
+<li>作用：网络层的<strong>控制消息</strong>（诊断&#x2F;错误报告）。</li>
+<li>常见类型：<ul>
+<li>8&#x2F;0：Echo Request&#x2F;Reply（ping）</li>
+<li>11：Time Exceeded（traceroute）</li>
+<li>3：Destination Unreachable（目标不可达）</li>
+<li>5：Redirect（重定向）</li>
+<li>12：Parameter Problem（参数问题）</li>
+</ul>
+</li>
+<li><strong>不能“绕过防火墙”</strong>：ICMP 可被拦截；Ping 不通不代表服务一定不可用。</li>
+</ul>
+<hr>
+<h2 id="6-BGP-与-2008-巴基斯坦-YouTube-事件（必考级）"><a href="#6-BGP-与-2008-巴基斯坦-YouTube-事件（必考级）" class="headerlink" title="6) BGP 与 2008 巴基斯坦 YouTube 事件（必考级）"></a>6) BGP 与 2008 巴基斯坦 YouTube 事件（必考级）</h2><ul>
+<li>背景：2008-02-24，巴基斯坦电信为屏蔽 YouTube，本地“黑洞路由”误通过 <strong>BGP</strong> 广播到全球。</li>
+<li>关键点：<ul>
+<li>YouTube 公布前缀：<code>208.65.152.0/22</code></li>
+<li>错误广播：<code>208.65.153.0/24</code>（<strong>更具体前缀优先</strong>）</li>
+<li>大量全球流量被吸到巴基斯坦，YouTube 全球中断约 <strong>2 小时</strong>。</li>
+<li>谷歌联系上游 <strong>PCCW</strong> 撤回错误前缀，网络收敛恢复。</li>
+</ul>
+</li>
+<li>意义：暴露 BGP 无认证&#x2F;易被“劫持”；促进 <strong>RPKI</strong> 等路由验证部署。</li>
+</ul>
+<hr>
+<h2 id="7-端口、连接与临时端口（Ephemeral）"><a href="#7-端口、连接与临时端口（Ephemeral）" class="headerlink" title="7) 端口、连接与临时端口（Ephemeral）"></a>7) 端口、连接与临时端口（Ephemeral）</h2><ul>
+<li><strong>端口范围</strong>：0–65535；0–1023（知名），1024–49151（注册），49152–65535（临时）。</li>
+<li><strong>服务器端口</strong>：应用显式监听（如 80&#x2F;443&#x2F;2099&#x2F;5000–5500）。</li>
+<li><strong>客户端临时端口</strong>：OS 自动分配；连接结束进入 <strong>TIME_WAIT</strong> 再回收。</li>
+<li><strong>四元组</strong> 唯一标识连接：<code>(源IP, 源端口, 目的IP, 目的端口)</code>。</li>
+<li>浏览器访问：HTTP&#x3D;80，HTTPS&#x3D;443（可显式写其他端口，如 <code>:8080</code>）。CDN&#x2F;代理层对外 80&#x2F;443，后端真实端口对外不可见。</li>
+<li><code>netstat</code> 解读：看本地&#x2F;远端地址与状态（ESTABLISHED&#x2F;TIME_WAIT&#x2F;CLOSE_WAIT&#x2F;SYN_SENT 等）。</li>
+</ul>
+<hr>
+<h2 id="8-LOL-的端口与对局拓扑"><a href="#8-LOL-的端口与对局拓扑" class="headerlink" title="8) LOL 的端口与对局拓扑"></a>8) LOL 的端口与对局拓扑</h2><ul>
+<li><strong>TCP</strong>：80、443（登录&#x2F;更新&#x2F;商城）；2099（大厅&#x2F;匹配）；5222&#x2F;5223（聊天）；8393–8400（启动器）。</li>
+<li><strong>UDP</strong>：5000–5500（对局核心数据）；语音可能额外 UDP 端口范围。</li>
+<li><strong>同一房间</strong>：所有玩家 → <strong>同一个服务器 UDP 端口</strong>（例如 5003）；客户端各自使用不同本地临时端口。</li>
+</ul>
+<h3 id="小图：同房间同端口"><a href="#小图：同房间同端口" class="headerlink" title="小图：同房间同端口"></a>小图：同房间同端口</h3><pre class="line-numbers language-none"><code class="language-none">玩家A 1.1.1.1:49120 ─┐
+玩家B 2.2.2.2:53001 ─┤  (UDP)
+...                  ─┤→ 203.205.136.77:5003
+玩家J 10.10.10.10:60001┘<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><strong>打一局大致连接数量</strong>：<ul>
+<li>大厅阶段：2–5 条 TCP</li>
+<li>对局阶段：1–2 条 UDP（+ 可能 1 条 TCP 辅助）</li>
+<li>语音：1–2 条 UDP</li>
+<li>合计：约 <strong>5–10</strong> 个并发端口</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="9-端口耗尽与扩展思路"><a href="#9-端口耗尽与扩展思路" class="headerlink" title="9) 端口耗尽与扩展思路"></a>9) 端口耗尽与扩展思路</h2><ul>
+<li>单个 IP 理论上限：<strong>65535</strong> 端口；极端并发（压测&#x2F;P2P）才可能耗尽。</li>
+<li>扩展手段：<ul>
+<li><strong>多个 IP</strong>（每个 IP × 65535）</li>
+<li>调整临时端口范围&#x2F;回收策略（Linux: <code>ip_local_port_range</code> &#x2F; <code>tcp_fin_timeout</code>；Windows: <code>MaxUserPort</code>）</li>
+<li><strong>IPv6</strong>（更多地址组合），或多机分布式架构&#x2F;负载均衡。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="10-网卡（NIC）与多-IP-多网段"><a href="#10-网卡（NIC）与多-IP-多网段" class="headerlink" title="10) 网卡（NIC）与多 IP &#x2F; 多网段"></a>10) 网卡（NIC）与多 IP &#x2F; 多网段</h2><ul>
+<li><strong>IP 绑定在网卡接口上</strong>；网卡有 <strong>MAC</strong>，IP 是逻辑地址。</li>
+<li><strong>一块网卡可绑多个 IP</strong>（IPv4&#x2F;IPv6 都行）；服务器&#x2F;网站托管常见。</li>
+<li><strong>PC 可有多个 IPv4</strong>：同一网卡多 IP、不同网卡（有线+无线+虚拟网卡）、以及 IPv6 同时存在。</li>
+<li><strong>两个公网 IP</strong>：<ul>
+<li>需运营商&#x2F;云厂商分配（同网卡多公网 IP，或双网卡双运营商）。</li>
+</ul>
+</li>
+<li><strong>一台服务器两个网段</strong>：<ul>
+<li>多网卡分别接入内外网，或单网卡多 IP；关键是 <strong>路由表&#x2F;策略路由</strong> 与 <strong>防火墙</strong>。</li>
+</ul>
+</li>
+<li><strong>两个外网段（双线接入&#x2F;Multi-homing）</strong>：<ul>
+<li>典型：电信 + 联通；需策略路由保证“从哪个源 IP 出去就从哪个网关回来”，避免回程错乱。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="11-跨境连接、加速与地区选择"><a href="#11-跨境连接、加速与地区选择" class="headerlink" title="11) 跨境连接、加速与地区选择"></a>11) 跨境连接、加速与地区选择</h2><ul>
+<li>地理近 ≠ 网络近：路径由 <strong>BGP 与运营商策略</strong> 决定。</li>
+<li><strong>AWS 台北 ←→ 大陆</strong>：常绕路&#x2F;拥塞，实际比香港&#x2F;新加坡&#x2F;日本更慢。</li>
+<li>方案：选 <strong>CN2&#x2F;GIA 优化线路</strong> 的香港&#x2F;新加坡&#x2F;日本节点；或中转&#x2F;协议优化（gRPC&#x2F;XTLS&#x2F;QUIC 等）。</li>
+<li><strong>加速器</strong>：本地节点 + 专线直连国内节点 → 避免绕路与公共出口拥塞。</li>
+</ul>
+<hr>
+<h2 id="12-命令速查（Windows-为例）"><a href="#12-命令速查（Windows-为例）" class="headerlink" title="12) 命令速查（Windows 为例）"></a>12) 命令速查（Windows 为例）</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># DNS 解析</span>
+nslookup domain<span class="token punctuation">.</span>com
+nslookup domain<span class="token punctuation">.</span>com 114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114<span class="token punctuation">.</span>114
+
+<span class="token comment"># 连通性/延迟</span>
+ping 203<span class="token punctuation">.</span>205<span class="token punctuation">.</span>136<span class="token punctuation">.</span>77
+
+<span class="token comment"># 路由路径</span>
+tracert 203<span class="token punctuation">.</span>205<span class="token punctuation">.</span>136<span class="token punctuation">.</span>77
+
+<span class="token comment"># 当前连接</span>
+netstat <span class="token operator">-</span>ano <span class="token punctuation">|</span> findstr ESTABLISHED
+
+<span class="token comment"># 查看/添加 IP（Linux 示例）</span>
+ip addr show
+ip addr add 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>0<span class="token punctuation">.</span>200/24 dev eth0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="13-传输层总览（TCP-vs-UDP）"><a href="#13-传输层总览（TCP-vs-UDP）" class="headerlink" title="13) 传输层总览（TCP vs UDP）"></a>13) 传输层总览（TCP vs UDP）</h2><ul>
+<li><strong>TCP</strong>：面向连接、可靠、有序、拥塞+流控；适合网页&#x2F;文件&#x2F;登录。</li>
+<li><strong>UDP</strong>：无连接、不保证可靠；时延小、开销低；适合直播&#x2F;语音&#x2F;游戏&#x2F;DNS。</li>
+<li><strong>端口</strong> 是传输层与应用的“门牌号”，四元组唯一标识一条会话。</li>
+</ul>
+<hr>
+<h2 id="14-关键概念一图流"><a href="#14-关键概念一图流" class="headerlink" title="14) 关键概念一图流"></a>14) 关键概念一图流</h2><pre class="line-numbers language-none"><code class="language-none">应用层:  HTTP &#x2F; DNS &#x2F; SMTP &#x2F; FTP &#x2F; ...
+            │
+传输层:  TCP &#x2F; UDP   ← 端口(80&#x2F;443&#x2F;5000..)
+            │
+网络层:    IP        ← 寻址&#x2F;路由
+            │
+链路层: Ethernet &#x2F; Wi‑Fi
+            │
+物理层: 光纤&#x2F;电缆&#x2F;无线<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">连接四元组:
+(源IP, 源端口, 目的IP, 目的端口)
+192.168.0.102:49835 → 220.181.38.148:443<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="15-自测题（快速复习）"><a href="#15-自测题（快速复习）" class="headerlink" title="15) 自测题（快速复习）"></a>15) 自测题（快速复习）</h2><ol>
+<li>为什么不同 DNS 解析同一域名得到的 IP 不同？</li>
+<li>Cloudflare 在链路中扮演什么角色，为什么 <code>auth.riotgames.com</code> 常解析到它？</li>
+<li>Ping 与 Traceroute 各用到哪种 ICMP 类型？能否绕过防火墙？</li>
+<li>2008 巴基斯坦 YouTube 事件的根本原因是什么？“更具体前缀优先”带来了什么后果？</li>
+<li>LOL 同一房间内，所有玩家是否连接到同一个服务器端口？为什么？</li>
+<li>本地临时端口为什么会进入 TIME_WAIT？如何避免端口资源耗尽？</li>
+<li>一台服务器如何同时接入两个外网段？策略路由如何保证出入口一致？</li>
+<li>为什么 AWS 台北从大陆访问常常比香港&#x2F;新加坡更慢？</li>
+</ol>
+<hr>
+<h3 id="End"><a href="#End" class="headerlink" title="End"></a>End</h3><p>这份清单可直接当“速记本”使用；若你要分享给同学，可在此基础上继续补充截图与实验数据（如你的 <code>ping/tracert/netstat</code> 输出）。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidjXZvsQ-Lx11jKth0ZUqH4" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          在新加坡的第一次网购
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/08/16/%E6%9D%82%E8%B0%88/%E5%AE%8C%E7%BE%8E%E7%9A%84%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%84%E5%88%92/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">完美的计算机规划</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/English/">English</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hip-Hop/">Hip-Hop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ml/">ml</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Colab/" rel="tag">Colab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logistic-Regression/" rel="tag">Logistic Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Softmax-Regression/" rel="tag">Softmax Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hiphop/" rel="tag">hiphop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/practice/" rel="tag">practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rhyme/" rel="tag">rhyme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" rel="tag">出国申请</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" rel="tag">时间线</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B1%82%E8%81%8C/" rel="tag">求职</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" rel="tag">生活常识</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%80%83%E7%A0%94/" rel="tag">考研</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" rel="tag">英语学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A7%84%E5%88%92/" rel="tag">规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" rel="tag">计算机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Colab/" style="font-size: 10px;">Colab</a> <a href="/tags/Logistic-Regression/" style="font-size: 10px;">Logistic Regression</a> <a href="/tags/Softmax-Regression/" style="font-size: 10px;">Softmax Regression</a> <a href="/tags/hiphop/" style="font-size: 10px;">hiphop</a> <a href="/tags/practice/" style="font-size: 10px;">practice</a> <a href="/tags/rhyme/" style="font-size: 10px;">rhyme</a> <a href="/tags/%E5%87%BA%E5%9B%BD%E7%94%B3%E8%AF%B7/" style="font-size: 10px;">出国申请</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">学习笔记</a> <a href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" style="font-size: 10px;">新加坡</a> <a href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" style="font-size: 20px;">日常口语</a> <a href="/tags/%E6%97%B6%E9%97%B4%E7%BA%BF/" style="font-size: 10px;">时间线</a> <a href="/tags/%E6%B1%82%E8%81%8C/" style="font-size: 10px;">求职</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E5%B8%B8%E8%AF%86/" style="font-size: 20px;">生活常识</a> <a href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" style="font-size: 10px;">生活记录</a> <a href="/tags/%E7%BD%91%E8%B4%AD/" style="font-size: 10px;">网购</a> <a href="/tags/%E8%80%83%E7%A0%94/" style="font-size: 10px;">考研</a> <a href="/tags/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">英语学习</a> <a href="/tags/%E8%A7%84%E5%88%92/" style="font-size: 15px;">规划</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/" style="font-size: 10px;">计算机</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%80%9D%E8%80%83/">思考可太重要了</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Job/%E6%8B%9B%E8%81%98/">招聘</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Job/%E4%B8%AD%E5%9B%BD%E7%94%B5%E4%BF%A1/">工作</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Hip-Hop/verse9.22/">Verse9.22</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/26/Hip-Hop/verse/">Verse1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Zhiming Liang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
