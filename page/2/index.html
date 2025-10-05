@@ -77,6 +77,231 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-机器学习/hexo_colab_post" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.366Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/">Colab 学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文整理自我的 Colab 笔记：保留核心文字与可复制的代码块，去除冗余输出与报错，适配 Hexo 博客。</p>
+</blockquote>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">here <span class="token operator">=</span> os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">here <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>getcwd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+here<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> <span class="token string">"https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary/a9a"</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>datasets <span class="token keyword">import</span> load_svmlight_file<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">Xtr<span class="token punctuation">,</span> ytr <span class="token operator">=</span> load_svmlight_file<span class="token punctuation">(</span>url<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+
+url <span class="token operator">=</span> <span class="token string">"https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary/a9a"</span>
+filename <span class="token operator">=</span> <span class="token string">"a9a.txt"</span>
+
+response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>filename<span class="token punctuation">,</span> <span class="token string">"wb"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>response<span class="token punctuation">.</span>content<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Downloaded </span><span class="token interpolation"><span class="token punctuation">&#123;</span>filename<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>datasets <span class="token keyword">import</span> load_svmlight_file
+
+filename <span class="token operator">=</span> <span class="token string">"a9a.txt"</span>
+Xtr<span class="token punctuation">,</span> ytr <span class="token operator">=</span> load_svmlight_file<span class="token punctuation">(</span>filename<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Data loaded successfully!"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Shape of Xtr:"</span><span class="token punctuation">,</span> Xtr<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Shape of ytr:"</span><span class="token punctuation">,</span> ytr<span class="token punctuation">.</span>shape<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os<span class="token punctuation">,</span> sys<span class="token punctuation">,</span> json
+<span class="token keyword">from</span> urllib<span class="token punctuation">.</span>parse <span class="token keyword">import</span> urlparse
+<span class="token keyword">from</span> urllib<span class="token punctuation">.</span>request <span class="token keyword">import</span> Request<span class="token punctuation">,</span> urlopen<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">hdr</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    h <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"User-Agent"</span><span class="token punctuation">:</span> <span class="token string">"url-grabber/2.0"</span><span class="token punctuation">,</span> <span class="token string">"Accept"</span><span class="token punctuation">:</span> <span class="token string">"*/*"</span><span class="token punctuation">&#125;</span>
+    tok <span class="token operator">=</span> os<span class="token punctuation">.</span>getenv<span class="token punctuation">(</span><span class="token string">"GITHUB_TOKEN"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> tok<span class="token punctuation">:</span>
+        h<span class="token punctuation">[</span><span class="token string">"Authorization"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"Bearer </span><span class="token interpolation"><span class="token punctuation">&#123;</span>tok<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+        h<span class="token punctuation">[</span><span class="token string">"Accept"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"application/vnd.github+json"</span>
+    <span class="token keyword">return</span> h
+<span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+  <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>url<span class="token punctuation">,</span> headers<span class="token operator">=</span>hdr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+      <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> http_get<span class="token punctuation">(</span><span class="token string">"https://github.com/location-competition/indoor-location-competition-20/blob/master/data/site1/F1/floor_info.json"</span><span class="token punctuation">)</span>
+url<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> http_get<span class="token punctuation">(</span><span class="token string">"https://github.com/location-competition/indoor-location-competition-20/blob/master/data/site1/F1/floor_info.json"</span><span class="token punctuation">)</span>
+url<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">arr <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>url<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span> <span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+arr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+    <span class="token comment"># Construct the raw URL for GitHub</span>
+    parsed_url <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    raw_url <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://raw.githubusercontent.com</span><span class="token interpolation"><span class="token punctuation">&#123;</span>parsed_url<span class="token punctuation">.</span>path<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'/blob/'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>raw_url<span class="token punctuation">,</span> headers<span class="token operator">=</span>hdr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> http_get<span class="token punctuation">(</span><span class="token string">"https://github.com/location-competition/indoor-location-competition-20/blob/master/data/site1/F1/geojson_map.json"</span><span class="token punctuation">)</span>
+url<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">arr <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>url<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span> <span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+arr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+    <span class="token comment"># Construct the raw URL for GitHub</span>
+    parsed_url <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    raw_url <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://raw.githubusercontent.com</span><span class="token interpolation"><span class="token punctuation">&#123;</span>parsed_url<span class="token punctuation">.</span>path<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'/blob/'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>raw_url<span class="token punctuation">,</span> headers<span class="token operator">=</span>hdr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> http_get<span class="token punctuation">(</span><span class="token string">"https://github.com/location-competition/indoor-location-competition-20/blob/master/data/site1/F1/path_data_files/5dd9e7aac5b77e0006b1732b.txt"</span><span class="token punctuation">)</span>
+url<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">arr <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>url<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span> <span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+arr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">p <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+p
+p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">parse_tree</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""
+    https://github.com/&lt;owner>/&lt;repo>/tree/&lt;branch>/&lt;subpath...>
+    -> owner, repo, branch, subpath
+    """</span>
+    p <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    parts <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> p<span class="token punctuation">.</span>path<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">]</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>parts<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">4</span> <span class="token keyword">or</span> parts<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">"tree"</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"不是 /tree/ 目录链接"</span><span class="token punctuation">)</span>
+    owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch <span class="token operator">=</span> parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parts<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parts<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+    subpath <span class="token operator">=</span> <span class="token string">"/"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>parts<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>parts<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">4</span> <span class="token keyword">else</span> <span class="token string">""</span>
+    <span class="token keyword">return</span> owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> <span class="token string">"https://github.com/location-competition/indoor-location-competition-20/tree/master/data/site1/B1/path_data_files"</span>
+<span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+    <span class="token comment"># Construct the raw URL for GitHub</span>
+    parsed_url <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    raw_url <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://raw.githubusercontent.com</span><span class="token interpolation"><span class="token punctuation">&#123;</span>parsed_url<span class="token punctuation">.</span>path<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'/blob/'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>raw_url<span class="token punctuation">,</span> headers<span class="token operator">=</span>hdr<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeout<span class="token operator">=</span><span class="token number">60</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath <span class="token operator">=</span> parse_tree<span class="token punctuation">(</span>url<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">list_dir_via_api</span><span class="token punctuation">(</span>owner<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> repo<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> branch<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> subpath<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    api <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://api.github.com/repos/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>owner<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>repo<span class="token punctuation">&#125;</span></span><span class="token string">/contents/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>subpath<span class="token punctuation">&#125;</span></span><span class="token string">?ref=</span><span class="token interpolation"><span class="token punctuation">&#123;</span>branch<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+    data <span class="token operator">=</span> http_get<span class="token punctuation">(</span>api<span class="token punctuation">)</span>
+    arr <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>data<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span> <span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token builtin">dict</span><span class="token punctuation">)</span> <span class="token keyword">and</span> arr<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"type"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"file"</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span>arr<span class="token punctuation">]</span>
+    <span class="token comment"># 只列当前目录（不递归）</span>
+    <span class="token keyword">return</span> <span class="token punctuation">[</span>it <span class="token keyword">for</span> it <span class="token keyword">in</span> arr <span class="token keyword">if</span> it<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"type"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"file"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">items <span class="token operator">=</span> list_dir_via_api<span class="token punctuation">(</span>owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath<span class="token punctuation">)</span>
+items<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> urllib<span class="token punctuation">.</span>parse <span class="token keyword">import</span> urlparse<span class="token punctuation">,</span> quote
+<span class="token keyword">from</span> urllib<span class="token punctuation">.</span>request <span class="token keyword">import</span> Request<span class="token punctuation">,</span> urlopen
+
+<span class="token keyword">def</span> <span class="token function">to_raw_github</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">str</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> url<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">"https://raw.githubusercontent.com/"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> url
+    <span class="token keyword">if</span> <span class="token string">"github.com"</span> <span class="token keyword">in</span> url <span class="token keyword">and</span> <span class="token string">"/blob/"</span> <span class="token keyword">in</span> url<span class="token punctuation">:</span>
+        p <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+        parts <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> p<span class="token punctuation">.</span>path<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">]</span>
+        <span class="token comment"># /owner/repo/blob/branch/path/to/file</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>parts<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">5</span> <span class="token keyword">and</span> parts<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">"blob"</span><span class="token punctuation">:</span>
+            owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> _<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> <span class="token operator">*</span>rest <span class="token operator">=</span> parts
+            rest_enc <span class="token operator">=</span> <span class="token string">"/"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>quote<span class="token punctuation">(</span>seg<span class="token punctuation">)</span> <span class="token keyword">for</span> seg <span class="token keyword">in</span> rest<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token string-interpolation"><span class="token string">f"https://raw.githubusercontent.com/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>owner<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>repo<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>branch<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>rest_enc<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+    <span class="token keyword">return</span> url  <span class="token comment"># 其他链接原样返回（或按需抛错）</span>
+
+<span class="token keyword">def</span> <span class="token function">http_get</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> timeout<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">bytes</span><span class="token punctuation">:</span>
+    raw <span class="token operator">=</span> to_raw_github<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    req <span class="token operator">=</span> Request<span class="token punctuation">(</span>raw<span class="token punctuation">,</span> headers<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"User-Agent"</span><span class="token punctuation">:</span> <span class="token string">"mini-downloader/1.0"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>req<span class="token punctuation">,</span> timeout<span class="token operator">=</span>timeout<span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 用法：</span>
+<span class="token comment"># data = http_get("https://github.com/.../blob/.../file.txt")</span>
+<span class="token comment"># with open("file.txt","wb") as f: f.write(data)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">url <span class="token operator">=</span> <span class="token string">"https://github.com/location-competition/indoor-location-competition-20/tree/master/data/site1/F2"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">r <span class="token operator">=</span> http_get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+r<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">arr <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>r<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span> <span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+arr<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">list_tree_recursive</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> prefix<span class="token operator">=</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    api <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://api.github.com/repos/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>owner<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>repo<span class="token punctuation">&#125;</span></span><span class="token string">/git/trees/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>branch<span class="token punctuation">&#125;</span></span><span class="token string">?recursive=1"</span></span>
+    <span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>api<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+        data <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span><span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    out <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> node <span class="token keyword">in</span> data<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"tree"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> node<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"type"</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token string">"blob"</span><span class="token punctuation">:</span>
+            path <span class="token operator">=</span> node<span class="token punctuation">[</span><span class="token string">"path"</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> <span class="token keyword">not</span> prefix <span class="token keyword">or</span> path<span class="token operator">==</span>prefix <span class="token keyword">or</span> path<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span>prefix<span class="token punctuation">.</span>rstrip<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                out<span class="token punctuation">.</span>append<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> out
+<span class="token keyword">def</span> <span class="token function">parse_tree</span><span class="token punctuation">(</span>url<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    p <span class="token operator">=</span> urlparse<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+    parts <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> p<span class="token punctuation">.</span>path<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token punctuation">]</span>
+    <span class="token keyword">assert</span> <span class="token builtin">len</span><span class="token punctuation">(</span>parts<span class="token punctuation">)</span><span class="token operator">>=</span><span class="token number">4</span> <span class="token keyword">and</span> parts<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">"tree"</span><span class="token punctuation">,</span> <span class="token string">"不是 /tree/ 目录链接"</span>
+    owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch <span class="token operator">=</span> parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parts<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parts<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+    subpath <span class="token operator">=</span> <span class="token string">"/"</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>parts<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>parts<span class="token punctuation">)</span><span class="token operator">></span><span class="token number">4</span> <span class="token keyword">else</span> <span class="token string">""</span>
+    <span class="token keyword">return</span> owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath
+<span class="token keyword">def</span> <span class="token function">to_raw_from_parts</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token string-interpolation"><span class="token string">f"https://raw.githubusercontent.com/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>owner<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>repo<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>branch<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>path<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span>
+
+<span class="token comment"># 用法：</span>
+<span class="token comment"># paths = list_tree_recursive(owner,repo,branch,"data/site1/B1/path_data_files")</span>
+<span class="token comment"># for p in paths:</span>
+<span class="token comment">#     raw = to_raw_from_parts(owner,repo,branch,p)</span>
+<span class="token comment">#     ...</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath <span class="token operator">=</span> parse_tree<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">items <span class="token operator">=</span> list_tree_recursive<span class="token punctuation">(</span>owner<span class="token punctuation">,</span> repo<span class="token punctuation">,</span> branch<span class="token punctuation">,</span> subpath<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">items<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">api <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"https://api.github.com/repos/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>owner<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>repo<span class="token punctuation">&#125;</span></span><span class="token string">/git/trees/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>branch<span class="token punctuation">&#125;</span></span><span class="token string">?recursive=1"</span></span>
+<span class="token keyword">with</span> urlopen<span class="token punctuation">(</span>Request<span class="token punctuation">(</span>api<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> r<span class="token punctuation">:</span>
+    data <span class="token operator">=</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>r<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">"utf-8"</span><span class="token punctuation">,</span><span class="token string">"ignore"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">data<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">out <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+prefix <span class="token operator">=</span> subpath
+<span class="token keyword">for</span> node <span class="token keyword">in</span> data<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"tree"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> node<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"type"</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token string">"blob"</span><span class="token punctuation">:</span>
+        path <span class="token operator">=</span> node<span class="token punctuation">[</span><span class="token string">"path"</span><span class="token punctuation">]</span>
+        <span class="token keyword">if</span> <span class="token keyword">not</span> prefix <span class="token keyword">or</span> path<span class="token operator">==</span>prefix <span class="token keyword">or</span> path<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span>prefix<span class="token punctuation">.</span>rstrip<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            out<span class="token punctuation">.</span>append<span class="token punctuation">(</span>path<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">out<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<p><em>由脚本自动从 Colab .ipynb 整理为 Hexo 友好 Markdown。资源（若有）位于 md_assets&#x2F;。</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/" data-id="cuiddgloVgYnAZXGoXdSjpRVO" data-title="Colab 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Colab/" rel="tag">Colab</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-工作/招聘" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/26/%E5%B7%A5%E4%BD%9C/%E6%8B%9B%E8%81%98/" class="article-date">
@@ -126,7 +351,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E6%8B%9B%E8%81%98/" data-id="cuid-YiWRK69beakKwH-fUHTS" data-title="招聘" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E6%8B%9B%E8%81%98/" data-id="cuidADoVAhiAeCBu80_WfNm3Y" data-title="招聘" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -189,7 +414,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse9.22/" data-id="cuidF3T_rpE54CWOi4ZQrTyFy" data-title="Verse9.22" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse9.22/" data-id="cuidy5wqrA9LgIEu5pX6J6DXZ" data-title="Verse9.22" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -246,7 +471,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidkxVryPxOzUDrHxn-NkFA9" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidf8aI6vL4u6BiD6qqYyoD-" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -713,7 +938,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/rap/" data-id="cuidqZhdLKA5Ds9waPUX2BAK5" data-title="Hiphop Exercise" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/rap/" data-id="cuidyGPpFLm-wqs4YE-zkoJ7R" data-title="Hiphop Exercise" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1478,11 +1703,184 @@
 </ol>
 <hr>
 <h1 id="🧾-Conclusion（小结）-1"><a href="#🧾-Conclusion（小结）-1" class="headerlink" title="🧾 Conclusion（小结）"></a>🧾 Conclusion（小结）</h1><p>保持善意与界限、体贴与真实之间的<strong>平衡</strong>。用更自然的表达（<em>I can’t help…</em>, <em>slip into a negative mindset</em>, <em>set healthy boundaries</em>）来描述情绪与立场；在“体贴”与“逢迎”间清晰区分，既<strong>温柔待人</strong>也<strong>不失自我</strong>。</p>
+<hr>
+<p>📌 <em>欢迎明天继续更新下一个生活场景~</em></p>
+<hr>
+<h1 id="2025-10-05："><a href="#2025-10-05：" class="headerlink" title="2025-10-05："></a>2025-10-05：</h1><h1 id="🎙️-本次语音练习总览"><a href="#🎙️-本次语音练习总览" class="headerlink" title="🎙️ 本次语音练习总览"></a>🎙️ 本次语音练习总览</h1><p>本次口语练习围绕多个生活化场景展开，包括 HDB 社区观察、植物种子荚果的英文描述、施工障碍绕行以及 lounge 拒客时的投诉用语。以下为对话中所有主题的全面整理与表达优化，适合复习与输出博客。</p>
+<hr>
+<h1 id="🌱-场景一：植物种子荚果掉落在地"><a href="#🌱-场景一：植物种子荚果掉落在地" class="headerlink" title="🌱 场景一：植物种子荚果掉落在地"></a>🌱 场景一：植物种子荚果掉落在地</h1><h2 id="🗣-原始描述回顾"><a href="#🗣-原始描述回顾" class="headerlink" title="🗣 原始描述回顾"></a>🗣 原始描述回顾</h2><blockquote>
+<p>“There are some weird containers on the ground. Inside them is some cotton. These things get in the way when I walk.”</p>
+</blockquote>
+<h2 id="✅-改进表达"><a href="#✅-改进表达" class="headerlink" title="✅ 改进表达"></a>✅ 改进表达</h2><blockquote>
+<p>There are these fluffy seed pods scattered all over the sidewalk.<br>They’re natural containers that hold cotton-like material and plant seeds.<br>They stick to your shoes and make it tricky to walk through sometimes.</p>
+</blockquote>
+<h2 id="📘-表达详解"><a href="#📘-表达详解" class="headerlink" title="📘 表达详解"></a>📘 表达详解</h2><table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文表达</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>容器</td>
+<td>container &#x2F; natural container</td>
+<td>泛指，适合日常场景</td>
+</tr>
+<tr>
+<td>植物荚果</td>
+<td>seed pod &#x2F; seed capsule</td>
+<td>科学与口语均可</td>
+</tr>
+<tr>
+<td>棉絮</td>
+<td>cotton-like fiber &#x2F; fluff &#x2F; fuzz</td>
+<td>多个可选形容</td>
+</tr>
+<tr>
+<td>散落</td>
+<td>scattered &#x2F; all over the sidewalk</td>
+<td>描述分布广泛</td>
+</tr>
+<tr>
+<td>妨碍走路</td>
+<td>get in the way &#x2F; make it tricky to walk</td>
+<td>场景化表达</td>
+</tr>
+</tbody></table>
+<h2 id="🌟-可拓展用法"><a href="#🌟-可拓展用法" class="headerlink" title="🌟 可拓展用法"></a>🌟 可拓展用法</h2><ul>
+<li>Some of them even burst open when I step on them.</li>
+<li>They cling to your shoes like burrs.</li>
+<li>It’s like a carpet of little pods and seeds on the ground.</li>
+</ul>
+<hr>
+<h1 id="👷-场景二：HDB-社区工人日常维护"><a href="#👷-场景二：HDB-社区工人日常维护" class="headerlink" title="👷 场景二：HDB 社区工人日常维护"></a>👷 场景二：HDB 社区工人日常维护</h1><h2 id="🗣-你说："><a href="#🗣-你说：" class="headerlink" title="🗣 你说："></a>🗣 你说：</h2><blockquote>
+<p>“There are always some workers there, doing cleaning, washing walls, repairing air-cons.”</p>
+</blockquote>
+<h2 id="✅-优化表达"><a href="#✅-优化表达" class="headerlink" title="✅ 优化表达"></a>✅ 优化表达</h2><blockquote>
+<p>In the HDB community, I often see workers maintaining the estate.<br>Some are washing down the building walls, others are fixing air conditioners or watering the grass.<br>It’s part of their daily upkeep routine.</p>
+</blockquote>
+<h2 id="📘-核心词汇"><a href="#📘-核心词汇" class="headerlink" title="📘 核心词汇"></a>📘 核心词汇</h2><table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文表达</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>维修&#x2F;维护</td>
+<td>maintenance &#x2F; upkeep</td>
+<td>general repair work</td>
+</tr>
+<tr>
+<td>洗墙</td>
+<td>wash down walls &#x2F; power-wash the wall</td>
+<td>通用表达法</td>
+</tr>
+<tr>
+<td>空调维修</td>
+<td>fix &#x2F; repair the air-con</td>
+<td>新加坡常用缩写 air-con</td>
+</tr>
+<tr>
+<td>浇草坪</td>
+<td>water the grass &#x2F; maintain the greenery</td>
+<td>指园艺部分</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🚧-场景三：施工围栏挡住去路"><a href="#🚧-场景三：施工围栏挡住去路" class="headerlink" title="🚧 场景三：施工围栏挡住去路"></a>🚧 场景三：施工围栏挡住去路</h1><h2 id="🗣-你说：-1"><a href="#🗣-你说：-1" class="headerlink" title="🗣 你说："></a>🗣 你说：</h2><blockquote>
+<p>“The barrier blocks me. I have to go through the gap and sneak into my room.”</p>
+</blockquote>
+<h2 id="✅-优化表达-1"><a href="#✅-优化表达-1" class="headerlink" title="✅ 优化表达"></a>✅ 优化表达</h2><blockquote>
+<p>There was a temporary barrier blocking the way to my room.<br>I had to squeeze through a narrow gap in the barricade to get in.<br>It felt like I was sneaking into my own house!</p>
+</blockquote>
+<h2 id="📘-场景表达"><a href="#📘-场景表达" class="headerlink" title="📘 场景表达"></a>📘 场景表达</h2><table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文表达</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>围栏</td>
+<td>barrier &#x2F; barricade</td>
+<td>barricade更生动临时</td>
+</tr>
+<tr>
+<td>钻进去</td>
+<td>squeeze through &#x2F; slip through &#x2F; sneak in</td>
+<td>口语生动</td>
+</tr>
+<tr>
+<td>自己家</td>
+<td>my own place &#x2F; my flat &#x2F; my unit</td>
+<td>“unit” 是 HDB 常用词</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🍽️-场景四：Lounge-被拦-表达投诉"><a href="#🍽️-场景四：Lounge-被拦-表达投诉" class="headerlink" title="🍽️ 场景四：Lounge 被拦 &amp; 表达投诉"></a>🍽️ 场景四：Lounge 被拦 &amp; 表达投诉</h1><h2 id="🗣-你说：-2"><a href="#🗣-你说：-2" class="headerlink" title="🗣 你说："></a>🗣 你说：</h2><blockquote>
+<p>“If I wear shorts and t-shirt, they stop me, say no suit, refuse me. But I don’t think I’m wrong.”</p>
+</blockquote>
+<h2 id="✅-多版本表达（从委婉到强烈）"><a href="#✅-多版本表达（从委婉到强烈）" class="headerlink" title="✅ 多版本表达（从委婉到强烈）"></a>✅ 多版本表达（从委婉到强烈）</h2><h3 id="🟢-正常沟通版"><a href="#🟢-正常沟通版" class="headerlink" title="🟢 正常沟通版"></a>🟢 正常沟通版</h3><blockquote>
+<p>I’m dressed casually in shorts and a t-shirt.<br>As far as I know, there’s no dress code that requires a suit.<br>Could I speak to the manager for clarification?</p>
+</blockquote>
+<h3 id="🟡-坚定立场版"><a href="#🟡-坚定立场版" class="headerlink" title="🟡 坚定立场版"></a>🟡 坚定立场版</h3><blockquote>
+<p>I don’t think there’s anything wrong with what I’m wearing.<br>I’d like the manager to give me a clear and proper reason.<br>As a customer, I deserve to be treated respectfully.</p>
+</blockquote>
+<h3 id="🔴-表达不满版"><a href="#🔴-表达不满版" class="headerlink" title="🔴 表达不满版"></a>🔴 表达不满版</h3><blockquote>
+<p>How can you treat a guest like this?<br>Is there any written policy stating this rule?<br>This seems unfair and arbitrary.</p>
+</blockquote>
+<h2 id="📘-表达总汇"><a href="#📘-表达总汇" class="headerlink" title="📘 表达总汇"></a>📘 表达总汇</h2><table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文表达</th>
+<th>情绪强度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>我穿得很正常</td>
+<td>I’m dressed properly &#x2F; casually</td>
+<td>🟢</td>
+</tr>
+<tr>
+<td>需要说明</td>
+<td>I want a clear explanation &#x2F; proper reason</td>
+<td>🟡</td>
+</tr>
+<tr>
+<td>我要投诉</td>
+<td>I want to lodge a complaint &#x2F; speak to the manager</td>
+<td>🔴</td>
+</tr>
+<tr>
+<td>不公平</td>
+<td>This is not fair &#x2F; This feels like discrimination</td>
+<td>🔴</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🧠-常见语法点与语音反馈"><a href="#🧠-常见语法点与语音反馈" class="headerlink" title="🧠 常见语法点与语音反馈"></a>🧠 常见语法点与语音反馈</h1><ul>
+<li>✅ 使用 “I’d like to…” 比 “I want to…” 更礼貌</li>
+<li>✅ 表达逻辑用 “As far as I know…” 更自然</li>
+<li>❌ 避免用 “I wear…” → 应该是 “I’m wearing” 或 “I’m dressed in…”</li>
+</ul>
+<hr>
+<h1 id="🧾-对话复述-模拟练习"><a href="#🧾-对话复述-模拟练习" class="headerlink" title="🧾 对话复述 &amp; 模拟练习"></a>🧾 对话复述 &amp; 模拟练习</h1><h2 id="模拟对话-A：植物种子"><a href="#模拟对话-A：植物种子" class="headerlink" title="模拟对话 A：植物种子"></a>模拟对话 A：植物种子</h2><blockquote>
+<p>🧍‍♂️ Zhiming: I saw a lot of seed pods on the ground today.<br>🤖 ChatGPT: Oh yeah? Were they the fluffy kind with seeds inside?<br>🧍‍♂️ Zhiming: Yeah, they get stuck on my shoes.<br>🤖 ChatGPT: You could say, “These fluffy seed pods are scattered all over the sidewalk.”</p>
+</blockquote>
+<h2 id="模拟对话-B：投诉场景"><a href="#模拟对话-B：投诉场景" class="headerlink" title="模拟对话 B：投诉场景"></a>模拟对话 B：投诉场景</h2><blockquote>
+<p>🧍‍♂️ Zhiming: I want to know why I can’t enter.<br>🤖 ChatGPT: You can say, “Could I speak to the manager? I don’t believe I’ve violated any policy.”<br>🧍‍♂️ Zhiming: He said no shorts allowed.<br>🤖 ChatGPT: You can reply, “Can you please show me the written dress code?”  </p>
+</blockquote>
+<hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/English/" data-id="cuidR-AboL-gL4T-Eu3Jn-5Dw" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/English/" data-id="cuidoZlDO3m_lbJeD95bT_7eB" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1631,7 +2029,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuidR4wefavmZEQF2rFySEqkK" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuidiQzI29T-1EAmLREfkQcCK" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1795,7 +2193,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuidGraX6-j395j_yXIQs5J8Y" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuidrULQJYKX7rDSHXtYZjJqS" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2020,7 +2418,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuidfps1Wn3vzhdowYOJL0Ckn" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuidubAOxWsjm-SmIO5KoSEdq" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2111,150 +2509,7 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidHV1AGuuStOFLXLO5hg1As" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Code/排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time class="dt-published" datetime="2025-09-26T13:44:43.329Z" itemprop="datePublished">2025-09-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81/">代码</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/">排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>（正文内容从这里开始…）</p>
-<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><pre class="line-numbers language-none"><code class="language-none">import random
-
-def partition(nums, start, end):
-    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;
-    pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end); nums[start], nums[p] &#x3D; nums[p], nums[start]
-    left, right &#x3D; start, end
-    while left &lt; right:
-        # 右侧先找 &lt; pivot 的
-        while left &lt; right and nums[right] &gt;&#x3D; pivot:
-            right -&#x3D; 1
-        nums[left] &#x3D; nums[right]     # 右边的小填到左坑
-
-        # 左侧再找 &gt; pivot 的
-        while left &lt; right and nums[left] &lt;&#x3D; pivot:
-            left +&#x3D; 1
-        nums[right] &#x3D; nums[left]     # 左边的大填到右坑
-
-    nums[left] &#x3D; pivot               # 枢轴就位
-    return left
-
-def quicksort(nums, l&#x3D;0, r&#x3D;None):
-    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
-    if r is None:
-        r &#x3D; len(nums) - 1
-    if l &gt;&#x3D; r:
-        return
-    mid &#x3D; partition(nums, l, r)
-    quicksort(nums, l, mid - 1)
-    quicksort(nums, mid + 1, r)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-none"><code class="language-none">def quicksort(nums, start, end):
-    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
-    if start &gt;&#x3D; end:
-        return
-
-    pivot &#x3D; nums[start]
-    left, right &#x3D; start, end
-
-    # 分区：右找小填左坑，左找大填右坑
-    while left &lt; right:
-        while left &lt; right and nums[right] &gt;&#x3D; pivot:
-            right -&#x3D; 1
-        if left &lt; right:
-            nums[left] &#x3D; nums[right]
-        while left &lt; right and nums[left] &lt;&#x3D; pivot:
-            left +&#x3D; 1
-        if left &lt; right:
-            nums[right] &#x3D; nums[left]
-
-    nums[left] &#x3D; pivot  # 枢轴就位
-    quicksort(nums, start, left - 1)
-    quicksort(nums, left + 1, end)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
-<pre class="line-numbers language-none"><code class="language-none">import random
-from typing import List
-
-def quicksort(a: List[int], l: int, r: int) -&gt; None:
-    &quot;&quot;&quot;改进版原地快速排序（三路划分 + 随机枢轴 + 尾递归优化）&quot;&quot;&quot;
-    while l &lt; r:
-        # 1) 随机选择枢轴，交换到开头
-        p &#x3D; random.randint(l, r)
-        a[l], a[p] &#x3D; a[p], a[l]
-        pivot &#x3D; a[l]
-
-        # 2) 三路划分：[l..lt-1] &lt; pivot, [lt..gt] &#x3D;&#x3D; pivot, [gt+1..r] &gt; pivot
-        lt, i, gt &#x3D; l, l + 1, r
-        while i &lt;&#x3D; gt:
-            if a[i] &lt; pivot:
-                a[lt], a[i] &#x3D; a[i], a[lt]
-                lt +&#x3D; 1
-                i +&#x3D; 1
-            elif a[i] &gt; pivot:
-                a[i], a[gt] &#x3D; a[gt], a[i]
-                gt -&#x3D; 1
-            else:
-                i +&#x3D; 1
-
-        # 3) 递归较小的一侧，循环处理较大的一侧（尾递归优化）
-        left_len &#x3D; lt - 1 - l
-        right_len &#x3D; r - (gt + 1)
-        if left_len &lt; right_len:
-            if l &lt; lt - 1:
-                quicksort(a, l, lt - 1)
-            l &#x3D; gt + 1
-        else:
-            if gt + 1 &lt; r:
-                quicksort(a, gt + 1, r)
-            r &#x3D; lt - 1
-
-&#96;&#96;&#96;  
-# 冒泡排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>def bubble_sort(nums):<br>    “””原地冒泡排序；稳定。平均&#x2F;最坏 O(n^2)，最好（近乎有序）可提前终止。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        swapped &#x3D; False<br>        # 相邻比较与交换，内层区间逐步缩短<br>        for j in range(0, n - 1 - i):<br>            if nums[j] &gt; nums[j + 1]:<br>                nums[j], nums[j + 1] &#x3D; nums[j + 1], nums[j]<br>                swapped &#x3D; True<br>        if not swapped:  # 本轮无交换 -&gt; 已有序<br>            break<br>    return nums</p>
-<pre class="line-numbers language-none"><code class="language-none"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>def selection_sort(nums):<br>    “””原地选择排序；不稳定。时间复杂度始终 O(n^2)。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        min_idx &#x3D; i<br>        # 在 [i+1, n) 中找最小元素的位置<br>        for j in range(i + 1, n):<br>            if nums[j] &lt; nums[min_idx]:<br>                min_idx &#x3D; j<br>        # 只在需要时交换，减少无谓交换次数<br>        if min_idx !&#x3D; i:<br>            nums[i], nums[min_idx] &#x3D; nums[min_idx], nums[i]<br>    return nums</p>
-<pre class="line-numbers language-none"><code class="language-none">
-
-# 归并排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>def merge_sort(nums):<br>    if len(nums) &lt;&#x3D; 1:<br>        return nums<br>    mid &#x3D; len(nums) &#x2F;&#x2F; 2<br>    left &#x3D; merge_sort(nums[:mid])<br>    right &#x3D; merge_sort(nums[mid:])<br>    return merge(left, right)</p>
-<p>def merge(left, right):<br>    l, r &#x3D; 0, 0<br>    res &#x3D; []<br>    while l &lt; len(left) and r &lt; len(right):<br>        if left[l] &lt;&#x3D; right[r]:<br>            res.append(left[l])<br>            l +&#x3D; 1<br>        else:<br>            res.append(right[r])<br>            r +&#x3D; 1<br>    res.extend(left[l:])<br>    res.extend(right[r:])<br>    return res</p>
-<pre><code>
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidvB1BngcglI00WJOMpgVBG" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuid0Hn2ZP0kCOUYQb8R432UR" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2310,7 +2565,7 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
     </div>
   </div>
 
@@ -2321,6 +2576,10 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/10/02/%E6%9D%82%E8%B0%88/%E5%88%86%E6%95%B0/">分数</a>
+          </li>
         
           <li>
             <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">浅拷贝和深拷贝</a>
@@ -2336,10 +2595,6 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
         
           <li>
             <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/">这找工作感觉跟考研一样啊！</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/">🌏 我的出国申请全流程时间线回顾</a>
           </li>
         
       </ul>

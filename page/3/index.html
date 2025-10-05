@@ -77,6 +77,149 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Code/排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.329Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81/">代码</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/Code/%E6%8E%92%E5%BA%8F/">排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>（正文内容从这里开始…）</p>
+<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><pre class="line-numbers language-none"><code class="language-none">import random
+
+def partition(nums, start, end):
+    &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;
+    pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end); nums[start], nums[p] &#x3D; nums[p], nums[start]
+    left, right &#x3D; start, end
+    while left &lt; right:
+        # 右侧先找 &lt; pivot 的
+        while left &lt; right and nums[right] &gt;&#x3D; pivot:
+            right -&#x3D; 1
+        nums[left] &#x3D; nums[right]     # 右边的小填到左坑
+
+        # 左侧再找 &gt; pivot 的
+        while left &lt; right and nums[left] &lt;&#x3D; pivot:
+            left +&#x3D; 1
+        nums[right] &#x3D; nums[left]     # 左边的大填到右坑
+
+    nums[left] &#x3D; pivot               # 枢轴就位
+    return left
+
+def quicksort(nums, l&#x3D;0, r&#x3D;None):
+    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+    if r is None:
+        r &#x3D; len(nums) - 1
+    if l &gt;&#x3D; r:
+        return
+    mid &#x3D; partition(nums, l, r)
+    quicksort(nums, l, mid - 1)
+    quicksort(nums, mid + 1, r)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">def quicksort(nums, start, end):
+    &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+    if start &gt;&#x3D; end:
+        return
+
+    pivot &#x3D; nums[start]
+    left, right &#x3D; start, end
+
+    # 分区：右找小填左坑，左找大填右坑
+    while left &lt; right:
+        while left &lt; right and nums[right] &gt;&#x3D; pivot:
+            right -&#x3D; 1
+        if left &lt; right:
+            nums[left] &#x3D; nums[right]
+        while left &lt; right and nums[left] &lt;&#x3D; pivot:
+            left +&#x3D; 1
+        if left &lt; right:
+            nums[right] &#x3D; nums[left]
+
+    nums[left] &#x3D; pivot  # 枢轴就位
+    quicksort(nums, start, left - 1)
+    quicksort(nums, left + 1, end)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
+<pre class="line-numbers language-none"><code class="language-none">import random
+from typing import List
+
+def quicksort(a: List[int], l: int, r: int) -&gt; None:
+    &quot;&quot;&quot;改进版原地快速排序（三路划分 + 随机枢轴 + 尾递归优化）&quot;&quot;&quot;
+    while l &lt; r:
+        # 1) 随机选择枢轴，交换到开头
+        p &#x3D; random.randint(l, r)
+        a[l], a[p] &#x3D; a[p], a[l]
+        pivot &#x3D; a[l]
+
+        # 2) 三路划分：[l..lt-1] &lt; pivot, [lt..gt] &#x3D;&#x3D; pivot, [gt+1..r] &gt; pivot
+        lt, i, gt &#x3D; l, l + 1, r
+        while i &lt;&#x3D; gt:
+            if a[i] &lt; pivot:
+                a[lt], a[i] &#x3D; a[i], a[lt]
+                lt +&#x3D; 1
+                i +&#x3D; 1
+            elif a[i] &gt; pivot:
+                a[i], a[gt] &#x3D; a[gt], a[i]
+                gt -&#x3D; 1
+            else:
+                i +&#x3D; 1
+
+        # 3) 递归较小的一侧，循环处理较大的一侧（尾递归优化）
+        left_len &#x3D; lt - 1 - l
+        right_len &#x3D; r - (gt + 1)
+        if left_len &lt; right_len:
+            if l &lt; lt - 1:
+                quicksort(a, l, lt - 1)
+            l &#x3D; gt + 1
+        else:
+            if gt + 1 &lt; r:
+                quicksort(a, gt + 1, r)
+            r &#x3D; lt - 1
+
+&#96;&#96;&#96;  
+# 冒泡排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>def bubble_sort(nums):<br>    “””原地冒泡排序；稳定。平均&#x2F;最坏 O(n^2)，最好（近乎有序）可提前终止。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        swapped &#x3D; False<br>        # 相邻比较与交换，内层区间逐步缩短<br>        for j in range(0, n - 1 - i):<br>            if nums[j] &gt; nums[j + 1]:<br>                nums[j], nums[j + 1] &#x3D; nums[j + 1], nums[j]<br>                swapped &#x3D; True<br>        if not swapped:  # 本轮无交换 -&gt; 已有序<br>            break<br>    return nums</p>
+<pre class="line-numbers language-none"><code class="language-none"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>def selection_sort(nums):<br>    “””原地选择排序；不稳定。时间复杂度始终 O(n^2)。”””<br>    n &#x3D; len(nums)<br>    for i in range(n - 1):<br>        min_idx &#x3D; i<br>        # 在 [i+1, n) 中找最小元素的位置<br>        for j in range(i + 1, n):<br>            if nums[j] &lt; nums[min_idx]:<br>                min_idx &#x3D; j<br>        # 只在需要时交换，减少无谓交换次数<br>        if min_idx !&#x3D; i:<br>            nums[i], nums[min_idx] &#x3D; nums[min_idx], nums[i]<br>    return nums</p>
+<pre class="line-numbers language-none"><code class="language-none">
+
+# 归并排序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>def merge_sort(nums):<br>    if len(nums) &lt;&#x3D; 1:<br>        return nums<br>    mid &#x3D; len(nums) &#x2F;&#x2F; 2<br>    left &#x3D; merge_sort(nums[:mid])<br>    right &#x3D; merge_sort(nums[mid:])<br>    return merge(left, right)</p>
+<p>def merge(left, right):<br>    l, r &#x3D; 0, 0<br>    res &#x3D; []<br>    while l &lt; len(left) and r &lt; len(right):<br>        if left[l] &lt;&#x3D; right[r]:<br>            res.append(left[l])<br>            l +&#x3D; 1<br>        else:<br>            res.append(right[r])<br>            r +&#x3D; 1<br>    res.extend(left[l:])<br>    res.extend(right[r:])<br>    return res</p>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidbt2jw_M62aA_22tPg3mi_" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-第二轮复习要点（自_2025_09_13_19_16_起）_网络与实战笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" class="article-date">
@@ -233,7 +376,7 @@ nmap <span class="token operator">-</span>sU <span class="token operator">-</spa
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" data-id="cuiduF3SOQra02zKSJ_sqLKYk" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" data-id="cuiduOnh_L1ZYoFa3cOEw9lzD" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -278,7 +421,7 @@ nmap <span class="token operator">-</span>sU <span class="token operator">-</spa
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" data-id="cuidwWug7ye0MjtlMGCQ1XzLI" data-title="一些小目标" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" data-id="cuidXUQ8K3JqR7aK6tOK3CQzy" data-title="一些小目标" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -454,7 +597,7 @@ sudo wgo wg<span aria-hidden="true" class="line-numbers-rows"><span></span><span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/wireguard/" data-id="cuidGHgAjNjkMJAe8HQU4K7vM" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/wireguard/" data-id="cuidlWLUgnwshxUtR5Z4WwRso" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -509,7 +652,7 @@ sudo wgo wg<span aria-hidden="true" class="line-numbers-rows"><span></span><span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" data-id="cuidvc036y3r-aYkAaHYE8xa2" data-title="在新加坡的第一次网购" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" data-id="cuidoaLt7uCDOnfGS9WUVUzoj" data-title="在新加坡的第一次网购" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -717,7 +860,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidd9XXWONdEwfoBP1Hl2nOm" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidIfrMkw1ImXlblAdDWekbl" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -783,7 +926,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/vector/" data-id="cuidrBdQIPE4NmsZtL3932nG8" data-title="向量运算复习" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/vector/" data-id="cuidSEJKqBggaL4XwQyN1qgf4" data-title="向量运算复习" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -839,7 +982,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a></li></ul>
     </div>
   </div>
 
@@ -850,6 +993,10 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/10/02/%E6%9D%82%E8%B0%88/%E5%88%86%E6%95%B0/">分数</a>
+          </li>
         
           <li>
             <a href="/2025/09/26/%E4%BB%A3%E7%A0%81/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">浅拷贝和深拷贝</a>
@@ -865,10 +1012,6 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
         
           <li>
             <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/">这找工作感觉跟考研一样啊！</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/">🌏 我的出国申请全流程时间线回顾</a>
           </li>
         
       </ul>
