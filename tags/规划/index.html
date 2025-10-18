@@ -234,9 +234,9 @@
   </div>
   <script>
   (async function () {
-    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
-    const ENDPOINT_BASE = '';
-    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+    // 你的 API 域名（不要结尾斜杠）
+    const ENDPOINT_BASE = 'https://lzm-bryan-github-io.vercel.app';
+    const url = (p) => ENDPOINT_BASE + p;
 
     try {
       const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());

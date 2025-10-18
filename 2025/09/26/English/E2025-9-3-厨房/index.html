@@ -227,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuidKndqpIMyJzqIWBegwHNx9" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuid6bP49noPK1_75BaAtWtrY" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -382,9 +382,9 @@
   </div>
   <script>
   (async function () {
-    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
-    const ENDPOINT_BASE = '';
-    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+    // 你的 API 域名（不要结尾斜杠）
+    const ENDPOINT_BASE = 'https://lzm-bryan-github-io.vercel.app';
+    const url = (p) => ENDPOINT_BASE + p;
 
     try {
       const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());

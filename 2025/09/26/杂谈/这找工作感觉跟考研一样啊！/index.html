@@ -143,7 +143,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/" data-id="cuiduj992-B2D76XN0HuhdfNR" data-title="这找工作感觉跟考研一样啊！" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/" data-id="cuidYyqdD9zwUBLGNc8B5J6la" data-title="这找工作感觉跟考研一样啊！" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -296,9 +296,9 @@
   </div>
   <script>
   (async function () {
-    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
-    const ENDPOINT_BASE = '';
-    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+    // 你的 API 域名（不要结尾斜杠）
+    const ENDPOINT_BASE = 'https://lzm-bryan-github-io.vercel.app';
+    const url = (p) => ENDPOINT_BASE + p;
 
     try {
       const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());
