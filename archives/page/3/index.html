@@ -335,5 +335,20 @@
 
 
   </div>
-<!-- hexo injector body_end start --><script async src="/js/busuanzi.pure.mini.js"></script><!-- hexo injector body_end end --></body>
+<!-- hexo injector body_end start -->
+  <!-- Busuanzi -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>
+    (function () {
+      function run() {
+        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
+      }
+      if (document.readyState === 'complete') run();
+      else window.addEventListener('load', run);
+      document.addEventListener('pjax:complete', run);
+      document.addEventListener('ajax:loaded', run);
+      document.addEventListener('swup:contentReplaced', run);
+    })();
+  </script>
+<!-- hexo injector body_end end --></body>
 </html>
