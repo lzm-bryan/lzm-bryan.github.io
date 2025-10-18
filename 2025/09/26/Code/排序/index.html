@@ -14,7 +14,7 @@
 <meta property="og:description" content="（正文内容从这里开始…） 快速排序import random  def partition(nums, start, end):     &quot;&quot;&quot;填坑法分区：返回枢轴落点索引&quot;&quot;&quot;     pivot &#x3D; nums[start]          # 也可随机：p &#x3D; random.randint(start, end)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-26T13:44:43.329Z">
-<meta property="article:modified_time" content="2025-09-26T14:02:59.149Z">
+<meta property="article:modified_time" content="2025-10-17T04:37:13.223Z">
 <meta property="article:author" content="Zhiming Liang">
 <meta name="twitter:card" content="summary">
   
@@ -155,6 +155,39 @@ def quicksort(nums, l&#x3D;0, r&#x3D;None):
     nums[left] &#x3D; pivot  # 枢轴就位
     quicksort(nums, start, left - 1)
     quicksort(nums, left + 1, end)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>912是排序数组 要求nlogn<br>改进版本快排</p>
+<pre class="line-numbers language-none"><code class="language-none">class Solution:
+    def sortArray(self, nums: List[int]) -&gt; List[int]:
+        def quicksort(nums, start, end):
+            &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+            if start &gt;&#x3D; end:
+                return
+
+            # pivot &#x3D; nums[start]
+            pivot &#x3D; nums[random.randint(start, end)]
+            left, right &#x3D; start, end
+            scan &#x3D; left
+            # 分区：右找小填左坑，左找大填右坑
+            while scan &lt;&#x3D; right:
+                if nums[scan] &lt; pivot:
+                    nums[left], nums[scan] &#x3D; nums[scan], nums[left]
+                    left &#x3D; left + 1
+                    scan &#x3D; scan + 1
+                elif nums[scan] &gt; pivot:
+                    nums[right], nums[scan] &#x3D; nums[scan], nums[right]
+                    right &#x3D; right - 1
+                else:
+                    scan &#x3D; scan + 1
+
+            quicksort(nums, start, left - 1)
+            quicksort(nums, right + 1, end)
+        
+        if len(nums) &lt;&#x3D; 1:
+            return nums
+        quicksort(nums, 0, len(nums) - 1)
+        return nums<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
 <pre class="line-numbers language-none"><code class="language-none">import random
 from typing import List
@@ -208,7 +241,7 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidbt2jw_M62aA_22tPg3mi_" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidE0yMNsHJbTMEmixmK20HK" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       

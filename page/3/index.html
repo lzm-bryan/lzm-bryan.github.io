@@ -155,6 +155,39 @@ def quicksort(nums, l&#x3D;0, r&#x3D;None):
     nums[left] &#x3D; pivot  # 枢轴就位
     quicksort(nums, start, left - 1)
     quicksort(nums, left + 1, end)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>912是排序数组 要求nlogn<br>改进版本快排</p>
+<pre class="line-numbers language-none"><code class="language-none">class Solution:
+    def sortArray(self, nums: List[int]) -&gt; List[int]:
+        def quicksort(nums, start, end):
+            &quot;&quot;&quot;原地快速排序（递归）&quot;&quot;&quot;
+            if start &gt;&#x3D; end:
+                return
+
+            # pivot &#x3D; nums[start]
+            pivot &#x3D; nums[random.randint(start, end)]
+            left, right &#x3D; start, end
+            scan &#x3D; left
+            # 分区：右找小填左坑，左找大填右坑
+            while scan &lt;&#x3D; right:
+                if nums[scan] &lt; pivot:
+                    nums[left], nums[scan] &#x3D; nums[scan], nums[left]
+                    left &#x3D; left + 1
+                    scan &#x3D; scan + 1
+                elif nums[scan] &gt; pivot:
+                    nums[right], nums[scan] &#x3D; nums[scan], nums[right]
+                    right &#x3D; right - 1
+                else:
+                    scan &#x3D; scan + 1
+
+            quicksort(nums, start, left - 1)
+            quicksort(nums, right + 1, end)
+        
+        if len(nums) &lt;&#x3D; 1:
+            return nums
+        quicksort(nums, 0, len(nums) - 1)
+        return nums<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这个方法会在leetcode217.存在重复元素超时<br>改进快排</p>
 <pre class="line-numbers language-none"><code class="language-none">import random
 from typing import List
@@ -208,7 +241,7 @@ def quicksort(a: List[int], l: int, r: int) -&gt; None:
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidbt2jw_M62aA_22tPg3mi_" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%8E%92%E5%BA%8F/" data-id="cuidE0yMNsHJbTMEmixmK20HK" data-title="排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -376,7 +409,7 @@ nmap <span class="token operator">-</span>sU <span class="token operator">-</spa
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" data-id="cuiduOnh_L1ZYoFa3cOEw9lzD" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E7%AC%AC%E4%BA%8C%E8%BD%AE%E5%A4%8D%E4%B9%A0%E8%A6%81%E7%82%B9%EF%BC%88%E8%87%AA_2025_09_13_19_16_%E8%B5%B7%EF%BC%89_%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/" data-id="cuid5Y5t-_rzXan5b8D2zkg_4" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -421,7 +454,7 @@ nmap <span class="token operator">-</span>sU <span class="token operator">-</spa
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" data-id="cuidXUQ8K3JqR7aK6tOK3CQzy" data-title="一些小目标" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E4%B8%80%E4%BA%9B%E5%B0%8F%E7%9B%AE%E6%A0%87/" data-id="cuidmIJvdUrysYrPppPsV_SOa" data-title="一些小目标" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -597,67 +630,10 @@ sudo wgo wg<span aria-hidden="true" class="line-numbers-rows"><span></span><span
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/wireguard/" data-id="cuidlWLUgnwshxUtR5Z4WwRso" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/wireguard/" data-id="cuiddDCqxwJiMhPPDousUAube" data-title="WireGuard" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-第一次网购" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" class="article-date">
-  <time class="dt-published" datetime="2025-08-16T07:00:00.000Z" itemprop="datePublished">2025-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/">在新加坡的第一次网购</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="在新加坡的第一次网购"><a href="#在新加坡的第一次网购" class="headerlink" title="在新加坡的第一次网购"></a>在新加坡的第一次网购</h1><blockquote>
-<p>淘宝网购小米热水壶，邮费比货贵</p>
-</blockquote>
-<ul>
-<li><strong>8 月 4 日 23:47</strong> 下单。  </li>
-<li><strong>8 月 9 日晚上</strong>，包裹已空运抵达新加坡。<br>配送员通过 WhatsApp 联系我，但我当时没有看到消息。<br>对方说我的单元楼号填写不够详细，如果当时及时回复，可能当天晚上就能收到。  </li>
-<li>空运速度很快，可惜我没注意到消息。第二天配送员再次联系，我依然没有看到。等我回复时，已经没有了反馈。我原以为他们不再配送了，后来才知道，两天联系不上就会更换配送员。  </li>
-<li><strong>8 月 13 日中午</strong>，新的配送员通过 WhatsApp 再次询问详细地址，我下午才回复，对方确认收到了。  </li>
-<li><strong>8 月 14 日下午</strong>，包裹顺利送达。  <blockquote>
-<p>整体来说空运速度还是很快的</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="到货包装"><a href="#到货包装" class="headerlink" title="到货包装"></a>到货包装</h3><img src="/images/包装.jpg" alt="到货包装" style="max-width: 20%; height: auto;">
-
-<h3 id="包裹内容"><a href="#包裹内容" class="headerlink" title="包裹内容"></a>包裹内容</h3><img src="/images/货.jpg" alt="包裹内容" style="max-width: 20%; height: auto;">
-
-<h3 id="购买链接截图"><a href="#购买链接截图" class="headerlink" title="购买链接截图"></a>购买链接截图</h3><img src="/images/订单.png" alt="购买链接" style="max-width: 20%; height: auto;">
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" data-id="cuidoaLt7uCDOnfGS9WUVUzoj" data-title="在新加坡的第一次网购" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li></ul>
-
     </footer>
   </div>
   
@@ -860,10 +836,67 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidIfrMkw1ImXlblAdDWekbl" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuid32TohGv56ppOT7Ld1mQTA" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-第一次网购" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" class="article-date">
+  <time class="dt-published" datetime="2025-08-16T07:00:00.000Z" itemprop="datePublished">2025-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/">在新加坡的第一次网购</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="在新加坡的第一次网购"><a href="#在新加坡的第一次网购" class="headerlink" title="在新加坡的第一次网购"></a>在新加坡的第一次网购</h1><blockquote>
+<p>淘宝网购小米热水壶，邮费比货贵</p>
+</blockquote>
+<ul>
+<li><strong>8 月 4 日 23:47</strong> 下单。  </li>
+<li><strong>8 月 9 日晚上</strong>，包裹已空运抵达新加坡。<br>配送员通过 WhatsApp 联系我，但我当时没有看到消息。<br>对方说我的单元楼号填写不够详细，如果当时及时回复，可能当天晚上就能收到。  </li>
+<li>空运速度很快，可惜我没注意到消息。第二天配送员再次联系，我依然没有看到。等我回复时，已经没有了反馈。我原以为他们不再配送了，后来才知道，两天联系不上就会更换配送员。  </li>
+<li><strong>8 月 13 日中午</strong>，新的配送员通过 WhatsApp 再次询问详细地址，我下午才回复，对方确认收到了。  </li>
+<li><strong>8 月 14 日下午</strong>，包裹顺利送达。  <blockquote>
+<p>整体来说空运速度还是很快的</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="到货包装"><a href="#到货包装" class="headerlink" title="到货包装"></a>到货包装</h3><img src="/images/包装.jpg" alt="到货包装" style="max-width: 20%; height: auto;">
+
+<h3 id="包裹内容"><a href="#包裹内容" class="headerlink" title="包裹内容"></a>包裹内容</h3><img src="/images/货.jpg" alt="包裹内容" style="max-width: 20%; height: auto;">
+
+<h3 id="购买链接截图"><a href="#购买链接截图" class="headerlink" title="购买链接截图"></a>购买链接截图</h3><img src="/images/订单.png" alt="购买链接" style="max-width: 20%; height: auto;">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%BD%91%E8%B4%AD/" data-id="cuidauq1ci1SdS4dm2XCadLW7" data-title="在新加坡的第一次网购" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%B0%E5%8A%A0%E5%9D%A1/" rel="tag">新加坡</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/" rel="tag">生活记录</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E8%B4%AD/" rel="tag">网购</a></li></ul>
+
     </footer>
   </div>
   
@@ -926,7 +959,7 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/vector/" data-id="cuidSEJKqBggaL4XwQyN1qgf4" data-title="向量运算复习" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/vector/" data-id="cuidlu9UBaC7q29Qm3R70adCj" data-title="向量运算复习" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
