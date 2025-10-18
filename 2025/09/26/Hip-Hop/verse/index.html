@@ -124,7 +124,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidpH39hwe4-2G5XwHWhPev9" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidmEFL0Aq1KaBatC2HIDWVa" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -272,17 +272,6 @@
 
   </div>
 <!-- hexo injector body_end start -->
-  <script async src="/js/busuanzi.pure.mini.js"></script>
-  <script>
-    (function () {
-      function run(){ if (window.BUSUANZI && typeof BUSUANZI.fetch==='function') BUSUANZI.fetch(); }
-      if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
-      document.addEventListener('pjax:complete', run);
-      document.addEventListener('ajax:loaded', run);
-      document.addEventListener('swup:contentReplaced', run);
-    })();
-  </script>
-
   <!-- Busuanzi -->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
@@ -295,6 +284,56 @@
       document.addEventListener('pjax:complete', run);
       document.addEventListener('ajax:loaded', run);
       document.addEventListener('swup:contentReplaced', run);
+    })();
+  </script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <style>
+    #hero-counter.floating{position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px}
+  </style>
+  <script>
+    (function () {
+      var CANDIDATES = ['.site-subtitle','.subtitle','.page-subtitle','.site-title','.page-title','#logo','.brand'];
+      function place() {
+        if (document.getElementById('hero-counter')) return;
+        var host = null;
+        for (var i=0;i<CANDIDATES.length;i++){ var el = document.querySelector(CANDIDATES[i]); if(el){host=el;break;} }
+        var wrap = document.createElement('div'); wrap.innerHTML = "\n  <div id=\"hero-counter\" style=\"display:inline-flex;gap:.75rem;font:14px/1.6 ui-sans-serif,system-ui;opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">访客：<strong id=\"busuanzi_value_site_uv\">--</strong></span>\n    <span class=\"busuanzi_container_site_pv\">浏览：<strong id=\"busuanzi_value_site_pv\">--</strong></span>\n  </div>";
+        var node = wrap.firstElementChild;
+        if (host) host.parentNode.insertBefore(node, host.nextSibling);
+        else { node.classList.add('floating'); document.body.appendChild(node); }
+      }
+      function refetch(tag){
+        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') {
+          try { BUSUANZI.fetch(); console.debug('[busuanzi] fetch @', tag); } catch(e){ console.error('[busuanzi] fetch error', e); }
+        } else {
+          console.warn('[busuanzi] object missing');
+        }
+      }
+      function jsonpFallback(){  // 兜底：直接打 JSONP（部分主题/拦截器把 fetch 卡住时用）
+        if (document.getElementById('bz-jsonp')) return;
+        var cb = 'BZCB'+Date.now();
+        window[cb] = function(d){
+          if (d){
+            var uv = document.getElementById('busuanzi_value_site_uv');
+            var pv = document.getElementById('busuanzi_value_site_pv');
+            if (uv && d.site_uv!=null) uv.textContent = d.site_uv;
+            if (pv && d.site_pv!=null) pv.textContent = d.site_pv;
+          }
+        };
+        var s = document.createElement('script');
+        s.id='bz-jsonp';
+        s.src='https://busuanzi.ibruce.info/busuanzi?jsonpCallback='+cb;
+        s.onerror=function(){ console.error('[busuanzi] jsonp blocked'); };
+        document.body.appendChild(s);
+      }
+
+      function go(tag){ place(); refetch(tag); setTimeout(jsonpFallback, 1500); }
+
+      if (document.readyState === 'complete') go('load-complete'); else window.addEventListener('load', function(){ go('window-load'); });
+      document.addEventListener('pjax:complete', function(){ go('pjax'); });
+      document.addEventListener('ajax:loaded', function(){ go('ajax'); });
+      document.addEventListener('swup:contentReplaced', function(){ go('swup'); });
     })();
   </script>
 <!-- hexo injector body_end end --></body>
