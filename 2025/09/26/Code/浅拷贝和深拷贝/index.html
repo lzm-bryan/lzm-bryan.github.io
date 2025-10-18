@@ -156,7 +156,7 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidhWU4gbI8J3-eqmwXDCoVO" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidFRVALJTGnNufzhCe5CmW7" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -316,6 +316,57 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       document.addEventListener('pjax:complete', run);
       document.addEventListener('ajax:loaded', run);
       document.addEventListener('swup:contentReplaced', run);
+    })();
+  </script>
+
+  <!-- Busuanzi -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <style>
+    /* 放不进横幅时的右上角兜底 */
+    #hero-counter.floating {
+      position: fixed; top: 12px; right: 14px; z-index: 9999;
+      background: rgba(0,0,0,.35); color: #fff; padding: 4px 8px; border-radius: 6px;
+    }
+  </style>
+  <script>
+    (function () {
+      // 常见主题的横幅副标题/标题选择器，挨个试
+      var CANDIDATES = [
+        '.site-subtitle', '.subtitle', '.page-subtitle',
+        '.site-title', '.page-title', '.masthead-title',
+        '.cover .subtitle', '.hero .subtitle', '.header .subtitle'
+      ];
+      function place() {
+        // 已经放过就别重复
+        if (document.getElementById('hero-counter')) return;
+        var host = null;
+        for (var i=0; i<CANDIDATES.length; i++) {
+          var el = document.querySelector(CANDIDATES[i]);
+          if (el) { host = el; break; }
+        }
+        if (host) {
+          // 放到标题/副标题下面
+          var wrap = document.createElement('div');
+          wrap.innerHTML = "\n  <div id=\"hero-counter\" style=\"\n    display:inline-flex; gap:.75rem;\n    font:14px/1.6 ui-sans-serif,system-ui; opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">\n      访客：<strong id=\"busuanzi_value_site_uv\">--</strong>\n    </span>\n    <span class=\"busuanzi_container_site_pv\">\n      浏览：<strong id=\"busuanzi_value_site_pv\">--</strong>\n    </span>\n  </div>";
+          host.parentNode.insertBefore(wrap.firstElementChild, host.nextSibling);
+        } else {
+          // 找不到就右上角悬浮，至少能看到
+          var flo = document.createElement('div');
+          flo.innerHTML = "\n  <div id=\"hero-counter\" style=\"\n    display:inline-flex; gap:.75rem;\n    font:14px/1.6 ui-sans-serif,system-ui; opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">\n      访客：<strong id=\"busuanzi_value_site_uv\">--</strong>\n    </span>\n    <span class=\"busuanzi_container_site_pv\">\n      浏览：<strong id=\"busuanzi_value_site_pv\">--</strong>\n    </span>\n  </div>";
+          flo = flo.firstElementChild;
+          flo.classList.add('floating');
+          document.body.appendChild(flo);
+        }
+        // 触发一次统计刷新
+        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
+      }
+      // 首次加载
+      if (document.readyState === 'complete') place();
+      else window.addEventListener('load', place);
+      // PJAX/各种局部刷新
+      document.addEventListener('pjax:complete', place);
+      document.addEventListener('ajax:loaded', place);
+      document.addEventListener('swup:contentReplaced', place);
     })();
   </script>
 <!-- hexo injector body_end end --></body>
