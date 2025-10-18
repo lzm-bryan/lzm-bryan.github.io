@@ -79,6 +79,207 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-机器学习/logistic-cheatsheet" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/logistic-cheatsheet/" class="article-date">
+  <time class="dt-published" datetime="2025-09-26T13:44:43.368Z" itemprop="datePublished">2025-09-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/logistic-cheatsheet/">逻辑回归一文通：二分类 vs 多分类（含 MLE、求导、正则、优化）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这篇是把我们前面所有讨论<strong>系统化</strong>的一份速查与学习笔记：从二分类逻辑回归到多类 softmax 回归，讲清楚 odds&#x2F;logit、MLE、交叉熵、梯度推导、正则化，以及 GD&#x2F;牛顿法等优化要点。可直接作为复习提纲。</p>
+</blockquote>
+<hr>
+<h2 id="0-问题设定与记号"><a href="#0-问题设定与记号" class="headerlink" title="0. 问题设定与记号"></a>0. 问题设定与记号</h2><ul>
+<li>训练集：({(x_i, y_i)}_{i&#x3D;1}^N)，(x_i\in\mathbb{R}^d)  </li>
+<li>二分类：(y_i\in{0,1})；多分类：(y_i\in{0,1,\dots,C-1})  </li>
+<li>线性打分（logits）：对类 (c) 记 (s_c &#x3D; w^{(c)\top} x)</li>
+</ul>
+<blockquote>
+<p><strong>logits 不是概率</strong>，是“未归一化的分数”；要变成概率需要 <strong>sigmoid</strong>（二类）或 <strong>softmax</strong>（多类）。</p>
+</blockquote>
+<hr>
+<h2 id="1-二分类：Logistic-Regression"><a href="#1-二分类：Logistic-Regression" class="headerlink" title="1. 二分类：Logistic Regression"></a>1. 二分类：Logistic Regression</h2><h3 id="1-1-Sigmoid-与-logit"><a href="#1-1-Sigmoid-与-logit" class="headerlink" title="1.1 Sigmoid 与 logit"></a>1.1 Sigmoid 与 logit</h3><ul>
+<li>Sigmoid：<br>[<br>\sigma(z)&#x3D;\frac{1}{1+e^{-z}} \in (0,1)<br>]</li>
+<li>概率：<br>[<br>p(x)&#x3D;P(y&#x3D;1\mid x)&#x3D;\sigma(w^\top x)<br>]</li>
+<li><strong>odds（几率比）</strong>：(\dfrac{p}{1-p})  </li>
+<li><strong>logit（对数几率）</strong>：(\mathrm{logit}(p)&#x3D;\ln\dfrac{p}{1-p}&#x3D;w^\top x)</li>
+</ul>
+<blockquote>
+<p>logit 把 ((0,1)) 映射到 (({-}\infty,{+}\infty))，可用线性函数建模。</p>
+</blockquote>
+<h3 id="1-2-似然、对数似然与损失（交叉熵）"><a href="#1-2-似然、对数似然与损失（交叉熵）" class="headerlink" title="1.2 似然、对数似然与损失（交叉熵）"></a>1.2 似然、对数似然与损失（交叉熵）</h3><ul>
+<li>i.i.d. 假设下的似然：<br>[<br>L(w)&#x3D;\prod_{i&#x3D;1}^N p_i^{y_i}(1-p_i)^{1-y_i},\quad p_i&#x3D;\sigma(w^\top x_i)<br>]</li>
+<li>对数似然：<br>[<br>\ell(w)&#x3D;\sum_{i&#x3D;1}^N \big[y_i\ln p_i + (1-y_i)\ln(1-p_i)\big]<br>]</li>
+<li><strong>损失</strong>（负对数似然 &#x3D; 交叉熵）：<br>[<br>E(w)&#x3D;-\ell(w)&#x3D; -\sum_{i&#x3D;1}^N \big[y_i\ln p_i + (1-y_i)\ln(1-p_i)\big]<br>]</li>
+</ul>
+<blockquote>
+<p><strong>为什么从似然变成损失？</strong> 最大化 (\ell(w)) ⇔ 最小化 (-\ell(w))，便于用最小化优化器。</p>
+</blockquote>
+<h3 id="1-3-梯度与更新"><a href="#1-3-梯度与更新" class="headerlink" title="1.3 梯度与更新"></a>1.3 梯度与更新</h3><p>[<br>\nabla E(w)&#x3D;\sum_{i&#x3D;1}^N (p_i - y_i),x_i<br>]</p>
+<ul>
+<li>批量&#x2F;小批量 GD：(w\leftarrow w-\eta\nabla E(w))  </li>
+<li>阈值判别：(\hat y&#x3D;\mathbb{I}[p(x)\ge \tau])（默认 (\tau&#x3D;0.5)，可按业务调整）</li>
+</ul>
+<h3 id="1-4-正则化（以-L2-为例）"><a href="#1-4-正则化（以-L2-为例）" class="headerlink" title="1.4 正则化（以 L2 为例）"></a>1.4 正则化（以 L2 为例）</h3><p>[<br>E_\lambda(w)&#x3D;E(w)+\frac{\lambda}{2}|w|<em>2^2,\quad<br>\nabla E</em>\lambda(w)&#x3D;\sum_i (p_i-y_i)x_i + \lambda w<br>]</p>
+<p><strong>权重衰减视角</strong>：<br>(w\leftarrow (1-\eta\lambda)w-\eta\sum (p_i-y_i)x_i)</p>
+<blockquote>
+<p>作用：抑制过拟合、提升稳定性（抗共线性），贝叶斯视角等价于高斯先验。</p>
+</blockquote>
+<hr>
+<h2 id="2-多分类：Softmax（Multinomial-Logistic-Regression）"><a href="#2-多分类：Softmax（Multinomial-Logistic-Regression）" class="headerlink" title="2. 多分类：Softmax（Multinomial Logistic Regression）"></a>2. 多分类：Softmax（Multinomial Logistic Regression）</h2><h3 id="2-1-概率模型（两种等价写法）"><a href="#2-1-概率模型（两种等价写法）" class="headerlink" title="2.1 概率模型（两种等价写法）"></a>2.1 概率模型（两种等价写法）</h3><ul>
+<li><p><strong>标准 softmax（常用）</strong><br>[<br>p_c(x)&#x3D;\frac{e^{w^{(c)\top}x}}{\sum_{k&#x3D;0}^{C-1} e^{w^{(k)\top}x}}<br>]</p>
+</li>
+<li><p><strong>参考类（与课件一致）</strong><br>取 class 0 为参考，(w^{(0)}\equiv 0)：<br>[<br>P(y&#x3D;0|x)&#x3D;\frac{1}{1+\sum_{k&#x3D;1}^{C-1}e^{w^{(k)\top}x}},\quad<br>P(y&#x3D;c|x)&#x3D;\frac{e^{w^{(c)\top}x}}{1+\sum_{k&#x3D;1}^{C-1}e^{w^{(k)\top}x}};(c&gt;0)<br>]</p>
+</li>
+</ul>
+<blockquote>
+<p>softmax 对“整体平移”不变：(s_c\mapsto s_c+a) 概率不变。选参考类只是去冗余，不影响预测。</p>
+</blockquote>
+<h3 id="2-2-交叉熵与-MLE"><a href="#2-2-交叉熵与-MLE" class="headerlink" title="2.2 交叉熵与 MLE"></a>2.2 交叉熵与 MLE</h3><ul>
+<li>One-hot 标签 (y_{ic}\in{0,1})，(\sum_c y_{ic}&#x3D;1)  </li>
+<li>损失（不含正则）：<br>[<br>E(W)&#x3D;-\sum_{i&#x3D;1}^N\sum_{c&#x3D;0}^{C-1} y_{ic},\log p_{ic}<br>]</li>
+</ul>
+<h3 id="2-3-关键梯度结论（单样本-→-批量）"><a href="#2-3-关键梯度结论（单样本-→-批量）" class="headerlink" title="2.3 关键梯度结论（单样本 → 批量）"></a>2.3 关键梯度结论（单样本 → 批量）</h3><ul>
+<li>softmax 的核心梯度恒等式：<br>[<br>\frac{\partial \ell_i}{\partial s_{ij}}&#x3D;p_{ij}-y_{ij}<br>]</li>
+<li>链式到参数：<br>[<br>\frac{\partial \ell_i}{\partial w^{(j)}}&#x3D;(p_{ij}-y_{ij}),x_i<br>]</li>
+<li>批量求和 + L2 正则：<br>[<br>\boxed{;\frac{\partial E}{\partial w^{(j)}}&#x3D;\sum_{i&#x3D;1}^N (p_{ij}-y_{ij})x_i+\lambda w^{(j)};}<br>]</li>
+</ul>
+<p><strong>向量化</strong>（最实用）：</p>
+<ul>
+<li>设 (X\in\mathbb{R}^{N\times d}), (W\in\mathbb{R}^{d\times C}),<br>(S&#x3D; XW), (P&#x3D;\mathrm{softmax}(S)), (Y) 为 one-hot<br>[<br>\boxed{;\nabla_W E &#x3D; X^\top (P - Y) + \lambda W;}<br>]<br>（若用参考类法，固定第 1 列为 0 且不正则&#x2F;不更新。）</li>
+</ul>
+<h3 id="2-4-学习规则（GD-mini-batch）"><a href="#2-4-学习规则（GD-mini-batch）" class="headerlink" title="2.4 学习规则（GD &#x2F; mini-batch）"></a>2.4 学习规则（GD &#x2F; mini-batch）</h3><p>[<br>w^{(j)} \leftarrow w^{(j)} - \eta\Big(\tfrac{1}{|B|}!\sum_{i\in B}(p_{ij}-y_{ij})x_i + \lambda w^{(j)}\Big)<br>]</p>
+<p><strong>预测</strong>：(\hat y&#x3D;\arg\max_c p_c(x))</p>
+<hr>
+<h2 id="3-Sigmoid-还是-Softmax？"><a href="#3-Sigmoid-还是-Softmax？" class="headerlink" title="3. Sigmoid 还是 Softmax？"></a>3. Sigmoid 还是 Softmax？</h2><ul>
+<li><strong>互斥单选（只能属于一个类）</strong> → <strong>softmax + 多类交叉熵</strong>  </li>
+<li><strong>非互斥多标签（可多选）</strong> → <strong>逐类 sigmoid + 二元交叉熵（one-vs-rest）</strong></li>
+</ul>
+<blockquote>
+<p>二分类中，“一个 sigmoid”与“2 类 softmax”是等价的：<br>(P(y&#x3D;1)&#x3D;\dfrac{e^{s_1}}{e^{s_0}+e^{s_1}}&#x3D;\sigma(s_1-s_0))</p>
+</blockquote>
+<hr>
+<h2 id="4-为什么损失凸却没有封闭解？"><a href="#4-为什么损失凸却没有封闭解？" class="headerlink" title="4. 为什么损失凸却没有封闭解？"></a>4. 为什么损失凸却没有封闭解？</h2><ul>
+<li>逻辑回归的损失（交叉熵 &#x2F; log-sum-exp）对参数是<strong>凸</strong>的 ⇒ 全局最优存在且唯一（加适当正则）。  </li>
+<li>但一阶条件是<strong>非线性方程组</strong>（包含 sigmoid&#x2F;softmax 的指数项），<strong>无法</strong>像线性回归那样解出 (w) 的显式封闭式。  </li>
+<li>故需数值优化：<strong>GD&#x2F;SGD&#x2F;Adam&#x2F;L-BFGS&#x2F;牛顿(IRLS)</strong> 等。</li>
+</ul>
+<hr>
+<h2 id="5-优化方法要点"><a href="#5-优化方法要点" class="headerlink" title="5. 优化方法要点"></a>5. 优化方法要点</h2><h3 id="5-1-一阶法（GD-SGD-Adam）"><a href="#5-1-一阶法（GD-SGD-Adam）" class="headerlink" title="5.1 一阶法（GD&#x2F;SGD&#x2F;Adam）"></a>5.1 一阶法（GD&#x2F;SGD&#x2F;Adam）</h3><ul>
+<li>便宜、可扩展到大数据；配合标准化、动量、权重衰减、学习率调度、早停。</li>
+</ul>
+<h3 id="5-2-二阶法（牛顿-IRLS，拟牛顿-L-BFGS）"><a href="#5-2-二阶法（牛顿-IRLS，拟牛顿-L-BFGS）" class="headerlink" title="5.2 二阶法（牛顿&#x2F;IRLS，拟牛顿 L-BFGS）"></a>5.2 二阶法（牛顿&#x2F;IRLS，拟牛顿 L-BFGS）</h3><ul>
+<li>利用 Hessian（或其近似），<strong>局部二次收敛</strong>、迭代步数少；  </li>
+<li>每步解线性方程，计算&#x2F;存储较重，适合中等规模；  </li>
+<li>逻辑回归 IRLS 形式：<br>[<br>\Delta w &#x3D; (X^\top R X + \lambda I)^{-1} X^\top (y-p),\quad w\leftarrow w+\Delta w<br>]<br>其中 (R&#x3D;\mathrm{diag}(p_i(1-p_i)))。</li>
+</ul>
+<hr>
+<h2 id="6-决策阈值与评估"><a href="#6-决策阈值与评估" class="headerlink" title="6. 决策阈值与评估"></a>6. 决策阈值与评估</h2><ul>
+<li>二分类默认阈值 (\tau&#x3D;0.5)；可按业务调优（ROC&#x2F;PR 曲线、Youden&#x2F;最佳 F1 等）。  </li>
+<li>多分类一般取 (\arg\max)；不平衡可结合代价敏感或后处理。</li>
+</ul>
+<hr>
+<h2 id="7-实现清单（Checklist）"><a href="#7-实现清单（Checklist）" class="headerlink" title="7. 实现清单（Checklist）"></a>7. 实现清单（Checklist）</h2><ul>
+<li><input disabled="" type="checkbox"> 特征标准化&#x2F;归一化  </li>
+<li><input disabled="" type="checkbox"> 偏置项：拼 1 或单独参数（通常<strong>不</strong>正则化偏置）  </li>
+<li><input disabled="" type="checkbox"> softmax 数值稳定：<strong>行内减最大值</strong>（log-sum-exp trick）  </li>
+<li><input disabled="" type="checkbox"> 正则系数 (\lambda) 与学习率 (\eta)：验证集&#x2F;交叉验证调参  </li>
+<li><input disabled="" type="checkbox"> 小批量、早停、权重衰减；必要时用 L-BFGS  </li>
+<li><input disabled="" type="checkbox"> 多分类参考类法 or 标准 softmax：<strong>预测等价</strong>，实现选更顺手的</li>
+</ul>
+<hr>
+<h2 id="8-公式速查（Cheat-Sheet）"><a href="#8-公式速查（Cheat-Sheet）" class="headerlink" title="8. 公式速查（Cheat Sheet）"></a>8. 公式速查（Cheat Sheet）</h2><p><strong>二分类</strong><br>[<br>\begin{aligned}<br>p_i&amp;&#x3D;\sigma(w^\top x_i),\<br>E(w)&amp;&#x3D;-\sum_i \big[y_i\ln p_i+(1-y_i)\ln(1-p_i)\big]+\tfrac{\lambda}{2}|w|^2,\<br>\nabla E(w)&amp;&#x3D;\sum_i (p_i-y_i)x_i+\lambda w.<br>\end{aligned}<br>]</p>
+<p><strong>多分类（softmax）</strong><br>[<br>\begin{aligned}<br>p_{ic}&amp;&#x3D;\frac{e^{w^{(c)\top}x_i}}{\sum_k e^{w^{(k)\top}x_i}},\<br>E(W)&amp;&#x3D;-\sum_{i,c} y_{ic}\log p_{ic}+\tfrac{\lambda}{2}\sum_c|w^{(c)}|^2,\<br>\nabla_W E&amp;&#x3D;X^\top(P-Y)+\lambda W.<br>\end{aligned}<br>]</p>
+<hr>
+<h2 id="9-常见问答（FAQ）"><a href="#9-常见问答（FAQ）" class="headerlink" title="9. 常见问答（FAQ）"></a>9. 常见问答（FAQ）</h2><p><strong>Q1：多分类一定要指定“class 0”吗？</strong><br>A：不需要。参考类只是去冗余的一种参数化；标准 softmax 学 (C) 组权重即可，预测等价。  </p>
+<p><strong>Q2：二分类不用 sigmoid 行吗？</strong><br>A：可以。用<strong>二类 softmax</strong>等价；或用 SVM&#x2F;hinge 等非概率方法。  </p>
+<p><strong>Q3：为什么要正则化？</strong><br>A：控制模型容量、抑制过拟合、提升数值稳定性；L1 得稀疏，L2 稳定抗共线，Elastic Net 折衷。</p>
+<hr>
+<h2 id="10-参考实现（极简伪代码）"><a href="#10-参考实现（极简伪代码）" class="headerlink" title="10. 参考实现（极简伪代码）"></a>10. 参考实现（极简伪代码）</h2><p><strong>向量化梯度（softmax + L2）：</strong></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># X: (N,d), Y one-hot: (N,C), W: (d,C)</span>
+S <span class="token operator">=</span> X @ W                       <span class="token comment"># (N,C)</span>
+S <span class="token operator">-=</span> S<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+P <span class="token operator">=</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>S<span class="token punctuation">)</span> <span class="token operator">/</span> np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span>S<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+grad <span class="token operator">=</span> X<span class="token punctuation">.</span>T @ <span class="token punctuation">(</span>P <span class="token operator">-</span> Y<span class="token punctuation">)</span> <span class="token operator">/</span> N <span class="token operator">+</span> lam <span class="token operator">*</span> W
+W <span class="token operator">-=</span> lr <span class="token operator">*</span> grad<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="11-结语"><a href="#11-结语" class="headerlink" title="11. 结语"></a>11. 结语</h2><ul>
+<li><strong>二分类</strong>：sigmoid + 交叉熵 + (p-y) 梯度  </li>
+<li><strong>多分类</strong>：softmax + 交叉熵 + (P-Y) 梯度  </li>
+<li><strong>MLE → NLL（交叉熵）</strong>：最大似然 ⇔ 最小负对数似然  </li>
+<li><strong>凸但无封闭解</strong>：用数值优化（GD&#x2F;L-BFGS&#x2F;IRLS）  </li>
+<li><strong>正则化</strong>：更稳、更泛化</li>
+</ul>
+<blockquote>
+<p>记住两条黄金公式即可快速复原一切：<br>(\nabla E_{\text{binary}}&#x3D;\sum (p-y)x+\lambda w)；<br>(\nabla E_{\text{multi}}&#x3D;X^\top(P-Y)+\lambda W)。</p>
+</blockquote>
+<p>我们再继续展开discrimination的问题</p>
+<p>有很多机器学习和深度学习是discrimination的</p>
+<p>但是现在是生成式模型的时代generation</p>
+<p>以中石化第一节人工智能竞赛为例，题目一是一个简单的分类问题，但是难点在于类不平衡</p>
+<p>所有我们默认先使用分类的模型</p>
+<p>因为是多分类问题，所以自然不能使用逻辑斯特回归</p>
+<p>想到分类擅长的SVM改进版，是能应对多分类问题的</p>
+<p>然后贝叶斯方法和决策树</p>
+<p>随机森林</p>
+<p>然后还有无监督knn方法</p>
+<p>在解决这个数据挖掘问题的过程</p>
+<p>Logistic 回归：用线性决策函数，最大化正则化对数似然（等价最小交叉熵）学到权重，输出 sigmoid&#x2F;softmax 概率，适合近线性可分数据。</p>
+<p>SVM：通过合页损失 + 正则寻找最大间隔超平面，配核技巧映射到高维以处理非线性边界。</p>
+<p>朴素贝叶斯（NB）：假设特征在给定类别下条件独立，先估<br>𝑝(𝑥∣𝑦)p(x∣y) 和 𝑝(𝑦)p(y) 再用贝叶斯定理求 𝑝(𝑦∣𝑥)<br>p(y∣x)，简单快速但偏强假设。</p>
+<p>决策树：按信息增益&#x2F;基尼指数递归划分特征空间形成规则树，叶节点给类别，易解释但单树易过拟合。</p>
+<p>随机森林：对样本与特征做随机子采样训练多棵弱相关树并投票&#x2F;平均，显著降方差、鲁棒好、调参友好。</p>
+
+  <div class="post-pv" style="opacity:.8;font:14px ui-sans-serif,system-ui;margin-top:1rem">
+    本文阅读：<strong class="pv-val">--</strong>
+  </div>
+  <script>
+  (async function () {
+    try {
+      const ENDPOINT = '/api/umami-post?url=' + encodeURIComponent('/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/logistic-cheatsheet/');
+      const d = await fetch(ENDPOINT, { cache: 'no-store' }).then(r => r.json());
+      document.currentScript.previousElementSibling.querySelector('.pv-val').textContent = d.page_pv ?? 0;
+    } catch (e) {}
+  })();
+  </script>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/logistic-cheatsheet/" data-id="cuidJZA1u5lDeZPRc1Xj9sTob" data-title="逻辑回归一文通：二分类 vs 多分类（含 MLE、求导、正则、优化）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Logistic-Regression/" rel="tag">Logistic Regression</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Softmax-Regression/" rel="tag">Softmax Regression</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-机器学习/hexo_colab_post" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/" class="article-date">
@@ -302,7 +503,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/" data-id="cuidu5kkgMeK1uyfXh84mA7Jt" data-title="Colab 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/hexo_colab_post/" data-id="cuidqOe2D1ylp7_bFa-3LS8QW" data-title="Colab 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -379,7 +580,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E6%8B%9B%E8%81%98/" data-id="cuidZW59jN_ZbTFJY5R1xKJOl" data-title="招聘" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E6%8B%9B%E8%81%98/" data-id="cuidN39V2HtxA2XHjtMZIoUX-" data-title="招聘" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -454,7 +655,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse9.22/" data-id="cuidEpTfdKOMY6e8dXmp8eysw" data-title="Verse9.22" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse9.22/" data-id="cuidfqUEiJnFjiSa8NegTLhG-" data-title="Verse9.22" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -523,7 +724,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidSmutZbYx7uw8gY7WqGQFG" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/verse/" data-id="cuidwfiPxsNxpu7yQBQHzZeCF" data-title="Verse1" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1002,7 +1203,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/rap/" data-id="cuid26yogfwv_OQbz5kH1Rtls" data-title="Hiphop Exercise" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/Hip-Hop/rap/" data-id="cuidY_Gy4m-NUtPoP5kparWnS" data-title="Hiphop Exercise" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1956,7 +2157,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/English/" data-id="cuidK4jmun-mshOOyykUs5II7" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/English/" data-id="cuidwpGU_36o2tT39d3wehAHv" data-title="英语场景对话 | English Scenario Conversations" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2117,7 +2318,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuid6bP49noPK1_75BaAtWtrY" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-9-3-%E5%8E%A8%E6%88%BF/" data-id="cuid3kSDBsu4O_QQ22Nn1FRO3" data-title="厨房里的常见物品" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2293,7 +2494,7 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuidj_f4T2eXqLzStAaNxUPRK" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-31-%E5%8E%95%E6%89%80/" data-id="cuidOmqQHx8h3_GNxoOp-uWZ6" data-title="浴室与卫生间常见表达与用具" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -2530,113 +2731,12 @@ prefix <span class="token operator">=</span> subpath
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuidjzHkUKYmK5KXAJ3A05GG_" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/English/E2025-8-30-%E7%94%B5%E5%99%A8/" data-id="cuida2f5F8j8On8wtOc9MEJ4i" data-title="日常生活中的电器" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8%E5%8F%A3%E8%AF%AD/" rel="tag">日常口语</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Code/浅拷贝和深拷贝" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="article-date">
-  <time class="dt-published" datetime="2025-09-26T13:44:43.331Z" itemprop="datePublished">2025-09-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BB%A3%E7%A0%81/">代码</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">浅拷贝和深拷贝</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-赋值（-）"><a href="#1-赋值（-）" class="headerlink" title="1. 赋值（&#x3D;）"></a>1. 赋值（&#x3D;）</h2><ul>
-<li><p><strong>只是创建新名字，指向同一个对象</strong></p>
-</li>
-<li><p>修改任意一方，另一方都会跟着变</p>
-</li>
-</ul>
-<pre class="line-numbers language-none"><code class="language-none">a &#x3D; [1, 2, 3]
-b &#x3D; a      # 赋值
-b[0] &#x3D; 99
-
-print(a)  # [99, 2, 3]
-print(b)  # [99, 2, 3]
-print(a is b)  # True<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-浅拷贝（copy-copy-）"><a href="#2-浅拷贝（copy-copy-）" class="headerlink" title="2. 浅拷贝（copy.copy()）"></a>2. 浅拷贝（<code>copy.copy()</code>）</h2><ul>
-<li><p><strong>新建外层容器，但里面的子对象仍然共享引用</strong></p>
-</li>
-<li><p>修改子对象内部 → 会影响原对象</p>
-</li>
-<li><p>替换整个子对象 → 脱钩，不影响原对象</p>
-</li>
-</ul>
-<h2 id="示例-1：修改子元素（会影响）"><a href="#示例-1：修改子元素（会影响）" class="headerlink" title="示例 1：修改子元素（会影响）"></a>示例 1：修改子元素（会影响）</h2><pre class="line-numbers language-none"><code class="language-none">import copy
-
-a &#x3D; [[1, 2, 3], [3, 4, 5]]
-b &#x3D; copy.copy(a)
-b[0][0] &#x3D; 99
-
-print(a)  # [[99, 2, 3], [3, 4, 5]]
-print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="示例-1：替换整个子列表（不会影响）"><a href="#示例-1：替换整个子列表（不会影响）" class="headerlink" title="示例 1：替换整个子列表（不会影响）"></a>示例 1：替换整个子列表（不会影响）</h2><pre class="line-numbers language-none"><code class="language-none">a &#x3D; [[1, 2, 3], [3, 4, 5]]
-b &#x3D; copy.copy(a)
-b[0] &#x3D; [99, 98, 97]
-
-print(a)  # [[1, 2, 3], [3, 4, 5]]
-print(b)  # [[99, 98, 97], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="3-深拷贝（copy-deepcopy-）"><a href="#3-深拷贝（copy-deepcopy-）" class="headerlink" title="3. 深拷贝（copy.deepcopy()）"></a>3. 深拷贝（<code>copy.deepcopy()</code>）</h2><ul>
-<li><p><strong>递归地复制所有层次对象</strong></p>
-</li>
-<li><p>完全独立，互不影响</p>
-</li>
-</ul>
-<pre class="line-numbers language-none"><code class="language-none">import copy
-a &#x3D; [[1, 2, 3], [3, 4, 5]]
-b &#x3D; copy.deepcopy(a)
-b[0][0] &#x3D; 99
-
-print(a)  # [[1, 2, 3], [3, 4, 5]]
-print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-  <div class="post-pv" style="opacity:.8;font:14px ui-sans-serif,system-ui;margin-top:1rem">
-    本文阅读：<strong class="pv-val">--</strong>
-  </div>
-  <script>
-  (async function () {
-    try {
-      const ENDPOINT = '/api/umami-post?url=' + encodeURIComponent('/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/');
-      const d = await fetch(ENDPOINT, { cache: 'no-store' }).then(r => r.json());
-      document.currentScript.previousElementSibling.querySelector('.pv-val').textContent = d.page_pv ?? 0;
-    } catch (e) {}
-  })();
-  </script>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/Code/%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="cuidfcxEaKVxqTz6JYOlu2DBd" data-title="浅拷贝和深拷贝" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
     </footer>
   </div>
   
@@ -2702,6 +2802,10 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       <ul>
         
           <li>
+            <a href="/2025/10/18/%E5%86%99%E4%BD%9C/2025-10-18/">写作</a>
+          </li>
+        
+          <li>
             <a href="/2025/10/02/%E6%9D%82%E8%B0%88/%E5%88%86%E6%95%B0/">分数</a>
           </li>
         
@@ -2715,10 +2819,6 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
         
           <li>
             <a href="/2025/09/26/%E5%B7%A5%E4%BD%9C/%E8%BF%90%E8%90%A5%E5%95%86/">运营商</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/26/%E6%9D%82%E8%B0%88/%E8%BF%99%E6%89%BE%E5%B7%A5%E4%BD%9C%E6%84%9F%E8%A7%89%E8%B7%9F%E8%80%83%E7%A0%94%E4%B8%80%E6%A0%B7%E5%95%8A%EF%BC%81/">这找工作感觉跟考研一样啊！</a>
           </li>
         
       </ul>
@@ -2769,6 +2869,21 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
 
   </div>
 <!-- hexo injector body_end start -->
+  <!-- Busuanzi -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>
+    (function () {
+      function run() {
+        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
+      }
+      if (document.readyState === 'complete') run();
+      else window.addEventListener('load', run);
+      document.addEventListener('pjax:complete', run);
+      document.addEventListener('ajax:loaded', run);
+      document.addEventListener('swup:contentReplaced', run);
+    })();
+  </script>
+
   <div id="hero-counter" style="position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px;font:14px ui-sans-serif,system-ui;opacity:.95">
     访客：<strong id="hero_uv">--</strong>　浏览：<strong id="hero_pv">--</strong>
   </div>
@@ -2787,21 +2902,6 @@ print(b)  # [[99, 2, 3], [3, 4, 5]]<span aria-hidden="true" class="line-numbers-
       document.getElementById('hero_pv').textContent = '服务异常';
     }
   })();
-  </script>
-
-  <!-- Busuanzi -->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script>
-    (function () {
-      function run() {
-        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
-      }
-      if (document.readyState === 'complete') run();
-      else window.addEventListener('load', run);
-      document.addEventListener('pjax:complete', run);
-      document.addEventListener('ajax:loaded', run);
-      document.addEventListener('swup:contentReplaced', run);
-    })();
   </script>
 <!-- hexo injector body_end end --></body>
 </html>
