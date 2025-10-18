@@ -113,10 +113,22 @@
 <h2 id="五月底：申请-IPA"><a href="#五月底：申请-IPA" class="headerlink" title="五月底：申请 IPA"></a><strong>五月底：申请 IPA</strong></h2><p>办理 IPA</p>
 <h2 id="六月中旬：国内体检"><a href="#六月中旬：国内体检" class="headerlink" title="六月中旬：国内体检"></a><strong>六月中旬：国内体检</strong></h2><p>在国内完成体检</p>
 <h2 id="八月初：入学前迎新体检-Endorsement-转换-STP"><a href="#八月初：入学前迎新体检-Endorsement-转换-STP" class="headerlink" title="八月初：入学前迎新体检 + Endorsement + 转换 STP"></a><strong>八月初：入学前迎新体检 + Endorsement + 转换 STP</strong></h2>
+  <div class="post-pv" style="opacity:.8;font:14px ui-sans-serif,system-ui;margin-top:1rem">
+    本文阅读：<strong class="pv-val">--</strong>
+  </div>
+  <script>
+  (async function () {
+    try {
+      const ENDPOINT = '/api/umami-post?url=' + encodeURIComponent('/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/');
+      const d = await fetch(ENDPOINT, { cache: 'no-store' }).then(r => r.json());
+      document.currentScript.previousElementSibling.querySelector('.pv-val').textContent = d.page_pv ?? 0;
+    } catch (e) {}
+  })();
+  </script>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/" data-id="cuid78qM42n5mqmrweYgL5hSV" data-title="🌏 我的出国申请全流程时间线回顾" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E6%9D%82%E8%B0%88/%E6%97%B6%E9%97%B4%E7%BA%BF/" data-id="cuid6BoBcIbX0XFPnvFWO66UD" data-title="🌏 我的出国申请全流程时间线回顾" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -264,6 +276,26 @@
 
   </div>
 <!-- hexo injector body_end start -->
+  <div id="hero-counter" style="position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px;font:14px ui-sans-serif,system-ui;opacity:.95">
+    访客：<strong id="hero_uv">--</strong>　浏览：<strong id="hero_pv">--</strong>
+  </div>
+  <script>
+  (async function () {
+    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
+    const ENDPOINT_BASE = '';
+    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+
+    try {
+      const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());
+      document.getElementById('hero_uv').textContent = d.site_uv ?? 0;
+      document.getElementById('hero_pv').textContent = d.site_pv ?? 0;
+    } catch (e) {
+      document.getElementById('hero_uv').textContent = '服务异常';
+      document.getElementById('hero_pv').textContent = '服务异常';
+    }
+  })();
+  </script>
+
   <!-- Busuanzi -->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
@@ -276,56 +308,6 @@
       document.addEventListener('pjax:complete', run);
       document.addEventListener('ajax:loaded', run);
       document.addEventListener('swup:contentReplaced', run);
-    })();
-  </script>
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <style>
-    #hero-counter.floating{position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px}
-  </style>
-  <script>
-    (function () {
-      var CANDIDATES = ['.site-subtitle','.subtitle','.page-subtitle','.site-title','.page-title','#logo','.brand'];
-      function place() {
-        if (document.getElementById('hero-counter')) return;
-        var host = null;
-        for (var i=0;i<CANDIDATES.length;i++){ var el = document.querySelector(CANDIDATES[i]); if(el){host=el;break;} }
-        var wrap = document.createElement('div'); wrap.innerHTML = "\n  <div id=\"hero-counter\" style=\"display:inline-flex;gap:.75rem;font:14px/1.6 ui-sans-serif,system-ui;opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">访客：<strong id=\"busuanzi_value_site_uv\">--</strong></span>\n    <span class=\"busuanzi_container_site_pv\">浏览：<strong id=\"busuanzi_value_site_pv\">--</strong></span>\n  </div>";
-        var node = wrap.firstElementChild;
-        if (host) host.parentNode.insertBefore(node, host.nextSibling);
-        else { node.classList.add('floating'); document.body.appendChild(node); }
-      }
-      function refetch(tag){
-        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') {
-          try { BUSUANZI.fetch(); console.debug('[busuanzi] fetch @', tag); } catch(e){ console.error('[busuanzi] fetch error', e); }
-        } else {
-          console.warn('[busuanzi] object missing');
-        }
-      }
-      function jsonpFallback(){  // 兜底：直接打 JSONP（部分主题/拦截器把 fetch 卡住时用）
-        if (document.getElementById('bz-jsonp')) return;
-        var cb = 'BZCB'+Date.now();
-        window[cb] = function(d){
-          if (d){
-            var uv = document.getElementById('busuanzi_value_site_uv');
-            var pv = document.getElementById('busuanzi_value_site_pv');
-            if (uv && d.site_uv!=null) uv.textContent = d.site_uv;
-            if (pv && d.site_pv!=null) pv.textContent = d.site_pv;
-          }
-        };
-        var s = document.createElement('script');
-        s.id='bz-jsonp';
-        s.src='https://busuanzi.ibruce.info/busuanzi?jsonpCallback='+cb;
-        s.onerror=function(){ console.error('[busuanzi] jsonp blocked'); };
-        document.body.appendChild(s);
-      }
-
-      function go(tag){ place(); refetch(tag); setTimeout(jsonpFallback, 1500); }
-
-      if (document.readyState === 'complete') go('load-complete'); else window.addEventListener('load', function(){ go('window-load'); });
-      document.addEventListener('pjax:complete', function(){ go('pjax'); });
-      document.addEventListener('ajax:loaded', function(){ go('ajax'); });
-      document.addEventListener('swup:contentReplaced', function(){ go('swup'); });
     })();
   </script>
 <!-- hexo injector body_end end --></body>

@@ -396,10 +396,22 @@
 <p>应聘条件<br>1.热爱祖国，热爱金融事业；诚实守信，品行端正，遵纪守法，无违法违纪或不良行为记录。<br>2.综合素质好，身心健康；具有较强的开拓创新、研究分析、文字综合和沟通协调能力，有团队合作精神。<br>3.境内外院校硕士研究生及以上学历毕业生，须在2026年7月31日前毕业，并取得国家认可的毕业证、学位证或国家教育部留学服务中心的学历学位认证书。如届时国家另有规定的，按有关政策办理。<br>4.大学英语六级（CET6）425分及以上，或英语专业八级合格，或托业（TOEIC）听读公开考试715分及以上，或新托福（TOEFL-iBT）考试85分及以上，或雅思（IELTS）考试6.5分及以上，或通过相应水平考试。<br>5.符合监管机构关于银行业从业人员的有关要求，以及中国农业银行亲属回避相关规定。</p>
 <p>具体要求<br>1.计算机、软件工程、大数据分析、人工智能、信息安全专业，具有金融和信息科技复合背景者优先。<br>2.具有国内外顶级竞赛获奖经历和在专业领域有重量级科研成果者优先。</p>
 
+  <div class="post-pv" style="opacity:.8;font:14px ui-sans-serif,system-ui;margin-top:1rem">
+    本文阅读：<strong class="pv-val">--</strong>
+  </div>
+  <script>
+  (async function () {
+    try {
+      const ENDPOINT = '/api/umami-post?url=' + encodeURIComponent('/2025/09/26/%E5%B7%A5%E4%BD%9C/%E8%BF%90%E8%90%A5%E5%95%86/');
+      const d = await fetch(ENDPOINT, { cache: 'no-store' }).then(r => r.json());
+      document.currentScript.previousElementSibling.querySelector('.pv-val').textContent = d.page_pv ?? 0;
+    } catch (e) {}
+  })();
+  </script>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E8%BF%90%E8%90%A5%E5%95%86/" data-id="cuidno2SEcS_Fi9FLQtCwkyfe" data-title="运营商" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/09/26/%E5%B7%A5%E4%BD%9C/%E8%BF%90%E8%90%A5%E5%95%86/" data-id="cuidB-jhgVEVDJYFkvQYgB8jN" data-title="运营商" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -547,6 +559,26 @@
 
   </div>
 <!-- hexo injector body_end start -->
+  <div id="hero-counter" style="position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px;font:14px ui-sans-serif,system-ui;opacity:.95">
+    访客：<strong id="hero_uv">--</strong>　浏览：<strong id="hero_pv">--</strong>
+  </div>
+  <script>
+  (async function () {
+    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
+    const ENDPOINT_BASE = '';
+    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+
+    try {
+      const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());
+      document.getElementById('hero_uv').textContent = d.site_uv ?? 0;
+      document.getElementById('hero_pv').textContent = d.site_pv ?? 0;
+    } catch (e) {
+      document.getElementById('hero_uv').textContent = '服务异常';
+      document.getElementById('hero_pv').textContent = '服务异常';
+    }
+  })();
+  </script>
+
   <!-- Busuanzi -->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
@@ -559,56 +591,6 @@
       document.addEventListener('pjax:complete', run);
       document.addEventListener('ajax:loaded', run);
       document.addEventListener('swup:contentReplaced', run);
-    })();
-  </script>
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <style>
-    #hero-counter.floating{position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px}
-  </style>
-  <script>
-    (function () {
-      var CANDIDATES = ['.site-subtitle','.subtitle','.page-subtitle','.site-title','.page-title','#logo','.brand'];
-      function place() {
-        if (document.getElementById('hero-counter')) return;
-        var host = null;
-        for (var i=0;i<CANDIDATES.length;i++){ var el = document.querySelector(CANDIDATES[i]); if(el){host=el;break;} }
-        var wrap = document.createElement('div'); wrap.innerHTML = "\n  <div id=\"hero-counter\" style=\"display:inline-flex;gap:.75rem;font:14px/1.6 ui-sans-serif,system-ui;opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">访客：<strong id=\"busuanzi_value_site_uv\">--</strong></span>\n    <span class=\"busuanzi_container_site_pv\">浏览：<strong id=\"busuanzi_value_site_pv\">--</strong></span>\n  </div>";
-        var node = wrap.firstElementChild;
-        if (host) host.parentNode.insertBefore(node, host.nextSibling);
-        else { node.classList.add('floating'); document.body.appendChild(node); }
-      }
-      function refetch(tag){
-        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') {
-          try { BUSUANZI.fetch(); console.debug('[busuanzi] fetch @', tag); } catch(e){ console.error('[busuanzi] fetch error', e); }
-        } else {
-          console.warn('[busuanzi] object missing');
-        }
-      }
-      function jsonpFallback(){  // 兜底：直接打 JSONP（部分主题/拦截器把 fetch 卡住时用）
-        if (document.getElementById('bz-jsonp')) return;
-        var cb = 'BZCB'+Date.now();
-        window[cb] = function(d){
-          if (d){
-            var uv = document.getElementById('busuanzi_value_site_uv');
-            var pv = document.getElementById('busuanzi_value_site_pv');
-            if (uv && d.site_uv!=null) uv.textContent = d.site_uv;
-            if (pv && d.site_pv!=null) pv.textContent = d.site_pv;
-          }
-        };
-        var s = document.createElement('script');
-        s.id='bz-jsonp';
-        s.src='https://busuanzi.ibruce.info/busuanzi?jsonpCallback='+cb;
-        s.onerror=function(){ console.error('[busuanzi] jsonp blocked'); };
-        document.body.appendChild(s);
-      }
-
-      function go(tag){ place(); refetch(tag); setTimeout(jsonpFallback, 1500); }
-
-      if (document.readyState === 'complete') go('load-complete'); else window.addEventListener('load', function(){ go('window-load'); });
-      document.addEventListener('pjax:complete', function(){ go('pjax'); });
-      document.addEventListener('ajax:loaded', function(){ go('ajax'); });
-      document.addEventListener('swup:contentReplaced', function(){ go('swup'); });
     })();
   </script>
 <!-- hexo injector body_end end --></body>

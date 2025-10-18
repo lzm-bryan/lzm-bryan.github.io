@@ -270,10 +270,22 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
 <hr>
 <h3 id="End"><a href="#End" class="headerlink" title="End"></a>End</h3><p>这份清单可直接当“速记本”使用；若你要分享给同学，可在此基础上继续补充截图与实验数据（如你的 <code>ping/tracert/netstat</code> 输出）。</p>
 
+  <div class="post-pv" style="opacity:.8;font:14px ui-sans-serif,system-ui;margin-top:1rem">
+    本文阅读：<strong class="pv-val">--</strong>
+  </div>
+  <script>
+  (async function () {
+    try {
+      const ENDPOINT = '/api/umami-post?url=' + encodeURIComponent('/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/');
+      const d = await fetch(ENDPOINT, { cache: 'no-store' }).then(r => r.json());
+      document.currentScript.previousElementSibling.querySelector('.pv-val').textContent = d.page_pv ?? 0;
+    } catch (e) {}
+  })();
+  </script>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidUfMVmUytSFJHlJBd9p0-x" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://lzm-bryan.github.io/2025/08/16/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%A6%81%E7%82%B9%E5%A4%8D%E4%B9%A0%EF%BC%88dns_cdn_%E6%B8%B8%E6%88%8F%E7%BD%91%E7%BB%9C_icmp_bgp_%E7%AB%AF%E5%8F%A3_%E4%BC%A0%E8%BE%93%E5%B1%82_%E5%A4%9A%E7%BD%91%E6%AE%B5%EF%BC%89/" data-id="cuidoe-SQgkxSiaKEI9d39VMA" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -421,6 +433,26 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
 
   </div>
 <!-- hexo injector body_end start -->
+  <div id="hero-counter" style="position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px;font:14px ui-sans-serif,system-ui;opacity:.95">
+    访客：<strong id="hero_uv">--</strong>　浏览：<strong id="hero_pv">--</strong>
+  </div>
+  <script>
+  (async function () {
+    // 如果你的博客和 API 不同域，把 ENDPOINT_BASE 改成完整域名，比如 'https://your-app.vercel.app'
+    const ENDPOINT_BASE = '';
+    const url = (p) => (ENDPOINT_BASE ? ENDPOINT_BASE : '') + p;
+
+    try {
+      const d = await fetch(url('/api/umami-stats'), { cache: 'no-store' }).then(r => r.json());
+      document.getElementById('hero_uv').textContent = d.site_uv ?? 0;
+      document.getElementById('hero_pv').textContent = d.site_pv ?? 0;
+    } catch (e) {
+      document.getElementById('hero_uv').textContent = '服务异常';
+      document.getElementById('hero_pv').textContent = '服务异常';
+    }
+  })();
+  </script>
+
   <!-- Busuanzi -->
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
@@ -433,56 +465,6 @@ ip addr add 192<span class="token punctuation">.</span>168<span class="token pun
       document.addEventListener('pjax:complete', run);
       document.addEventListener('ajax:loaded', run);
       document.addEventListener('swup:contentReplaced', run);
-    })();
-  </script>
-
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <style>
-    #hero-counter.floating{position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px}
-  </style>
-  <script>
-    (function () {
-      var CANDIDATES = ['.site-subtitle','.subtitle','.page-subtitle','.site-title','.page-title','#logo','.brand'];
-      function place() {
-        if (document.getElementById('hero-counter')) return;
-        var host = null;
-        for (var i=0;i<CANDIDATES.length;i++){ var el = document.querySelector(CANDIDATES[i]); if(el){host=el;break;} }
-        var wrap = document.createElement('div'); wrap.innerHTML = "\n  <div id=\"hero-counter\" style=\"display:inline-flex;gap:.75rem;font:14px/1.6 ui-sans-serif,system-ui;opacity:.9;\">\n    <span class=\"busuanzi_container_site_uv\">访客：<strong id=\"busuanzi_value_site_uv\">--</strong></span>\n    <span class=\"busuanzi_container_site_pv\">浏览：<strong id=\"busuanzi_value_site_pv\">--</strong></span>\n  </div>";
-        var node = wrap.firstElementChild;
-        if (host) host.parentNode.insertBefore(node, host.nextSibling);
-        else { node.classList.add('floating'); document.body.appendChild(node); }
-      }
-      function refetch(tag){
-        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') {
-          try { BUSUANZI.fetch(); console.debug('[busuanzi] fetch @', tag); } catch(e){ console.error('[busuanzi] fetch error', e); }
-        } else {
-          console.warn('[busuanzi] object missing');
-        }
-      }
-      function jsonpFallback(){  // 兜底：直接打 JSONP（部分主题/拦截器把 fetch 卡住时用）
-        if (document.getElementById('bz-jsonp')) return;
-        var cb = 'BZCB'+Date.now();
-        window[cb] = function(d){
-          if (d){
-            var uv = document.getElementById('busuanzi_value_site_uv');
-            var pv = document.getElementById('busuanzi_value_site_pv');
-            if (uv && d.site_uv!=null) uv.textContent = d.site_uv;
-            if (pv && d.site_pv!=null) pv.textContent = d.site_pv;
-          }
-        };
-        var s = document.createElement('script');
-        s.id='bz-jsonp';
-        s.src='https://busuanzi.ibruce.info/busuanzi?jsonpCallback='+cb;
-        s.onerror=function(){ console.error('[busuanzi] jsonp blocked'); };
-        document.body.appendChild(s);
-      }
-
-      function go(tag){ place(); refetch(tag); setTimeout(jsonpFallback, 1500); }
-
-      if (document.readyState === 'complete') go('load-complete'); else window.addEventListener('load', function(){ go('window-load'); });
-      document.addEventListener('pjax:complete', function(){ go('pjax'); });
-      document.addEventListener('ajax:loaded', function(){ go('ajax'); });
-      document.addEventListener('swup:contentReplaced', function(){ go('swup'); });
     })();
   </script>
 <!-- hexo injector body_end end --></body>
