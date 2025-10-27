@@ -326,7 +326,7 @@
       <ul>
         
           <li>
-            <a href="/2025/10/27/%E5%B7%A5%E4%BD%9C/table/">数据表展示</a>
+            <a href="/2025/10/27/%E5%B7%A5%E4%BD%9C/table/">时间表</a>
           </li>
         
           <li>
@@ -393,6 +393,21 @@
 
   </div>
 <!-- hexo injector body_end start -->
+  <!-- Busuanzi -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>
+    (function () {
+      function run() {
+        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
+      }
+      if (document.readyState === 'complete') run();
+      else window.addEventListener('load', run);
+      document.addEventListener('pjax:complete', run);
+      document.addEventListener('ajax:loaded', run);
+      document.addEventListener('swup:contentReplaced', run);
+    })();
+  </script>
+
   <div id="hero-counter" style="position:fixed;top:12px;right:14px;z-index:9999;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:6px;font:14px ui-sans-serif,system-ui;opacity:.95">
     访客：<strong id="hero_uv">--</strong>　浏览：<strong id="hero_pv">--</strong>
   </div>
@@ -411,21 +426,6 @@
       document.getElementById('hero_pv').textContent = '服务异常';
     }
   })();
-  </script>
-
-  <!-- Busuanzi -->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script>
-    (function () {
-      function run() {
-        if (window.BUSUANZI && typeof BUSUANZI.fetch === 'function') BUSUANZI.fetch();
-      }
-      if (document.readyState === 'complete') run();
-      else window.addEventListener('load', run);
-      document.addEventListener('pjax:complete', run);
-      document.addEventListener('ajax:loaded', run);
-      document.addEventListener('swup:contentReplaced', run);
-    })();
   </script>
 <!-- hexo injector body_end end --></body>
 </html>
